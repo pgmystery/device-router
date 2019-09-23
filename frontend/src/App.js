@@ -16,7 +16,7 @@ export const backendUrl = 'http://127.0.0.1:3001'
 export const MainSocketContext = React.createContext()
 
 
-const mainSocket = SocketIO({ url: backendUrl, namespace: 'main' })
+const mainSocket = SocketIO({ namespace: 'main' })
 
 function App() {
   const [mainSocketConnected, setMainSocketConnected] = useState(false)
