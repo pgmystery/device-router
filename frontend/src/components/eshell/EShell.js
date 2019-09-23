@@ -1,5 +1,6 @@
 import React  from "react"
 import SocketIO from "../socketio/SocketIO";
+import { backendUrl } from '../../App'
 
 import EShellTerm from "./EShellTerm"
 
@@ -44,7 +45,7 @@ class EShell {
   }
 
   connectSession(session, { namespace='eshell', query={} }={}) {
-    const socket = SocketIO({namespace, query})
+    const socket = SocketIO({backendUrl, namespace, query})
     session.socket = socket
 
     socket.on('connect', () => {

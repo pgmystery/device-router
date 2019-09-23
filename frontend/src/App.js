@@ -9,10 +9,14 @@ import '../node_modules/xterm/dist/xterm.css'
 // https://www.npmjs.com/package/mxgraph
 // devicerouter.de/.com
 
+
+export const backendUrl = 'http://127.0.0.1:3001'
+
+// Not in use, but later this will be good
 export const MainSocketContext = React.createContext()
 
 
-const mainSocket = SocketIO({ namespace: 'main' })
+const mainSocket = SocketIO({ url: backendUrl, namespace: 'main' })
 
 function App() {
   const [mainSocketConnected, setMainSocketConnected] = useState(false)

@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 
 import EShell from '../eshell/EShell'
+import Button from "../utils/Button"
 // import { MainSocketContext } from '../../App'
 
 
@@ -8,10 +9,10 @@ function EShellPage({ mainSocket }) {
   const eshell = new EShell()
   const [eshellSession, setEshellSession] = useState(  // Only in a state it works best...
     eshell.createSession({
-      query: {  // TODO: CHANGE THIS TO A BETTER AUTH!
+      query: {  // TODO: Change this to a better auth!
         type: 'user',
         userToken: mainSocket.id,
-        deviceId: 0,  // TODO: GET THE ID FROM THE DB
+        deviceId: 0,  // TODO: Get the device-id from the db
       }
     })
   )
@@ -37,22 +38,24 @@ function EShellPage({ mainSocket }) {
 
   function getEshellConnectButton() {
     if (eshellConnected) {
-      return eshellConnectButton({ onClick: stopEshellConnection, text: 'Stop connection...' })
+      return eshellConnectButton({
+        onClick: stopEshellConnection,
+        text: 'Stop connection...'
+      })
     }
-    return eshellConnectButton({ onClick: startEshellConnection, text: 'Start connection...', disabled: eshellConnectionStarted })
+    return eshellConnectButton({
+      onClick: startEshellConnection,
+      text: 'Start connection...',
+      disabled: eshellConnectionStarted
+    })
   }
 
   function eshellConnectButton({ onClick, text, disabled=null }) {
-    // TODO: Style the Button with styled-components
     return (
-      <button
+      <Button 
         onClick={onClick}
-        style={{
-          padding: 10,
-          marginBottom: 10
-        }}
         disabled={disabled}
-      >{text}</button>
+      >{text}</Button>
     )
   }
 
