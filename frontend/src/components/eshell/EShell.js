@@ -25,7 +25,7 @@ class EShell {
     newSession.term = <EShellTerm
       input={newSession.termInput}
       output={data => this.send(newSession, data)}
-      {...termCallbacks}
+      {...termCallbacks}  // only if I want to rewrite the parameters, its not in use yet
     />
 
     this.sessions = [...this.sessions, newSession]
