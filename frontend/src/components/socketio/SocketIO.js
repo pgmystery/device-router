@@ -1,6 +1,6 @@
 import io from "socket.io-client"
 
-import { backendUrl } from '../../App'
+import { backendUrl } from '../App'
 
 
 function SocketIO({ url=backendUrl, namespace='', query={} }={}) {

@@ -1,9 +1,10 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import { Terminal } from "xterm"
 
 
 function EShellTerm({ input, output }) {
-  let termContainer = HTMLDivElement
+  // let termContainer = HTMLDivElement
+  const termContainer = useRef(null)
   const term = new Terminal()
 
   useEffect(() => {
@@ -22,7 +23,7 @@ function EShellTerm({ input, output }) {
   }
 
   return (
-    <div ref={ref => (termContainer = ref)} />
+    <div ref={termContainer} />
   )
 }
 

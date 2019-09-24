@@ -3,7 +3,7 @@ import LostConnectionPage from './LostConnectionPage'
 import SocketIO  from './socketio/SocketIO'
 import EShellPage from './pages/EShellPage'
 
-import '../node_modules/xterm/dist/xterm.css'
+import '../../node_modules/xterm/dist/xterm.css'
 
 
 // https://www.npmjs.com/package/mxgraph
