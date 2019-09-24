@@ -1,11 +1,11 @@
 import React, { useState } from "react"
 
+import { mainSocket } from '../App'
 import EShell from '../eshell/EShell'
 import Button from "../utils/Button"
-// import { MainSocketContext } from '../../App'
 
 
-function EShellPage({ mainSocket }) {
+function EShellPage() {
   const eshell = new EShell()
   const [eshellSession, setEshellSession] = useState(  // Only in a state it works best...
     eshell.createSession({
@@ -60,15 +60,10 @@ function EShellPage({ mainSocket }) {
   }
 
   return (
-    <>
-    {/*<MainSocketContext.Consumer>*/}
-    {/*  {mainSocket => <EShell mainSocket={mainSocket}/>}*/}
-    {/*</MainSocketContext.Consumer>*/}
     <div>
       { getEshellConnectButton() }
       { eshellSession.term }
     </div>
-    </>
   )
 }
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import LostConnectionPage from './components/LostConnectionPage'
-import SocketIO  from './components/socketio/SocketIO'
-import EShellPage from './components/pages/EShellPage'
+import LostConnectionPage from './LostConnectionPage'
+import SocketIO  from './socketio/SocketIO'
+import EShellPage from './pages/EShellPage'
 
 import '../node_modules/xterm/dist/xterm.css'
 
@@ -12,11 +12,7 @@ import '../node_modules/xterm/dist/xterm.css'
 
 export const backendUrl = 'http://127.0.0.1:3001'
 
-// Not in use, but later this will be good
-export const MainSocketContext = React.createContext()
-
-
-const mainSocket = SocketIO({ namespace: 'main' })
+export const mainSocket = SocketIO({ namespace: 'main' })
 
 function App() {
   const [mainSocketConnected, setMainSocketConnected] = useState(false)
@@ -32,9 +28,7 @@ function App() {
   function getPage() {
     if (mainSocketConnected) {
       return (
-        <MainSocketContext.Provider value={mainSocket}>
-          <EShellPage mainSocket={mainSocket} />
-        </MainSocketContext.Provider>
+        <EShellPage mainSocket />
       )
     }
     return <LostConnectionPage />
