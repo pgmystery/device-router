@@ -13,7 +13,6 @@ sessionRouter.get('', ({ session: { user } }, res) => {
 sessionRouter.post('', async (req, res) => {
   try {
     const fields = sliceKeysFromObject(req.body, signIn._ids._byKey.keys())
-    console.log(fields)
     await signIn.validateAsync(fields)
 
     const user = await User.findOne({ username: fields.username })

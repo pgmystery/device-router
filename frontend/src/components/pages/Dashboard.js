@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { logout } from '../../actions/session'
 // import EShellPage from './pages/EShellPage'
-import LostConnectionPage from '../LostConnectionPage'
+import LostConnectionPage from './LostConnectionPage'
 
 import SocketIO  from '../../socketio/SocketIO'
 
