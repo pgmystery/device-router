@@ -10,13 +10,13 @@
   "license": "ISC",
   "dependencies": {
     "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.2.0",
     "gulp-concat": "^2.6.1",
-    "gulp-minify-css": "^1.2.4",
     "gulp-uglify-es": "^1.0.4",
     "node-ssh": "^6.0.0",
     "ssh2": "^0.8.5"
   },
   "devDependencies": {
-    "electron": "^6.0.2"
+    "electron": "^6.0.10"
   }
 }

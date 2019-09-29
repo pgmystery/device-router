@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 // const del = require('del');
 const concat = require('gulp-concat');
-const minifyCSS = require('gulp-minify-css');
+const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify-es').default;
 
 
@@ -16,7 +16,7 @@ function css() {
     const css_export_filepath = 'src/.out/';
 
     gulp.src(css_filepath + '/**/*.css')
-        .pipe(minifyCSS())
+        .pipe(cleanCSS())
         .pipe(concat(css_export_filename))
         .pipe(gulp.dest(css_export_filepath));
 }
