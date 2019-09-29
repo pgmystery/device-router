@@ -1,0 +1,37 @@
+<div id="ssh_connect">
+    <form id="ssh_connect_form">
+        <div id="ip" class="block">
+            <p>Device IP + SSH-Port (Standard: 22):</p>
+            <input type="radio" id="ipv4_radio" class="radioButton" name="ip_type" value="ipv4" checked>
+            <label for="ipv4_radio">IPv4</label>
+            <input type="radio" id="ipv6_radio" class="radioButton" name="ip_type" value="ipv6">
+            <label for="ipv6_radio">IPv6</label>
+            <div id="ip-block">
+                <input id="ssh_ipv4_address" class="input_left" type="text" name="ssh_ipv4" placeholder="IP-v4 address" pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$" required value="192.168.1.1" autofocus>
+                <input id="ssh_ipv6_address" class="input_left" type="text" name="ssh_ipv6" placeholder="IP-v6 address" pattern="((^|:)([0-9a-fA-F]{0,4})){1,8}$" value="" hidden>
+                <input id="ssh_port" class="input_right" type="number" name="ssh_port" placeholder="SSH-Port (standard: 22)" required value="22">
+            </div>
+        </div>
+        <div id="username_block" class="block">
+            <label for="ssh_username">SSH Username:</label>
+            <input id="ssh_username" type="text" name="ssh_username" placeholder="SSH-Username" required>
+        </div>
+        <div id="password_block" class="block">
+            <input type="radio" id="password_radio" class="radioButton" name="password_type" value="password" checked>
+            <label for="password_radio">SSH Password</label>
+            <input type="radio" id="pkey_radio" class="radioButton" name="password_type" value="pkey">
+            <label for="pkey_radio">Private-Key</label>
+
+            <div id="ssh_key" class="hidden">
+                <input id="ssh_key_path" class="input_left" type="text" name="key_path" placeholder="Private-Key path">
+                <button id="ssh_key_path_button" class="inline input_right" type="button">...</button>
+            </div>
+
+            <input id="ssh_password" type="password" name="ssh_password" placeholder="SSH-Password" required>
+        </div>
+        <div class="footerButtons">
+            <button id="ssh_connect_back" class="back_button" type="button"><- Back</button>
+            <button id="ssh_connect_continue" class="continue_button" type="submit">Install</button>
+        </div>
+    </form>
+</div>

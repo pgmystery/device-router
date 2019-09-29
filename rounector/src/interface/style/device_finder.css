@@ -1,0 +1,12 @@
+#device_finder p {
+    margin-bottom: 40px;
+}
+
+#device_finder select {
+    width: 100%;
+    height: 22px;
+}
+
+#device_finder label {
+    margin-top: 10px;
+}

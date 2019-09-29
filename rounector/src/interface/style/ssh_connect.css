@@ -1,0 +1,34 @@
+#ssh_connect .block {
+    margin-bottom: 10px;
+}
+
+#ssh_connect label {
+    display: inline;
+    margin-right: 3px;
+}
+
+#ssh_connect p {
+    text-align: left;
+}
+
+#ssh_connect .inline {
+    display: inline;
+}
+
+#ssh_connect .radioButton {
+    display: inline;
+    width: auto;
+    margin-left: 0;
+}
+
+#ssh_connect .hidden {
+    visibility: hidden;
+}
+
+#ssh_connect .input_left {
+    width: 81%;
+}
+
+#ssh_connect .input_right {
+    width: 15%;
+}

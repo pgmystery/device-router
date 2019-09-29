@@ -1,0 +1,40 @@
+class UserSocket {
+  constructor(io, eshellSocket) {
+    this.connectedUsers = []
+    this.userChannel = io.of('/user')
+
+    this.userChannel.on('connection', socket => {
+      console.log('NEW CONNECTION!')
+
+      this.connectedUsers.includes(socket.id) || (this.connectedUsers = [...this.connectedUsers, socket.id])
+
+      socket.emit('msg', 'Hallo vom Server!')  // TODO: REMOVE THIS LINE!
+
+      socket.on('disconnect', () => {
+        console.log(`${socket.id} -> DISCONNECTED!`)
+
+        const socketIndex = this.connectedUsers.indexOf(socket.id)
+        this.connectedUsers = [
+          ...this.connectedUsers.slice(0, socketIndex),
+          ...this.connectedUsers.slice(socketIndex + 1)
+        ]
+
+        // eshellSessions = eshellSessions.reduce(
+        //   (acc, session) => {
+        //     return session.userMainSocket === socket.id ? acc : [...acc, eshellSessions.indexOf(session)]
+        //   }, []
+        // )
+        console.log(eshellSocket.sessions)
+        eshellSocket.sessions = eshellSocket.sessions.map(session => {
+          const returnValue = session.userMainSocket !== socket.id
+          returnValue && (session.user)
+          return returnValue
+        })
+
+
+      })
+    })
+  }
+}
+
+module.exports = UserSocket
