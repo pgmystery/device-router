@@ -1,5 +1,5 @@
 import React  from "react"
-import SocketIO from "../socketio/SocketIO";
+import SocketIO from "../components/socketio/SocketIO";
 
 import EShellTerm from "./EShellTerm"
 

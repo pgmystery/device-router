@@ -11,7 +11,7 @@ function Button({ onClick, children, disabled }) {
   )
 }
 
-const ButtonStyled = styled.button`
+export const ButtonStyled = styled.button`
   padding: 10px;
   margin-bottom: 10px;
 `
