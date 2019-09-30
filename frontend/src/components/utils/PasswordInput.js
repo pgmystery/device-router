@@ -1,4 +1,13 @@
 import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
+
+PasswordInput.propTypes = {
+  
+}
+
+PasswordInput.defaultProps = {
+  
+}
 
 function PasswordInput({ onChange }) {
   const [password, setPassword] = useState('')
