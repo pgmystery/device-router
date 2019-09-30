@@ -5,6 +5,7 @@ import { logout } from '../../actions/session'
 import LostConnectionPage from './LostConnectionPage'
 
 import SocketIO  from '../../socketio/SocketIO'
+import Wrapper from '../utils/Wrapper'
 
 export let mainSocket = null
 
@@ -39,11 +40,11 @@ function Dashboard({ logout, session }) {
   }
 
   return (
-    <>
+    <Wrapper>
       <h1>Hi {session.username}</h1>
       { getPage() }
       <button onClick={logout}>Logout</button>
-    </>
+    </Wrapper>
   )
 }
 
