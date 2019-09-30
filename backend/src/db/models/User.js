@@ -58,7 +58,7 @@ userSchema.pre('save', function(next) {
     const hash = makeHash(this.username.hashCode().length)
     this.picture = new Identicon(hash).toString()
   }
-  next();
+  next()
 })
 
 userSchema.statics.doesNotExist = async function(field) {

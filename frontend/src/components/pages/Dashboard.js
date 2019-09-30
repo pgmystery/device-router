@@ -1,13 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { logout } from '../../actions/session'
-// import EShellPage from './pages/EShellPage'
-import LostConnectionPage from './LostConnectionPage'
-
-import SocketIO  from '../../socketio/SocketIO'
 import Wrapper from '../utils/Wrapper'
-
-export let mainSocket = null
 
 const mapStateToProps = ({ session }) => ({
   session
@@ -18,31 +12,10 @@ const mapDispatchToProps = dispatch => ({
 })
 
 function Dashboard({ logout, session }) {
-  const [mainSocketConnected, setMainSocketConnected] = useState(false)
-
-  useEffect(() => {
-    mainSocket = SocketIO({ namespace: 'user' })
-
-    mainSocket.on('connect', () => {
-      setMainSocketConnected(true)
-    })
-  
-    mainSocket.on('disconnect', () => {
-      setMainSocketConnected(false)
-    })
-  }, [])
-
-  function getPage() {
-    if (mainSocketConnected) {
-      return <p>You are now logged in!</p>
-    }
-    return <LostConnectionPage />
-  }
-
   return (
     <Wrapper>
       <h1>Hi {session.username}</h1>
-      { getPage() }
+      <p>You are now logged in!</p>
       <button onClick={logout}>Logout</button>
     </Wrapper>
   )

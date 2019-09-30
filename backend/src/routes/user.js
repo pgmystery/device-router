@@ -11,8 +11,8 @@ userRoutes.post('', async (req, res) => {
     await signUp.validateAsync(fields)
 
     const newUser = new User(fields)
-    const sessionUser = sessionizeUser(newUser)
-    await newUser.save()
+    const newUserSaved = await newUser.save()
+    const sessionUser = sessionizeUser(newUserSaved)
 
     req.session.user = sessionUser
     res.send(sessionUser)

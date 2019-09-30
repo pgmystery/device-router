@@ -1,11 +1,18 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components/macro'
 
 import MainTheme from '../Theme'
 import Wrapper from './Wrapper'
 
+import ProfilePicture from '../utils/ProfilePicture'
 
-function Navigation({ links }) {
+
+const mapStateToProps = ({ session }) => ({
+  session
+})
+
+function Navigation({ links, session }) {
   function getLinks() {
     return links.map((link, index) => <NavigationLinkStyled href={link.url} key={index}>{link.name}</NavigationLinkStyled>)
   }
@@ -17,7 +24,7 @@ function Navigation({ links }) {
           {getLinks()}
         </NavigationLeftStyled>
         <NavigationRightStyled>
-          Hello World!
+          <ProfilePicture />
         </NavigationRightStyled>
       </Wrapper>
     </NavigationStyled>
@@ -75,4 +82,6 @@ const NavigationRightStyled = styled.div`
 `
 
 
-export default Navigation
+export default connect(
+  mapStateToProps
+)(Navigation)

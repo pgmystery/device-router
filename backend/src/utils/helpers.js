@@ -3,9 +3,11 @@ const parseError = err => {
   return JSON.stringify(err, Object.getOwnPropertyNames(err))
 }
 
-const sessionizeUser = user => {
-  return { id: user.id, username: user.username }
-}
+const sessionizeUser = user => ({
+  id: user.id,
+  username: user.username,
+  picture: user.picture,
+})
 
 const sliceKeysFromObject = (obj, list) => ({
   ...Array.from(list).reduce((res, key) => ({ ...res, [key]: obj[key] }), { })

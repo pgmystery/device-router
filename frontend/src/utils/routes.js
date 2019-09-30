@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect, Route, withRouter } from 'react-router-dom'
-
 import LoggedInPage from '../components/pages/standard/LoggedInPage'
+
 
 const mapStateToProps = ({ session: { id } }) => ({
   loggedIn: Boolean(id)
@@ -24,7 +24,7 @@ const Protected = ({ loggedIn, path, component: Component }) => (
     path={path}
     render={props => (
       loggedIn
-        ? <LoggedInPage><Component {...props} /></LoggedInPage>
+        ? <LoggedInPage><Component {...props}></Component></LoggedInPage>
         : <Redirect to='/login' />
     )}
   />
