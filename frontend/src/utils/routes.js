@@ -20,16 +20,14 @@ const Auth = ({ loggedIn, path, component: Component }) => (
 )
 
 const Protected = ({ loggedIn, path, component: Component }) => (
-  <LoggedInPage>
-      <Route
-      path={path}
-      render={props => (
-        loggedIn
-          ? <Component {...props} />
-          : <Redirect to='/login' />
-      )}
-    />
-  </LoggedInPage>
+  <Route
+    path={path}
+    render={props => (
+      loggedIn
+        ? <LoggedInPage><Component {...props} /></LoggedInPage>
+        : <Redirect to='/login' />
+    )}
+  />
 )
 
 export const AuthRoute = withRouter(

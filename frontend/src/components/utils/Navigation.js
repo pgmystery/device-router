@@ -7,7 +7,7 @@ import Wrapper from './Wrapper'
 
 function Navigation({ links }) {
   function getLinks() {
-    return links.map(link => <NavigationLinkStyled href={link.url}>{link.name}</NavigationLinkStyled>)
+    return links.map((link, index) => <NavigationLinkStyled href={link.url} key={index}>{link.name}</NavigationLinkStyled>)
   }
 
   return (
