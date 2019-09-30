@@ -1,6 +1,16 @@
 import React from 'react'
 import styled from 'styled-components/macro'
+import PropTypes from 'prop-types'
 
+Button.propTypes = {
+  children: PropTypes.string,
+  disabled: PropTypes.bool,
+}
+
+Button.defaultProps = {
+  children: '(NO TITLE)',
+  disabled: false,
+}
 
 function Button({ onClick, children, disabled }) {
   return (
