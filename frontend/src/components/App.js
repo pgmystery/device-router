@@ -1,5 +1,4 @@
 import React from 'react'
-// import styled from 'styled-components/macro'
 import GlobalStyle from './utils/GlobalStyle'
 import PageHandler from './PageHandler'
 

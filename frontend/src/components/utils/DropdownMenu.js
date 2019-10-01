@@ -17,7 +17,6 @@ const DropdownMenuStyled = styled.ul`
   position: absolute;
   z-index: 1001;
   background: #ffffff;
-  /* padding: 0; */
   margin: 0;
   top: 53px;
   border: 1px solid#fbfbfc;

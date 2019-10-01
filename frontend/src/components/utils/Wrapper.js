@@ -20,7 +20,6 @@ const WrapperStyled = styled.div`
   padding-right: ${MainTheme.wrapperPadding};
   margin: 0 auto;
   width: 100%;
-  /* display: flex; */
 `
 
 
