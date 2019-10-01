@@ -5,8 +5,9 @@ import styled from 'styled-components/macro'
 import MainTheme from '../../Theme'
 import Wrapper from '../Wrapper'
 
-import NavigationLinkStyled from './NavigationLink'
+import NavigationLink from './NavigationLink'
 import ProfileWidget from './ProfileWidget'
+import NotificationWidget from './NotificationWidget'
 
 
 const mapStateToProps = ({ session }) => ({
@@ -16,12 +17,12 @@ const mapStateToProps = ({ session }) => ({
 function Navigation({ links, profileLinks, session }) {
   function getLinks() {
     return links.map((link, index) => 
-      <NavigationLinkStyled
-        href={link.url}
+      <NavigationLink
+        to={link.url}
         key={index}
       >
         {link.name}
-      </NavigationLinkStyled>
+      </NavigationLink>
     )
   }
 
@@ -32,6 +33,7 @@ function Navigation({ links, profileLinks, session }) {
           {getLinks()}
         </NavigationLeftStyled>
         <NavigationRightStyled>
+          <NotificationWidget notifications={[1, 2, 3]} />
           <ProfileWidget links={profileLinks} />
         </NavigationRightStyled>
       </Wrapper>
@@ -64,13 +66,13 @@ const NavigationRightStyled = styled.div`
   margin-left: auto;
   align-items: center;
   
-  > a {
-    margin: 0 12px
+  > * {
+    margin: 0 20px
   }
-  > a:first-child {
+  > *:first-child {
     margin-left: 0;
   }
-  > a:last-child {
+  > *:last-child {
     margin-right: 0;
   }
 `

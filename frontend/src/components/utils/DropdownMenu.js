@@ -49,7 +49,7 @@ const DropdownMenuItem = styled.li`
   }
 `
 
-export const DropdownMenuSeparator = styled.li`
+export const DropdownMenuSeparator = styled.span`
   border-bottom: 1px solid #e0e4e7;
   height: 1px;
   margin: 0 4px;
