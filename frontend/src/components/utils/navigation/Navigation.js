@@ -2,19 +2,27 @@ import React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components/macro'
 
-import MainTheme from '../Theme'
-import Wrapper from './Wrapper'
+import MainTheme from '../../Theme'
+import Wrapper from '../Wrapper'
 
-import ProfilePicture from '../utils/ProfilePicture'
+import NavigationLinkStyled from './NavigationLink'
+import ProfileWidget from './ProfileWidget'
 
 
 const mapStateToProps = ({ session }) => ({
   session
 })
 
-function Navigation({ links, session }) {
+function Navigation({ links, profileLinks, session }) {
   function getLinks() {
-    return links.map((link, index) => <NavigationLinkStyled href={link.url} key={index}>{link.name}</NavigationLinkStyled>)
+    return links.map((link, index) => 
+      <NavigationLinkStyled
+        href={link.url}
+        key={index}
+      >
+        {link.name}
+      </NavigationLinkStyled>
+    )
   }
 
   return (
@@ -24,7 +32,7 @@ function Navigation({ links, session }) {
           {getLinks()}
         </NavigationLeftStyled>
         <NavigationRightStyled>
-          <ProfilePicture />
+          <ProfileWidget links={profileLinks} />
         </NavigationRightStyled>
       </Wrapper>
     </NavigationStyled>
@@ -36,20 +44,6 @@ const NavigationStyled = styled.nav`
   margin: 0 auto;
   height: 100%;
   display: flex;
-`
-
-const NavigationLinkStyled = styled.a`
-  color: ${MainTheme.textColor};
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  letter-spacing: 0.8px;
-  opacity: 0.8;
-
-  :hover {
-    text-decoration: underline;
-    opacity: 1;
-  }
 `
 
 const NavigationLeftStyled = styled.div`
@@ -70,13 +64,13 @@ const NavigationRightStyled = styled.div`
   margin-left: auto;
   align-items: center;
   
-  > * {
+  > a {
     margin: 0 12px
   }
-  > *:first-child {
+  > a:first-child {
     margin-left: 0;
   }
-  > *:last-child {
+  > a:last-child {
     margin-right: 0;
   }
 `

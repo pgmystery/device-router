@@ -8,11 +8,11 @@ const mapStateToProps = ({ session }) => ({
   session
 })
 
-function Dashboard({ session }) {
+function Profile({ session }) {
   return (
     <Wrapper>
       <h1>Hi {session.username}</h1>
-      <p>You are now logged in!</p>
+      <p>This is you Profile!</p>
       <Link to='/logout'>Logout</Link>
     </Wrapper>
   )
@@ -20,4 +20,4 @@ function Dashboard({ session }) {
 
 export default connect(
   mapStateToProps
-)(Dashboard)
+)(Profile)
