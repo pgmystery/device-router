@@ -38,11 +38,6 @@ class Request {
   }
 
   send({ url=this.url, method='GET', id='', data }={}) {
-    console.log(url)
-    console.log(id)
-    console.log(backendUrl + '/' + url + id)
-    console.log(method)
-    console.log(data)
     return fetch(backendUrl + '/' + url + id, {
       method,
       body: JSON.stringify(data),
