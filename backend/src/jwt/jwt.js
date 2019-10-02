@@ -18,7 +18,6 @@ function generateToken(user, startDay, endDay) {
   }
 
   return token = jwt.sign(u, JWT_SECRET, {
-    //  expiresIn: 60 * 60 * 24 // expires in 24 hours
     expiresIn: expireDay + 'd'
   })
 }
