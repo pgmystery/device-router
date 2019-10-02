@@ -39,7 +39,7 @@ function NotificationWidget({ notifications }) {
 
 
 NotificationWidgetCounter.propTypes = {
-  children: PropTypes.string
+  children: PropTypes.number
 }
 
 NotificationWidgetCounter.defaultTypes = {
