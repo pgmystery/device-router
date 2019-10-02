@@ -30,6 +30,10 @@ function LoggedInPage({ children }) {
     mainSocket.on('disconnect', () => {
       setMainSocketConnected(false)
     })
+
+    mainSocket.on('msg', msg => {
+      console.log(msg)
+    })
   }, [])
 
   const navLinks = [
@@ -55,7 +59,7 @@ function LoggedInPage({ children }) {
     <Link to='/profile'>My Profile</Link>,
     <Link to='/dashboard'>My Dashboard</Link>,
     <DropdownMenuSeparator />,
-    <Link to='/logout'>Logout</Link>
+    <Link style={{color: 'red'}} to='/logout'>Logout</Link>
   ]
 
   function getPage() {

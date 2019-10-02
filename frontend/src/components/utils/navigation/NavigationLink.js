@@ -1,8 +1,18 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import MainTheme from '../../Theme'
 
 
-const NavigationLinkStyled = styled.a`
+function NavigationLink({ to, children }) {
+  return (
+    to === undefined || (
+      <NavigationLinkStyled to={to}>{children}</NavigationLinkStyled>
+    )
+  )
+}
+
+const NavigationLinkStyled = styled(Link)`
   color: ${MainTheme.textColor};
   display: flex;
   align-items: center;
@@ -17,4 +27,4 @@ const NavigationLinkStyled = styled.a`
 `
 
 
-export default NavigationLinkStyled
+export default NavigationLink
