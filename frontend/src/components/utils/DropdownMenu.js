@@ -1,5 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
+
+DropdownMenu.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.node)
+}
+
+DropdownMenu.defaultProps = {
+  items: [],
+}
 
 
 function DropdownMenu({ items, className }) {
