@@ -38,7 +38,7 @@ class Request {
   }
 
   send({ url=this.url, method='GET', id='', data }={}) {
-    return fetch(backendUrl + '/' + url + id, {
+    return fetch(backendUrl + url + id, {
       method,
       body: JSON.stringify(data),
       headers: {
