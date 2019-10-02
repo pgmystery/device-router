@@ -1,10 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 
-function Popover({ body, header }) {
+Popover.propTypes = {
+  header: PropTypes.string,
+  body: PropTypes.string,
+}
+
+Popover.defaultProps = {
+  header: '(NO HEADER)',
+  body: '(NO BODY)',
+}
+
+function Popover({ body, header, className }) {
   return (
-    <PopoverStyled>
+    <PopoverStyled className={className}>
       <PopoverArrowStyled></PopoverArrowStyled>
       { header && <PopoverHeader>{header}</PopoverHeader> }
       { body && <PopoverBody>{body}</PopoverBody> }
@@ -16,7 +27,6 @@ const PopoverStyled = styled.div`
   position: absolute;
   border: 1px solid #b5b0b0;
   border-radius: 5%;
-  right: 0;
   top: 40px;
 `
 

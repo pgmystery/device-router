@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 DropdownMenu.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.node)
+  items: PropTypes.arrayOf(PropTypes.node).isRequired
 }
 
 DropdownMenu.defaultProps = {
