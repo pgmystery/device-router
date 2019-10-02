@@ -31,7 +31,7 @@ function ProfileWidget({ links, session }) {
           svg.setAttribute('style', 'width: 10px; height: 10px; fill: #ffffff;')
         }}
     />
-    { openMenu && <DropdownMenu items={links} /> }
+    { openMenu && <ProfileWidgetDropdownMenu items={links} /> }
     </ProfileWidgetStyled>
   )
 }
@@ -53,6 +53,10 @@ const ProfileWidgetStyled = styled.div`
   > :nth-child(2) {
     margin: 0 12px;
   }
+`
+
+const ProfileWidgetDropdownMenu = styled(DropdownMenu)`
+  right: 10px;
 `
 
 

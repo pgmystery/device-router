@@ -1,6 +1,6 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import styled from 'styled-components/macro'
+import PropTypes from 'prop-types'
 
 import MainTheme from '../../Theme'
 import Wrapper from '../Wrapper'
@@ -10,11 +10,20 @@ import ProfileWidget from './ProfileWidget'
 import NotificationWidget from './NotificationWidget'
 
 
-const mapStateToProps = ({ session }) => ({
-  session
-})
+Navigation.propTypes = {
+  links: PropTypes.arrayOf(PropTypes.object).isRequired
+}
 
-function Navigation({ links, profileLinks, session }) {
+Navigation.defaultProps = {
+  links: [
+    {
+      name: '(NO NAME)',
+      link: '',
+    }
+  ]
+}
+
+function Navigation({ links, profileLinks }) {
   function getLinks() {
     return links.map((link, index) => 
       <NavigationLink
@@ -78,6 +87,4 @@ const NavigationRightStyled = styled.div`
 `
 
 
-export default connect(
-  mapStateToProps
-)(Navigation)
+export default Navigation
