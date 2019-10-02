@@ -1,8 +1,19 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import styled from 'styled-components/macro'
 import MainTheme from '../../Theme'
 
+
+NavigationLink.propTypes = {
+  to: PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired,
+}
+
+NavigationLink.defaultProps = {
+  to: '',
+  children: '(NO NAME)',
+}
 
 function NavigationLink({ to, children }) {
   return (

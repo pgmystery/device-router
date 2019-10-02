@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import ReactSVG from 'react-svg'
 
@@ -6,6 +7,14 @@ import bellIcon from '../../images/bell.svg'
 import bellActiveIcon from '../../images/bellActive.svg'
 import Popover from '../Popover'
 
+
+NotificationWidget.propTypes = {
+  notifications: PropTypes.array,
+}
+
+NotificationWidget.defaultTypes = {
+  notifications: []
+}
 
 function NotificationWidget({ notifications }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -26,6 +35,15 @@ function NotificationWidget({ notifications }) {
       { isMenuOpen && <NotificationWidgetPopoverStyled header='Notifications' body='BODY' /> }
     </NotificationWidgetStyled>
   )
+}
+
+
+NotificationWidgetCounter.propTypes = {
+  children: PropTypes.string
+}
+
+NotificationWidgetCounter.defaultTypes = {
+  children: '(NO NOTIFICATIONS)'
 }
 
 function NotificationWidgetCounter({ children }) {
