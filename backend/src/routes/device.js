@@ -11,8 +11,6 @@ deviceRouter.get('/register', async (req, res) => {
   const userId = req.session.user.id
   const registerTokens = await RegisterToken.find({userId})
 
-  console.log(registerTokens)
-
   res.send({ registerTokens })
 })
 
