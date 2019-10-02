@@ -45,8 +45,7 @@ const NotificationWidgetCounterStyled = styled.p`
   align-items: center;
   display: flex;
   justify-content: center;
-  background-color:
-  #ffffff;
+  background-color: #ffffff;
   border-radius: 50%;
   position: absolute;
   top: 0;
