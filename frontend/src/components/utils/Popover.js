@@ -34,7 +34,6 @@ const PopoverArrowStyled = styled.div`
 `
 
 const PopoverHeader = styled.h4`
-  /* display: block; */
   background-color: #e0e0e6;
   padding: .5rem .75rem;
   border-bottom: 1px solid #b5b0b0;
