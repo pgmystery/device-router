@@ -2,11 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 
 
-function DropdownMenu({ items }) {
+function DropdownMenu({ items, className }) {
   return (
     <>
       <DropdownMenuOverlay />
-      <DropdownMenuStyled>
+      <DropdownMenuStyled  className={className}>
         { items.map((item, index) => <DropdownMenuItem key={index}>{item}</DropdownMenuItem>) }
       </DropdownMenuStyled>
     </>
@@ -25,7 +25,7 @@ const DropdownMenuStyled = styled.ul`
   padding-top: 8px;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
   min-width: 96px;
-  right: 10px;
+  /* right: 10px; */
 `
 
 const DropdownMenuItem = styled.li`
