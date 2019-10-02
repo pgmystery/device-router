@@ -1,5 +1,5 @@
 import React from 'react'
-import { withKnobs, array } from '@storybook/addon-knobs'
+import { withKnobs } from '@storybook/addon-knobs'
 import { withInfo } from '@storybook/addon-info';
 import DropdownMenu, { DropdownMenuSeparator } from './DropdownMenu'
 
@@ -10,7 +10,7 @@ export default {
 }
 
 export const standard = () =>
-  <DropdownMenu style={{right: '0'}} items={[
+  <DropdownMenu items={[
     <p>My Profile</p>,
     <p>My Dashboard</p>,
     <DropdownMenuSeparator />,
