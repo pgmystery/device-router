@@ -8,7 +8,7 @@ import LostConnectionPage from '../LostConnectionPage'
 import SocketIO  from '../../../socketio/SocketIO'
 
 import Navigation from '../../utils/navigation/Navigation'
-import { DropdownMenuItem, DropdownMenuSeparator } from '../../utils/DropdownMenu'
+import { DropdownMenuSeparator } from '../../utils/DropdownMenu'
 
 
 const mapStateToProps = ({ userData }) => ({
