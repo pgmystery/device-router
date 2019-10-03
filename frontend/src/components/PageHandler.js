@@ -8,7 +8,7 @@ import Dashboard from './pages/Dashboard'
 import Logout from './pages/Logout'
 import Profile from './pages/Profile'
 import LoggedInPage from './pages/standard/LoggedInPage'
-import DeviceRegisterList from './pages/DeviceRegisterList'
+import DeviceRegisterPage from './pages/DeviceRegisterPage'
 
 function PageHandler() {
 
@@ -27,7 +27,7 @@ function PageHandler() {
           />
           <Route
             path='/registerlist'
-            component={DeviceRegisterList}
+            component={DeviceRegisterPage}
           />
           <Route
             path='/Profile'

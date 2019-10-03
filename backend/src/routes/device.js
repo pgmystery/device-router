@@ -4,6 +4,7 @@ const User = require('../db/models/User')
 const { registerToken } = require('../validations/registerToken')
 const { parseError, sliceKeysFromObject } = require('../utils/helpers')
 const { generateToken } = require('../jwt/jwt')
+const DeviceType = require('../db/models/DeviceType')
 
 
 const deviceRouter = Router()
@@ -11,7 +12,9 @@ deviceRouter.get('/register', async (req, res) => {
   const userId = req.session.user.id
   const registerTokens = await RegisterToken.find({userId})
 
-  res.send({ registerTokens })
+  const registerTokensKeys = RegisterToken.getKeys()
+
+  res.send({ tokens: registerTokens, keys: registerTokensKeys })
 })
 
 deviceRouter.get('/register/:id', async (req, res) => {
@@ -42,6 +45,21 @@ deviceRouter.post('/register', async (req, res) => {
     res.status(400).send(parseError('invalid request'))
   }
 })
+
+deviceRouter.get('/type', async (req, res) => {
+  const deviceTypes = await DeviceType.find({}, {_id: 0, __v: 0})
+
+  res.send(deviceTypes)
+})
+
+// deviceRouter.post('/type', async (req, res) => {
+//   const newDeviceTypes = new DeviceType(req.body)
+//   newDeviceTypesSaved = await newDeviceTypes.save()
+
+//   console.log(newDeviceTypesSaved)
+
+//   res.send(newDeviceTypesSaved)
+// })
 
 
 module.exports = deviceRouter
