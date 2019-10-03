@@ -2,24 +2,16 @@
     <form id="device_finder_form">
         <p>Select you device or let it find (slower):</p>
         <div>
-            <label for="device_type">Select the type of the device:</label>
-            <select id="device_type" name="type">
-                    <option>Choose automatically...</option>
+            <label for="device_finder_device">Select the device:</label>
+            <select id="device_finder_device" name="device">
+                <option>Choose automatically...</option>
             </select>
         </div>
         <div>
-            <div>
-                <label for="device">Select the device:</label>
-                <select id="device" name="device" disabled>
-                    <option>Choose automatically...</option>
-                </select>
-            </div>
-            <div>
-                <label for="device_version">Select the version which is installed on the device:</label>
-                <select id="device_version" name="version" disabled>
-                    <option>Choose automatically...</option>
-                </select>
-            </div>
+            <label for="device_finder_device_version">Select the version which is installed on the device:</label>
+            <select id="device_finder_device_version" name="version" disabled>
+                <option>Choose automatically...</option>
+            </select>
         </div>
         <div class="footerButtons">
             <button id="device_finder_back" class="back_button" type="button"><- Back</button>
