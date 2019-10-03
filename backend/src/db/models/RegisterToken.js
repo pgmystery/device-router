@@ -26,6 +26,10 @@ const registerTokenSchema = new mongoose.Schema({
   // MAC-Adress ?
 })
 
+registerTokenSchema.statics.getKeys = function() {
+  return ['name', 'token', 'startDate', 'endDate']
+}
+
 const RegisterToken = mongoose.model('RegisterToken', registerTokenSchema)
 
 
