@@ -7,9 +7,6 @@ import { ButtonDanger } from '../../utils/Button'
 
 
 function DeviceRegisterListItem({ tokenObject, order }) {
-  console.log(tokenObject)
-  console.log(order)
-
   return (
     <DeviceRegisterListItemStyled>
       {
