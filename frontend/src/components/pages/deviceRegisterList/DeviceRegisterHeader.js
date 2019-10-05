@@ -15,13 +15,15 @@ function DeviceRegisterHeader({ refreshClick }) {
         <ButtonPrimary>Download Rounector</ButtonPrimary>
       </DeviceRegisterHeaderLeft>
       <DeviceRegisterHeaderRight>
-        <ButtonSuccess>
-          <LinkUnstyled to='/registerlist/new' color={'#ffffff'}>Create Register-Token</LinkUnstyled>
-          <ReactSVG src={plusIcon} beforeInjection={svg => {
-              svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #ffffff; margin-left: 10px;')
-            }}
-          />
-        </ButtonSuccess>
+        <LinkUnstyled to='/registerlist/new' color={'#ffffff'}>
+          <CreateRegisterTokenButton>
+            Create Register-Token
+            <ReactSVG src={plusIcon} beforeInjection={svg => {
+                svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #ffffff; margin-left: 10px;')
+              }}
+            />
+          </CreateRegisterTokenButton>
+        </LinkUnstyled>
         <RefreshButton onClick={refreshClick}>
           <ReactSVG src={reloadIcon} beforeInjection={svg => {
               svg.setAttribute('style', 'width: 26px; height: 26px; display: flex; fill: #000000;')
@@ -55,6 +57,10 @@ const RefreshButton = styled(Button)`
   border-radius: 50%;
   padding: 6px;
   height: 38px;
+`
+
+const CreateRegisterTokenButton = styled(ButtonSuccess)`
+  margin: 0;
 `
 
 
