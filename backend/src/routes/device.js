@@ -10,7 +10,23 @@ const DeviceType = require('../db/models/DeviceType')
 const deviceRouter = Router()
 deviceRouter.get('/register', async (req, res) => {
   const userId = req.session.user.id
-  const registerTokens = await RegisterToken.find({userId})
+  const registerTokensOriginal = await RegisterToken.find({userId})
+
+  const registerTokens = registerTokensOriginal.map(tokenObject => {
+    return {
+      ...tokenObject._doc,
+      startDate: tokenObject.startDate.getDate()
+        + '.'
+        + (tokenObject.startDate.getMonth() + 1)
+        + '.'
+        + tokenObject.startDate.getFullYear(),
+      endDate: tokenObject.endDate.getDate()
+        + '.'
+        + (tokenObject.endDate.getMonth() + 1)
+        + '.'
+        + tokenObject.endDate.getFullYear(),
+    }
+  })
 
   const registerTokensKeys = RegisterToken.getKeys()
 
@@ -20,6 +36,17 @@ deviceRouter.get('/register', async (req, res) => {
 deviceRouter.get('/register/:id', async (req, res) => {
   const userId = req.session.user.id
   const registerToken = await RegisterToken.findById(req.params.id)
+
+  registerToken.startDate = registerToken.startDate.getDate()
+    + '.'
+    + (registerToken.startDate.getMonth() + 1)
+    + '.'
+    + registerToken.startDate.getFullYear()
+  registerToken.endDate = registerToken.endDate.getDate()
+    + '.'
+    + (registerToken.endDate.getMonth() + 1)
+    + '.'
+    + registerToken.endDate.getFullYear()
 
   res.send({ registerToken })
 })
@@ -34,6 +61,7 @@ deviceRouter.post('/register', async (req, res) => {
     await registerToken.validateAsync(fields)
 
     fields.userId = userId
+
     fields.token = generateToken(fields, fields.startDate, fields.endDate)
 
     const newRegisterToken = new RegisterToken(fields)

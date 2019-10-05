@@ -30,6 +30,8 @@ const NavigationLinkStyled = styled(Link)`
   text-decoration: none;
   letter-spacing: 0.8px;
   opacity: 0.8;
+  outline: none;
+  user-select: none;
 
   :hover {
     text-decoration: underline;

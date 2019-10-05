@@ -27,7 +27,12 @@ const registerTokenSchema = new mongoose.Schema({
 })
 
 registerTokenSchema.statics.getKeys = function() {
-  return ['name', 'token', 'startDate', 'endDate']
+  return {
+    'name': 'Name',
+    'token': 'Token',
+    'startDate': 'Start Date',
+    'endDate': 'End Date',
+  }
 }
 
 const RegisterToken = mongoose.model('RegisterToken', registerTokenSchema)

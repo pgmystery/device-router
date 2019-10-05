@@ -11,6 +11,7 @@ function DeviceRegisterPage() {
     getRegisterTokenList().then(registerTokenList => setRegisterTokenList(registerTokenList))
   }, [])
 
+
   async function getRegisterTokenList() {
     const request = new Request('/api/device/register')
     const response = await request.get()
@@ -31,7 +32,7 @@ function DeviceRegisterPage() {
 
   return (
     <Wrapper>
-      <DeviceRegisterList items={registerTokenList} />
+      <DeviceRegisterList items={registerTokenList} onRefresh={setRegisterTokenList} />
     </Wrapper>
   )
 }
