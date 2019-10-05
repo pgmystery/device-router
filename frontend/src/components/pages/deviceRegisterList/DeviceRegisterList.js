@@ -16,27 +16,28 @@ function DeviceRegisterList({ items, onRefresh }) {
   }
 
   return (
-    <DeviceRegisterStyled>
+    <>
       <DeviceRegisterHeader refreshClick={refreshList} />
       <DeviceRegisterTable>
         {
-          (items.tokens == undefined || items.keys == undefined) ||
-          <>
-            <DeviceRegisterListHeadline items={items.keys} />
-            <DeviceRegisterListStyled>
-              {items.tokens.map((tokenObject, index) => 
-                <DeviceRegisterListItem key={index} tokenObject={tokenObject} order={Object.keys(items.keys)}></DeviceRegisterListItem>
-              )}
-            </DeviceRegisterListStyled>
-          </>
+          items.keys === undefined || <DeviceRegisterListHeadline items={items.keys} />
+        }
+        {
+          items.tokens === undefined ||
+            <tbody>
+              {
+                items.tokens.length > 0
+                  ? items.tokens.map((tokenObject, index) => 
+                      <DeviceRegisterListItem key={index} tokenObject={tokenObject} order={Object.keys(items.keys)}></DeviceRegisterListItem>
+                    )
+                  : <tr><DeviceRegisterTableErrorTd colSpan="100">You don't have any Register-Tokens :(</DeviceRegisterTableErrorTd></tr>
+              }
+            </tbody>
         }
       </DeviceRegisterTable>
-    </DeviceRegisterStyled>
+    </>
   )
 }
-
-const DeviceRegisterStyled = styled.div`
-`
 
 const DeviceRegisterTable = styled.table`
   border-collapse: collapse;
@@ -44,7 +45,10 @@ const DeviceRegisterTable = styled.table`
   text-align: center;
 `
 
-const DeviceRegisterListStyled = styled.tbody`
+const DeviceRegisterTableErrorTd = styled.td`
+  color: #a6a6a6;
+  font-size: 1.3em;
+  padding: 20px;
 `
 
 
