@@ -1,41 +1,33 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 
 function DeviceRegisterListHeadline({ items }) {
   return (
     <DeviceRegisterListHeadlineStyled>
-      <DeviceRegisterListHeadlineTr>
-        {
-          Object.keys(items).map((itemKey, index) => (
-          <DeviceRegisterListHeadlineItem 
-              keyName={itemKey}
-              key={index}
-            >{items[itemKey]}</DeviceRegisterListHeadlineItem>
-          ))
-        }
-        <DeviceRegisterListHeadlineItem keyName='delete'>Delete</DeviceRegisterListHeadlineItem>
-      </DeviceRegisterListHeadlineTr>
+      {
+        Object.keys(items).map((itemKey, index) => (
+        <DeviceRegisterListHeadlineItem 
+            keyName={itemKey}
+            key={index}
+          >{items[itemKey]}</DeviceRegisterListHeadlineItem>
+        ))
+      }
+      <DeviceRegisterListHeadlineItem>Delete</DeviceRegisterListHeadlineItem>
     </DeviceRegisterListHeadlineStyled>
   )
 }
 
-function DeviceRegisterListHeadlineItem({ keyName, children }) {
-  const [key, setKey] = useState(keyName)
-  return <DeviceRegisterListHeadlineItemStyled>{children}</DeviceRegisterListHeadlineItemStyled>
-}
-
-const DeviceRegisterListHeadlineStyled = styled.thead`
-  padding: 0;
-`
-
-const DeviceRegisterListHeadlineTr = styled.tr`
+const DeviceRegisterListHeadlineStyled = styled.div`
+  display: contents;
   color: #919095;
-  border-bottom: 2px solid #dee2e6;
 `
 
-const DeviceRegisterListHeadlineItemStyled = styled.th`
+const DeviceRegisterListHeadlineItem = styled.div`
   padding: .75rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  border-bottom: 2px solid #dee2e6;
 `
 
 

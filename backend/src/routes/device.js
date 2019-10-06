@@ -74,6 +74,54 @@ deviceRouter.post('/register', async (req, res) => {
   }
 })
 
+deviceRouter.patch('/register/:id', async (req, res) => {
+  try {
+    const userId = req.session.user.id
+
+    await User.findById(userId)
+
+    let fields = sliceKeysFromObject(req.body, registerToken._ids._byKey.keys())
+    fields = Object.keys(fields)
+      .reduce((pre, curr) => {
+        if (fields[curr]) {
+          return {...pre, [curr]: fields[curr]}
+        }
+        return pre
+      }, {})
+    await registerToken.validateAsync(fields)
+
+    const registerTokenModel = await RegisterToken.findOne({_id: req.params.id, userId})
+
+    if (Object.keys(req.body).includes('token')) {
+      const startDate = registerTokenModel.startDate.getFullYear() + '-' + (registerTokenModel.startDate.getMonth() + 1) + '-' + registerTokenModel.startDate.getDate()
+      const endDate = registerTokenModel.endDate.getFullYear() + '-' + (registerTokenModel.endDate.getMonth() + 1) + '-' + registerTokenModel.endDate.getDate()
+      fields.token = generateToken(registerTokenModel, startDate, endDate)
+    }
+
+    const newRegisterTokenModel = await RegisterToken.findOneAndUpdate({_id: req.params.id, userId}, fields, {useFindAndModify: false})
+
+    res.send(newRegisterTokenModel)
+  }
+  catch(err) {
+    res.status(400).send(parseError('invalid request'))
+  }
+})
+
+deviceRouter.delete('/register/:id', async (req, res) => {
+  try {
+    const userId = req.session.user.id
+
+    await User.findById(userId)
+
+    const deletedRegisterTokenModel = await RegisterToken.findOneAndDelete({_id: req.params.id, userId})
+
+    res.send(deletedRegisterTokenModel)
+  }
+  catch(err) {
+    res.status(400).send(parseError('invalid request'))
+  }
+})
+
 deviceRouter.get('/type', async (req, res) => {
   const deviceTypes = await DeviceType.find({}, {_id: 0, __v: 0})
 

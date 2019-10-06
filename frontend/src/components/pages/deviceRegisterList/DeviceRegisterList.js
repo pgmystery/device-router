@@ -1,54 +1,43 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import Request from '../../../utils/Request'
-
-import DeviceRegisterHeader from './DeviceRegisterHeader'
 import DeviceRegisterListHeadline from './DeviceRegisterListHeadline'
 import DeviceRegisterListItem from './DeviceRegisterListItem'
 
 
-function DeviceRegisterList({ items, onRefresh }) {
-  function refreshList() {
-    const request = new Request('/api/device/register')
-    request.get()
-      .then(res => onRefresh(res))
-  }
-
+function DeviceRegisterList({ headerItems, items }) {
   return (
     <>
-      <DeviceRegisterHeader refreshClick={refreshList} />
       <DeviceRegisterTable>
         {
-          items.keys === undefined || <DeviceRegisterListHeadline items={items.keys} />
+          headerItems === undefined || <DeviceRegisterListHeadline items={headerItems} />
         }
         {
-          items.tokens === undefined ||
-            <tbody>
-              {
-                items.tokens.length > 0
-                  ? items.tokens.map((tokenObject, index) => 
-                      <DeviceRegisterListItem key={index} tokenObject={tokenObject} order={Object.keys(items.keys)}></DeviceRegisterListItem>
-                    )
-                  : <tr><DeviceRegisterTableErrorTd colSpan="100">You don't have any Register-Tokens :(</DeviceRegisterTableErrorTd></tr>
-              }
-            </tbody>
+          items === undefined ||
+            items.length > 0
+              ? items.map((tokenObject, index) => 
+                  <DeviceRegisterListItem key={index} tokenObject={tokenObject} order={Object.keys(headerItems)}></DeviceRegisterListItem>
+                )
+              : <DeviceRegisterTableError>You don't have any Register-Tokens :(</DeviceRegisterTableError>
         }
       </DeviceRegisterTable>
     </>
   )
 }
 
-const DeviceRegisterTable = styled.table`
-  border-collapse: collapse;
+const DeviceRegisterTable = styled.div`
   width: 100%;
-  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(5, auto);
 `
 
-const DeviceRegisterTableErrorTd = styled.td`
+const DeviceRegisterTableError = styled.div`
   color: #a6a6a6;
   font-size: 1.3em;
   padding: 20px;
+  width: 100%;
+  grid-column: 1/-1;
+  text-align: center;
 `
 
 
