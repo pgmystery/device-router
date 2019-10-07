@@ -56,7 +56,13 @@ userSchema.pre('save', function(next) {
   this.devices = []
   if (this.picture == undefined) {
     const hash = makeHash(this.username.hashCode().length)
-    this.picture = new Identicon(hash).toString()
+    options = {
+      foreground: [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256) , 255],
+      background: [255, 255, 255, 255],
+      margin: 0.2,
+      size: 420,
+    }
+    this.picture = new Identicon(hash, options).toString()
   }
   next()
 })
@@ -77,7 +83,7 @@ userSchema.virtual('name')
 const User = mongoose.model('User', userSchema)
 
 function makeHash(length) {
-  if (length < 15) length = 15
+  if (length < 15) length = Math.floor(Math.random() * 25) + 15 
   let result           = ''
   const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   const charactersLength = characters.length

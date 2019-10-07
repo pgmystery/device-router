@@ -2,6 +2,11 @@ import React from "react"
 import styled from 'styled-components/macro'
 import { Link } from 'react-router-dom'
 
+import Wrapper from '../../utils/Wrapper'
+import { ButtonSuccess } from '../../utils/Button'
+import Label from '../../utils/Label'
+import Input from '../../utils/Input'
+
 
 function RegisterForm({ onSubmit, errors }) {
   function submitHandler(event) {
@@ -12,34 +17,51 @@ function RegisterForm({ onSubmit, errors }) {
   }
 
   return (
-    <>
+    <Wrapper>
       <p>{errors}</p>
       <RegisterFormStyled onSubmit={submitHandler}>
-        <label>Username:</label>
-        <input type="text" name="username" required autoFocus/>
+        <div>
+          <Label>Username:</Label>
+          <Input type="text" name="username" placeholder="Username" required autoFocus/>
+        </div>
 
-        <label>Password:</label>
-        <input type="password" name="password" required/>
+        <div>
+          <Label>Password:</Label>
+          <Input type="password" name="password" placeholder="Password" required/>
+        </div>
 
-        <label>Firstname:</label>
-        <input type="text" name="firstname" required/>
+        <div>
+          <Label>Firstname:</Label>
+          <Input type="text" name="firstname" placeholder="Firstname" required/>
+        </div>
 
-        <label>Secondname:</label>
-        <input type="text" name="secondname" required/>
+        <div>
+          <Label>Secondname:</Label>
+          <Input type="text" name="secondname" placeholder="Secondname" required/>
+        </div>
 
-        <label>E-Mail:</label>
-        <input type="email" name="email" required/>
+        <div>
+          <Label>E-Mail:</Label>
+          <Input type="email" name="email" placeholder="E-Mail" required/>
+        </div>
 
-        <button>Register</button>
+        <SubmitButton>Register</SubmitButton>
       </RegisterFormStyled>
       <Link to="/login">Login</Link>
-    </>
+    </Wrapper>
   )
 }
 
 const RegisterFormStyled = styled.form`
   display: grid;
   gap: 20px;
+  margin-top: 20px
+`
+
+const SubmitButton = styled(ButtonSuccess)`
+  margin-left: 0;
+  margin-right: 0;
+  font-size: 24px;
 `
 
 

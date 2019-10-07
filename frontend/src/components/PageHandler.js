@@ -9,6 +9,7 @@ import Logout from './pages/Logout'
 import Profile from './pages/Profile'
 import LoggedInPage from './pages/standard/LoggedInPage'
 import DeviceRegisterPage from './pages/DeviceRegisterPage'
+import DeviceRegisterNew from './pages/DeviceRegisterNew'
 
 function PageHandler() {
 
@@ -26,8 +27,14 @@ function PageHandler() {
             component={Dashboard}
           />
           <Route
+            exact
             path='/registerlist'
             component={DeviceRegisterPage}
+          />
+          <Route
+            exact
+            path='/registerlist/new'
+            component={DeviceRegisterNew}
           />
           <Route
             path='/Profile'
