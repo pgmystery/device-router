@@ -5,8 +5,9 @@
   "main": "src/main.js",
   "scripts": {
     "start": "gulp start && electron .",
-    "pack": "build --dir ",
-    "dist": "build"
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "build": "yarn dist"
   },
   "build": {
     "appId": "com.device-router.rounector.app",
@@ -15,16 +16,15 @@
   "author": "Philipp Glaw",
   "license": "ISC",
   "dependencies": {
-    "electron-builder": "^21.2.0",
-    "gulp": "^4.0.2",
-    "gulp-clean-css": "^4.2.0",
-    "gulp-concat": "^2.6.1",
-    "gulp-uglify-es": "^1.0.4",
     "ssh2": "^0.8.5",
     "ssh2shell": "^1.9.3"
   },
   "devDependencies": {
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "electron": "^6.0.10"
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.2.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-uglify-es": "^1.0.4",
+    "electron": "^6.0.10",
+    "electron-builder": "^21.2.0"
   }
 }
