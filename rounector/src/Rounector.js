@@ -5,9 +5,9 @@
 
 class Rounector {
     constructor() {
-        this.url = 'http://192.168.1.5:5000'
+        this.url = 'http://192.168.1.10:5000'  // HOME
+        // this.url = 'http://172.16.100.60:5000'  // neuefische
         this.client = new SSHClient()
-        this.client2 = new SSHClient2()
         this.data = {}
 
     }
@@ -39,7 +39,7 @@ class Rounector {
         }
         catch (e) {
             console.log(e)
-            dialog.showErrorBox('No connection to the webserver', 'Cloud not connect to the webserver!')
+            dialog.showErrorBox('No connection to the webserver', 'Could not connect to the webserver!')
             return false
         }
 
@@ -50,17 +50,26 @@ class Rounector {
         return true
     }
 
-    async connect(loginData, cmd) {
-        return await this.client2.connect(loginData)
-            .then(() => {
-                return this.client2.execCommand(cmd)
-                    .then(result => {
-                        if (result.stderr) {
-                            return result.stderr
-                        }
-                        return result.stdout
+    connect(host, callback) {
+        const SSH = new SSH2shell(host)
+        SSH.connect(callback)
+    }
+
+    async connectShell(loginData) {
+        return new Promise((resolve, reject) => {
+            const conn = new SSHClient()
+            conn.on('ready', function() {
+                console.log('Client :: ready')
+                conn.shell(function(err, stream) {
+                    if (err) reject(err)
+                    stream.on('close', function(code, signal) {
+                      console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
+                      conn.end()
                     })
-            })
+                    resolve(stream)
+                })
+            }).connect(loginData)
+        })
     }
 }
 

@@ -14,11 +14,10 @@ app.on('ready', function() {
         webPreferences: {
             preload: path.join(__dirname, 'preload.js')
         },
-        // show: false,
     })
 
 // TODO: DELETE THIS BEFORE RELEASE!!!
-    mainWindow.toggleDevTools()
+    // mainWindow.toggleDevTools()
 // TODO: DELETE THIS BEFORE RELEASE!!!
 
     mainWindow.loadFile(path.join(__dirname, 'interface/index.html'))

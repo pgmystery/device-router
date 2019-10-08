@@ -1,3 +1,7 @@
+#ssh_connect {
+    flex: 1;
+}
+
 #ssh_connect .block {
     margin-bottom: 10px;
 }
@@ -30,5 +34,5 @@
 }
 
 #ssh_connect .input_right {
-    width: 15%;
+    width: 14%;
 }

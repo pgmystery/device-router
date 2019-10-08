@@ -1,22 +1,33 @@
 'use strict'
 
 window.SSHClient = require('ssh2').Client
-window.SSHClient2 = require('node-ssh')
+window.SSH2shell = require('ssh2shell')
 
 const { remote } = require('electron')
 const Menu = remote.Menu
 
 const path = require('path')
-const { readFileSync } = require('fs')
+const { readFileSync, writeFileSync, createReadStream } = require('fs')
+window.readFileSync = readFileSync
+window.writeFileSync = writeFileSync
+window.createReadStream = createReadStream
 
 // CLOSE THE ELECTRON-WINDOW:
 const currWindow = remote.getCurrentWindow()
 
-window.closeApp = function() {
+window.closeApp = () => {
     currWindow.close()
 }
 
-//GET VERSION OF THE APP:
+// FLASH IN TASKBAR:
+window.flashWindow = () => {
+    currWindow.flashFrame(true)
+}
+
+// GET APP-TEMP PATH:
+window.tempPath = remote.app.getPath("temp")
+
+// GET VERSION OF THE APP:
 window.appVersion = remote.app.getVersion()
 
 // SET DIALOG TO GLOBAL:
@@ -39,16 +50,16 @@ function loadFrame(filename) {
     const dummyEl = document.createElement('div')
     dummyEl.innerHTML = frameHTML
     const frameElement = dummyEl.firstChild
-    frameElement.hidden = true
+    frameElement.classList.add('hide')
     const container_HTML = document.getElementById('container')
     container_HTML.insertAdjacentElement('afterbegin', frameElement)
 }
 window.loadFrame = loadFrame
 
 function setActiveFrame(frameName) {
-    frameSites[currentFrame] && (document.getElementById(frameSites[currentFrame]).hidden = true)
+    frameSites[currentFrame] && (document.getElementById(frameSites[currentFrame]).classList.add('hide'))
     currentFrame = Number(Object.keys(frameSites).find(key => frameSites[key] === frameName))
-    document.getElementById(frameName).hidden = false
+    document.getElementById(frameName).classList.remove('hide')
     frameFunctions[frameName]()
 }
 window.setActiveFrame = setActiveFrame
