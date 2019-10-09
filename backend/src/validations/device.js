@@ -3,8 +3,7 @@ const { normalString } = require('./utils')
 
 const type = normalString()
 const version = normalString()
-// const description = normalString({required: false, max: 64})
-const description = normalString().allow('')
+const description = normalString({required: false, max: 64}).allow('')
 
 const deviceValidation = Joi.object().keys({
   type,
