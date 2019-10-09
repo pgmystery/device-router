@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import Request from '../../utils/Request'
 import Wrapper from '../utils/Wrapper'
@@ -17,7 +17,8 @@ function DeviceRegisterPage() {
   const [registerTokenList, setRegisterTokenList] = useState()
 
   useEffect(() => {
-    getRegisterTokenList().then(registerTokenList => setRegisterTokenList(registerTokenList))
+    getRegisterTokenList()
+      .then(registerTokenList => setRegisterTokenList(registerTokenList))
   }, [])
 
   function getRegisterTokenList() {

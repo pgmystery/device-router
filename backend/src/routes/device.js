@@ -11,6 +11,20 @@ const Device = require('../db/models/Device')
 
 const deviceRouter = Router()
 
+deviceRouter.get('/', async (req, res) => {
+  try {
+    const userId = req.session.user.id
+    const devices = await Device.find({userId})
+
+    const devicesKeys = Device.getKeys()
+  
+    res.send({devices, keys: devicesKeys})
+  }
+  catch(err) {
+    res.status(400).send(parseError('not found'))
+  }
+})
+
 deviceRouter.post('/auth', async (req, res) => {
   console.log('NEW DEVICE AUTH!')
   try {
@@ -22,6 +36,7 @@ deviceRouter.post('/auth', async (req, res) => {
     fields.name = registerToken.name
     fields.userId = registerToken.userId
     fields.accessToken = 'null'
+    fields.online = false
 
     const newDevice = new Device(fields)
     const newDeviceSaved = await newDevice.save()
@@ -35,11 +50,11 @@ deviceRouter.post('/auth', async (req, res) => {
 
 deviceRouter.get('/register', async (req, res) => {
   const userId = req.session.user.id
-  const registerTokensOriginal = await RegisterToken.findOne({userId}).exec()
+  const registerTokensOriginal = await RegisterToken.find({userId})
 
   const registerTokens = registerTokensOriginal.map(tokenObject => {
     return {
-      ...tokenObject,
+      ...tokenObject._doc,
       startDate: tokenObject.startDate.getDate()
         + '.'
         + (tokenObject.startDate.getMonth() + 1)
@@ -56,24 +71,6 @@ deviceRouter.get('/register', async (req, res) => {
   const registerTokensKeys = RegisterToken.getKeys()
 
   res.send({ tokens: registerTokens, keys: registerTokensKeys })
-})
-
-deviceRouter.get('/register/:id', async (req, res) => {
-  const userId = req.session.user.id
-  const registerToken = await RegisterToken.findById(req.params.id)
-
-  registerToken.startDate = registerToken.startDate.getDate()
-    + '.'
-    + (registerToken.startDate.getMonth() + 1)
-    + '.'
-    + registerToken.startDate.getFullYear()
-  registerToken.endDate = registerToken.endDate.getDate()
-    + '.'
-    + (registerToken.endDate.getMonth() + 1)
-    + '.'
-    + registerToken.endDate.getFullYear()
-
-  res.send({ registerToken })
 })
 
 deviceRouter.post('/register', async (req, res) => {

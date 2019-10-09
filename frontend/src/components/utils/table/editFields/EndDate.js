@@ -9,19 +9,19 @@ import { TextSpan, IconButton } from '../../DeviceRegisterPage'
 import calendarIcon from '../../../images/calendar_icon.svg'
 
 
-function StartDate({ id, text, onChanged }) {
+function EndDate({ id, text, onChanged }) {
   const [textValue, setTextValue] = useState(text)
   const [inputValue, setInputValue] = useState(dateConverter(text, 'na'))
   const [onEditing, setOnEditing] = useState(false)
 
   function handleSubmit(event) {
     event.preventDefault()
-    const startDate = event.currentTarget.startDate.value
+    const endDate = event.currentTarget.endDate.value
 
-    if (startDate) {
-      onChanged(id, {startDate})
-
-      setTextValue(dateConverter(startDate))
+    if (endDate) {
+      onChanged(id, {endDate})
+  
+      setTextValue(dateConverter(endDate))
       setOnEditing(false)
     }
   }
@@ -36,17 +36,17 @@ function StartDate({ id, text, onChanged }) {
     <>
       {
         onEditing
-          ? <FormStyled onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
+          ? <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
               <Input
                 type="date"
-                name="startDate"
+                name="endDate"
                 onChange={event => setInputValue(event.currentTarget.value)}
                 value={inputValue}
                 onFocus={(event) => event.target.select()}
                 autoFocus
               />
               <SubmitButton>Change</SubmitButton>
-            </FormStyled>
+            </form>
           : <TextSpan>{textValue}</TextSpan>
       }
       <IconButton onClick={() => setOnEditing(!onEditing)}>
@@ -58,14 +58,10 @@ function StartDate({ id, text, onChanged }) {
   )
 }
 
-const FormStyled = styled.form`
-  width: 100%;
-`
-
 const SubmitButton = styled(ButtonSuccess)`
   width: 100%;
   margin: 0;
 `
 
 
-export default StartDate
+export default EndDate

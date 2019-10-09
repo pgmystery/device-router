@@ -33,7 +33,7 @@ function Name({ id, text, onChanged }) {
     <>
       {
         onEditing
-          ? <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
+          ? <FormStyled onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
               <Input
                 type="text"
                 name="name"
@@ -43,7 +43,7 @@ function Name({ id, text, onChanged }) {
                 autoFocus
               />
               <SubmitButton>Change</SubmitButton>
-            </form>
+            </FormStyled>
           : <TextSpan>{textValue}</TextSpan>
       }
       <IconButton onClick={() => setOnEditing(!onEditing)}>
@@ -54,6 +54,10 @@ function Name({ id, text, onChanged }) {
     </>
   )
 }
+
+const FormStyled = styled.form`
+  width: 100%;
+`
 
 const SubmitButton = styled(ButtonSuccess)`
   width: 100%;

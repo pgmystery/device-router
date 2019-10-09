@@ -10,6 +10,7 @@ import Profile from './pages/Profile'
 import LoggedInPage from './pages/standard/LoggedInPage'
 import DeviceRegisterPage from './pages/DeviceRegisterPage'
 import DeviceRegisterNew from './pages/DeviceRegisterNew'
+import DevicesPage from './pages/DevicesPage'
 
 function PageHandler() {
 
@@ -35,6 +36,11 @@ function PageHandler() {
             exact
             path='/registerlist/new'
             component={DeviceRegisterNew}
+          />
+          <Route
+            exact
+            path='/devices'
+            component={DevicesPage}
           />
           <Route
             path='/Profile'

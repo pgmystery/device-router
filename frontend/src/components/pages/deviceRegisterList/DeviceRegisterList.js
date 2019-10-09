@@ -7,21 +7,19 @@ import DeviceRegisterListItem from './DeviceRegisterListItem'
 
 function DeviceRegisterList({ headerItems, items }) {
   return (
-    <>
-      <DeviceRegisterTable>
-        {
-          headerItems === undefined || <DeviceRegisterListHeadline items={headerItems} />
-        }
-        {
-          items === undefined ||
-            items.length > 0
-              ? items.map((tokenObject, index) => 
-                  <DeviceRegisterListItem key={index} tokenObject={tokenObject} order={Object.keys(headerItems)}></DeviceRegisterListItem>
-                )
-              : <DeviceRegisterTableError>You don't have any Register-Tokens :(</DeviceRegisterTableError>
-        }
-      </DeviceRegisterTable>
-    </>
+    <DeviceRegisterTable>
+      {
+        headerItems === undefined || <DeviceRegisterListHeadline items={headerItems} />
+      }
+      {
+        items === undefined ||
+          items.length > 0
+            ? items.map((tokenObject, index) => 
+                <DeviceRegisterListItem key={index} tokenObject={tokenObject} order={Object.keys(headerItems)}></DeviceRegisterListItem>
+              )
+            : <DeviceRegisterTableError>You don't have any Register-Tokens :(</DeviceRegisterTableError>
+      }
+    </DeviceRegisterTable>
   )
 }
 

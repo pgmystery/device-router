@@ -1,29 +1,26 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import ReactSVG from 'react-svg'
-import dateConverter from '../../../../utils/dateConverter'
 
 import { ButtonSuccess } from '../../../utils/Button'
 import Input from '../../../utils/Input'
-import { TextSpan, IconButton } from '../../DeviceRegisterPage'
-import calendarIcon from '../../../images/calendar_icon.svg'
+import { TextSpan, IconButton } from '../Table'
+import pencilIcon from '../../../images/pencil_icon.svg'
 
 
-function StartDate({ id, text, onChanged }) {
+function Textarea({ text, onChanged }) {
   const [textValue, setTextValue] = useState(text)
-  const [inputValue, setInputValue] = useState(dateConverter(text, 'na'))
+  const [inputValue, setInputValue] = useState(text)
   const [onEditing, setOnEditing] = useState(false)
 
   function handleSubmit(event) {
     event.preventDefault()
-    const startDate = event.currentTarget.startDate.value
+    const value = event.currentTarget.textarea.value
 
-    if (startDate) {
-      onChanged(id, {startDate})
+    onChanged(value)
 
-      setTextValue(dateConverter(startDate))
-      setOnEditing(false)
-    }
+    setTextValue(value)
+    setOnEditing(false)
   }
 
   function handleKeyDown(event) {
@@ -37,9 +34,9 @@ function StartDate({ id, text, onChanged }) {
       {
         onEditing
           ? <FormStyled onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
-              <Input
-                type="date"
-                name="startDate"
+              <TextareaStyled
+                type="text"
+                name="textarea"
                 onChange={event => setInputValue(event.currentTarget.value)}
                 value={inputValue}
                 onFocus={(event) => event.target.select()}
@@ -50,7 +47,7 @@ function StartDate({ id, text, onChanged }) {
           : <TextSpan>{textValue}</TextSpan>
       }
       <IconButton onClick={() => setOnEditing(!onEditing)}>
-        <ReactSVG src={calendarIcon} beforeInjection={svg => {
+        <ReactSVG src={pencilIcon} beforeInjection={svg => {
           svg.setAttribute('style', 'width: 16px; height: 16px; display: flex;')
         }} />
       </IconButton>
@@ -62,10 +59,14 @@ const FormStyled = styled.form`
   width: 100%;
 `
 
+const TextareaStyled = styled.textarea`
+  width: 100%;
+`
+
 const SubmitButton = styled(ButtonSuccess)`
   width: 100%;
   margin: 0;
 `
 
 
-export default StartDate
+export default Textarea

@@ -36,7 +36,7 @@ function StartDate({ id, text, onChanged }) {
     <>
       {
         onEditing
-          ? <FormStyled onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
+          ? <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
               <Input
                 type="date"
                 name="startDate"
@@ -46,7 +46,7 @@ function StartDate({ id, text, onChanged }) {
                 autoFocus
               />
               <SubmitButton>Change</SubmitButton>
-            </FormStyled>
+            </form>
           : <TextSpan>{textValue}</TextSpan>
       }
       <IconButton onClick={() => setOnEditing(!onEditing)}>
@@ -57,10 +57,6 @@ function StartDate({ id, text, onChanged }) {
     </>
   )
 }
-
-const FormStyled = styled.form`
-  width: 100%;
-`
 
 const SubmitButton = styled(ButtonSuccess)`
   width: 100%;
