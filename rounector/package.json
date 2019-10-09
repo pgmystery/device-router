@@ -1,22 +1,30 @@
 {
   "name": "rounector",
   "version": "0.0.1-beta",
-  "description": "",
+  "description": "App for the device-router",
   "main": "src/main.js",
   "scripts": {
-    "start": "gulp start && electron ."
+    "start": "gulp start && electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "build": "yarn dist"
+  },
+  "build": {
+    "appId": "com.device-router.rounector.app",
+    "productName": "Rounector"
   },
   "author": "Philipp Glaw",
   "license": "ISC",
   "dependencies": {
+    "ssh2": "^0.8.5",
+    "ssh2shell": "^1.9.3"
+  },
+  "devDependencies": {
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.2.0",
     "gulp-concat": "^2.6.1",
     "gulp-uglify-es": "^1.0.4",
-    "node-ssh": "^6.0.0",
-    "ssh2": "^0.8.5"
-  },
-  "devDependencies": {
-    "electron": "^6.0.10"
+    "electron": "^6.0.10",
+    "electron-builder": "^21.2.0"
   }
 }

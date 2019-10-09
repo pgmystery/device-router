@@ -1,3 +1,7 @@
+#register_token {
+    flex: 1;
+}
+
 #register_token #register_token_description {
     height: 140px;
 }

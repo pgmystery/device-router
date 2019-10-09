@@ -1,0 +1,32 @@
+#rounection {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100%;
+  align-self: stretch;
+  flex: 1;
+  flex-direction: column;
+}
+
+#rounection_status {
+  margin-bottom: 10px
+}
+
+#rounection_progess {
+  width: 100%;
+  margin-top: 20px;
+  -webkit-appearance: none;
+}
+
+#rounection_progess_label {
+  margin-bottom: 20px;
+}
+
+#rounection_cancel {
+  width: 150px;
+  height: 21px;
+  font-size: 0.8em;
+  margin: 0 auto;
+  display: block;
+}

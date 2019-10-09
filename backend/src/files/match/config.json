@@ -1,0 +1,19 @@
+{
+  "network": "",
+  "info": {
+    "description": "",
+    "id": "",
+    "type": "",
+    "version": ""
+  },
+  "auth": {
+    "register_token": "",
+    "access_token": ""
+  },
+  "logger": {
+    "path": "/var/log/match.log",
+    "level": "info",
+    "backup_file_time": "midnight",
+    "backup_count": 3
+  }
+}

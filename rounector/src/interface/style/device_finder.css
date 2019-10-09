@@ -1,3 +1,7 @@
+#device_finder {
+  flex: 1;
+}
+
 #device_finder p {
     margin-bottom: 40px;
 }
