@@ -1,7 +1,7 @@
 class Rounector {
     constructor() {
         // this.url = 'http://192.168.1.10:5000'  // HOME
-        this.url = 'http://172.16.100.60:5000'  // neuefische
+        this.url = 'http://172.16.100.80:5000'  // neuefische
         this.client = new SSHClient()
         this.data = {}
         this.afterUrlPromp = []

@@ -4,12 +4,12 @@ import sys
 
 from core.daemon import MatchDaemon
 from core.sys_logging import Logger
+from core.config import Settings
+from core.auth import Auth
 
 from core.connector.connector import Connector
 from core.mainSocket import MainSocket
 from core.eshell.eshell import EShell
-
-
 
 __version__ = "0.1"  # NEEDS TO HAVE IN "" CHARS!!!!
 
@@ -26,11 +26,15 @@ class Match(MatchDaemon):
     self.logger = Logger()
     self.logger.log("MATCH-Service startet")
 
-    self.connector = Connector(self.url)
-    self.mainSocket = MainSocket(self, '/device')
-    self.connector.register_namespace(self.mainSocket)
-    self.connector.connect()
-    self.eshell = EShell(self.url, self.mainSocket.client.sid)
+    self.settings = Settings(self)
+
+    self.auth = Auth()
+    if self.auth.check():
+      self.connector = Connector(self.url)
+      self.mainSocket = MainSocket(self, '/device')
+      self.connector.register_namespace(self.mainSocket)
+      self.connector.connect()
+      self.eshell = EShell(self.url, self.mainSocket.client.sid)
     # while True:
     #     pass
     # print('END APP')

@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-# THIS IS FROM THE DROPBOX-FILE IN LINUX-SYSTEMS !!!
-
 import os
 import sys
 import locale

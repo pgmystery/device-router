@@ -181,13 +181,13 @@ function startMatch(command, response, sshObj) {
 
 function startMatch2(command, response, sshObj) {
   response.forEach(responseLine => {
-    if (responseLine === 'Permission denied!') {
+    if (responseLine === 'Permission denied!' || responseLine.toLowerCase().includes('permission denied')) {
       sshObj.commands.push('sudo python /tmp/match/setup.py')
       sshObj.commands.push('echo "MATCH-DONE"')
     }
     else if (responseLine === 'MATCH-DONE') {
       progress = 'cleanUp'
-      setProgress('Finish installation!')
+      setProgress('Finish installation...')
       sshObj.commands.push('rm /tmp/match.tar')
       sshObj.commands.push('rm -R /tmp/match')
       sshObj.commands.push('echo "CLEAN-UP-DONE"')

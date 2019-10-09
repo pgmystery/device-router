@@ -3,21 +3,14 @@ const { JWT_SECRET } = require('../config')
 const { getDaysBetweenDates } = require('../utils/helpers')
 
 
-function generateToken(user, startDay, endDay) {
-  const u = {
-    name: user.name,
-    username: user.username,
-    email: user.email,
-    _id: user._id,
-  }
-
+function generateToken(fields, startDay, endDay) {
   const expireDay = getDaysBetweenDates(startDay, endDay)
 
   if (expireDay < 0) {
     throw new Error('Invalid start- and end-dates')
   }
 
-  return token = jwt.sign(u, JWT_SECRET, {
+  return token = jwt.sign(fields, JWT_SECRET, {
     expiresIn: expireDay + 'd'
   })
 }

@@ -4,17 +4,42 @@ const User = require('../db/models/User')
 const { registerToken } = require('../validations/registerToken')
 const { parseError, sliceKeysFromObject } = require('../utils/helpers')
 const { generateToken } = require('../jwt/jwt')
+const { deviceValidation } = require('../validations/device')
 const DeviceType = require('../db/models/DeviceType')
+const Device = require('../db/models/Device')
 
 
 const deviceRouter = Router()
+
+deviceRouter.post('/auth', async (req, res) => {
+  console.log('NEW DEVICE AUTH!')
+  try {
+    const registerToken = await RegisterToken.findOne({token: req.body.registerToken})
+
+    const fields = sliceKeysFromObject(req.body, deviceValidation._ids._byKey.keys())
+    await deviceValidation.validateAsync(fields)
+
+    fields.name = registerToken.name
+    fields.userId = registerToken.userId
+    fields.accessToken = 'null'
+
+    const newDevice = new Device(fields)
+    const newDeviceSaved = await newDevice.save()
+
+    res.send(newDeviceSaved)
+  }
+  catch(err) {
+    res.status(400).send('Invalid request')
+  }
+})
+
 deviceRouter.get('/register', async (req, res) => {
   const userId = req.session.user.id
-  const registerTokensOriginal = await RegisterToken.find({userId})
+  const registerTokensOriginal = await RegisterToken.findOne({userId}).exec()
 
   const registerTokens = registerTokensOriginal.map(tokenObject => {
     return {
-      ...tokenObject._doc,
+      ...tokenObject,
       startDate: tokenObject.startDate.getDate()
         + '.'
         + (tokenObject.startDate.getMonth() + 1)
@@ -62,7 +87,12 @@ deviceRouter.post('/register', async (req, res) => {
 
     fields.userId = userId
 
-    fields.token = generateToken(fields, fields.startDate, fields.endDate)
+    fields.token = generateToken({
+      name: fields.name,
+      username: fields.username,
+      email: fields.email,
+      _id: fields._id,
+    }, fields.startDate, fields.endDate)
 
     const newRegisterToken = new RegisterToken(fields)
     const newRegisterTokenSaved = await newRegisterToken.save()
@@ -95,7 +125,12 @@ deviceRouter.patch('/register/:id', async (req, res) => {
     if (Object.keys(req.body).includes('token')) {
       const startDate = registerTokenModel.startDate.getFullYear() + '-' + (registerTokenModel.startDate.getMonth() + 1) + '-' + registerTokenModel.startDate.getDate()
       const endDate = registerTokenModel.endDate.getFullYear() + '-' + (registerTokenModel.endDate.getMonth() + 1) + '-' + registerTokenModel.endDate.getDate()
-      fields.token = generateToken(registerTokenModel, startDate, endDate)
+      fields.token = generateToken({
+        name: registerTokenModel.name,
+        username: registerTokenModel.username,
+        email: registerTokenModel.email,
+        _id: registerTokenModel._id,
+      }, startDate, endDate)
     }
 
     const newRegisterTokenModel = await RegisterToken.findOneAndUpdate({_id: req.params.id, userId}, fields, {useFindAndModify: false})
