@@ -1,15 +1,23 @@
-/*
-    TODO runtime process:
-
-*/
-
 class Rounector {
     constructor() {
-        this.url = 'http://192.168.1.10:5000'  // HOME
-        // this.url = 'http://172.16.100.60:5000'  // neuefische
+        // this.url = 'http://192.168.1.10:5000'  // HOME
+        this.url = 'http://172.16.100.60:5000'  // neuefische
         this.client = new SSHClient()
         this.data = {}
+        this.afterUrlPromp = []
 
+        // SET IP+PORT:
+        dialogPrompt({
+            title: 'IP:Port of the backend',
+            label: 'http://',
+            value: this.url.replace('http://', '')
+        })
+          .then(r => {
+              if (r !== null) {
+                  this.url = 'http://' + r
+              }
+              this.afterUrlPromp.forEach(callback => callback())
+          })
     }
 
     // TODO PARAMETERS:
@@ -42,10 +50,6 @@ class Rounector {
             dialog.showErrorBox('No connection to the webserver', 'Could not connect to the webserver!')
             return false
         }
-
-    // CONNECT TO THE SERVER WITH SSH:
-
-
         console.log("DONE!")
         return true
     }

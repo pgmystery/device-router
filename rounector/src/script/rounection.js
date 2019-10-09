@@ -32,6 +32,7 @@ function startRounection() {
       device_config.info.type = rounector.data['device_type']
       device_config.info.version = rounector.data['device_version']
       device_config.auth.register_token = rounector.data['register_token']
+      device_config.remote_host = rounector.url.replace('http://', '')
 
       writeFileSync(tempPath + '/config.json', JSON.stringify(device_config))
 
