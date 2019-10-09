@@ -6,13 +6,16 @@ import Button, { ButtonPrimary, ButtonSuccess } from '../../utils/Button'
 import ReactSVG from 'react-svg'
 import plusIcon from '../../images/plus_icon.svg'
 import reloadIcon from '../../images/reload_icon.svg'
+import rounectorFile from '../../../files/rounector/Rounector.dmg'
 
 
 function DeviceRegisterHeader({ refreshClick }) {
   return (
     <DeviceRegisterHeaderStyled>
       <DeviceRegisterHeaderLeft>
-        <ButtonPrimary>Download Rounector</ButtonPrimary>
+        <AnchorUnstyled href={rounectorFile} download>
+          <ButtonPrimary>Download Rounector</ButtonPrimary>
+        </AnchorUnstyled>
       </DeviceRegisterHeaderLeft>
       <DeviceRegisterHeaderRight>
         <LinkUnstyled to='/registerlist/new' color={'#ffffff'}>
@@ -51,6 +54,12 @@ const DeviceRegisterHeaderRight = styled.div`
   display: flex;
   margin-left: auto;
   align-items: center;
+`
+
+const AnchorUnstyled = styled.a`
+  color: inherit;
+  text-decoration: inherit;
+  cursor: inherit;
 `
 
 const RefreshButton = styled(Button)`
