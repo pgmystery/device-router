@@ -23,7 +23,7 @@ async function setDevices() {
           dialog.showMessageBox(null, {
             type: 'error',
             title: 'Error!',
-            message: 'Can not getting the devices from server',
+            message: 'Can not get the devices from server',
           },
           () => {
             closeApp()
