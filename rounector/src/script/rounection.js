@@ -181,7 +181,7 @@ function startMatch(command, response, sshObj) {
 
 function startMatch2(command, response, sshObj) {
   response.forEach(responseLine => {
-    if (responseLine === 'Permission denied!' || responseLine.toLowerCase().includes('permission denied')) {
+    if (responseLine.toLowerCase().includes('permission denied')) {
       sshObj.commands.push('sudo python /tmp/match/setup.py')
       sshObj.commands.push('echo "MATCH-DONE"')
     }
