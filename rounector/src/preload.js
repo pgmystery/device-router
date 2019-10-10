@@ -32,6 +32,7 @@ window.appVersion = remote.app.getVersion()
 
 // SET DIALOG TO GLOBAL:
 window.dialog = remote.dialog
+window.dialogPrompt = require('electron-prompt')
 
 // Declare the https module:
 // window.requests = require('https')  // TODO!!!

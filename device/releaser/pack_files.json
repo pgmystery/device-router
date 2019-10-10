@@ -1,0 +1,4 @@
+{
+  "/etc/init.d/match.sh": "/",
+  "/usr/bin/*": "/bin"
+}

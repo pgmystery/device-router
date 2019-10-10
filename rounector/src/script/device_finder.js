@@ -8,15 +8,29 @@ loadFrame('device_finder')
 const device_finder_comboBox_device_name = document.getElementById('device_finder_device')
 const device_finder_comboBox_device_version = document.getElementById('device_finder_device_version')
 
-async function getDevices() {
+
+let device_finder_devices
+async function setDevices() {
+    console.log('START_GETTING_DEVICES')
     return await fetch(rounector.url + '/api/device/type')
         .then(async res => await res.json())
+        .then(data => {
+          device_finder_devices = data
+          data.forEach(device => addOptionItem(device_finder_comboBox_device_name, device.name))
+        })
+        .catch(err => {
+          console.error(err)
+          dialog.showMessageBox(null, {
+            type: 'error',
+            title: 'Error!',
+            message: 'Can not get the devices from server',
+          },
+          () => {
+            closeApp()
+          })
+        })
 }
-let device_finder_devices
-getDevices().then(data => {
-    device_finder_devices = data
-    data.forEach(device => addOptionItem(device_finder_comboBox_device_name, device.name))
-})
+rounector.afterUrlPromp.push(setDevices)
 
 const device_finder_form = document.getElementById('device_finder_form')
 device_finder_form.addEventListener('submit', e => {
