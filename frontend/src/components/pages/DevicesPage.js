@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 
 import Request from '../../utils/Request'
 import Wrapper from '../utils/Wrapper'
+import PageHeader from '../utils/PageHeader'
 import Table, { TextSpan } from '../utils/table/Table'
 import Input from '../utils/table/editFields/Input'
 import Textarea from '../utils/table/editFields/Textarea'
+import RefreshButton from '../utils/RefreshButton'
 
 
 function DevicesPage() {
@@ -44,6 +46,9 @@ function DevicesPage() {
 
   return (
     <Wrapper>
+      <PageHeader rightComponent={
+        <RefreshButton onClick={getDeviceList} />
+      }/>
       {
         devicesList &&
           <Table
