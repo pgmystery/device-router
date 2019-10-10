@@ -1,17 +1,18 @@
 import React, { useState } from "react"
 
-import { mainSocket } from '../App'
-import EShell from '../eshell/EShell'
-import Button from "../utils/Button"
+import EShell from '../../eshell/EShell'
+import { ButtonSuccess } from "../utils/Button"
 
 
-function EShellPage() {
+function EShellPage({ location }) {
+  console.log(location.device)
+
   const eshell = new EShell()
   const [eshellSession, setEshellSession] = useState(  // Only in a state it works best...
     eshell.createSession({
       query: {  // TODO: Change this to a better auth!
         type: 'user',
-        userToken: mainSocket.id,
+        // userToken: mainSocket.id,
         deviceId: 0,  // TODO: Get the device-id from the db
       }
     })
@@ -52,10 +53,10 @@ function EShellPage() {
 
   function eshellConnectButton({ onClick, text, disabled=null }) {
     return (
-      <Button 
+      <ButtonSuccess 
         onClick={onClick}
         disabled={disabled}
-      >{text}</Button>
+      >{text}</ButtonSuccess>
     )
   }
 

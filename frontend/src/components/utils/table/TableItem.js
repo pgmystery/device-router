@@ -22,11 +22,6 @@ const TableItemStyled = styled.div`
       background-color: #f4f2f3;
     }
   }
-
-  /* :hover {
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
-    transform: scale(1);
-  } */
 `
 
 const TableItemText = styled.div`

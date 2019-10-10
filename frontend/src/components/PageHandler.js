@@ -11,6 +11,7 @@ import LoggedInPage from './pages/standard/LoggedInPage'
 import DeviceRegisterPage from './pages/DeviceRegisterPage'
 import DeviceRegisterNew from './pages/DeviceRegisterNew'
 import DevicesPage from './pages/DevicesPage'
+import EShellPage from './pages/EShellPage'
 
 function PageHandler() {
 
@@ -41,6 +42,11 @@ function PageHandler() {
             exact
             path='/devices'
             component={DevicesPage}
+          />
+          <Route
+            exact
+            path='/eshell'
+            component={EShellPage}
           />
           <Route
             path='/Profile'

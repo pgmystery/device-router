@@ -5,23 +5,23 @@ import dateConverter from '../../../../utils/dateConverter'
 
 import { ButtonSuccess } from '../../../utils/Button'
 import Input from '../../../utils/Input'
-import { TextSpan, IconButton } from '../../DeviceRegisterPage'
+import { TextSpan, IconButton } from '../Table'
 import calendarIcon from '../../../images/calendar_icon.svg'
 
 
-function EndDate({ id, text, onChanged }) {
+function Date({ text, onChanged, name="date" }) {
   const [textValue, setTextValue] = useState(text)
   const [inputValue, setInputValue] = useState(dateConverter(text, 'na'))
   const [onEditing, setOnEditing] = useState(false)
 
   function handleSubmit(event) {
     event.preventDefault()
-    const endDate = event.currentTarget.endDate.value
+    const date = event.currentTarget[name].value
 
-    if (endDate) {
-      onChanged(id, {endDate})
-  
-      setTextValue(dateConverter(endDate))
+    if (date) {
+      onChanged(date)
+
+      setTextValue(dateConverter(date))
       setOnEditing(false)
     }
   }
@@ -39,7 +39,7 @@ function EndDate({ id, text, onChanged }) {
           ? <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
               <Input
                 type="date"
-                name="endDate"
+                name={name}
                 onChange={event => setInputValue(event.currentTarget.value)}
                 value={inputValue}
                 onFocus={(event) => event.target.select()}
@@ -64,4 +64,4 @@ const SubmitButton = styled(ButtonSuccess)`
 `
 
 
-export default EndDate
+export default Date

@@ -8,14 +8,14 @@ import { TextSpan, IconButton } from '../Table'
 import pencilIcon from '../../../images/pencil_icon.svg'
 
 
-function Textarea({ text, onChanged }) {
+function Textarea({ text, onChanged, name="textarea" }) {
   const [textValue, setTextValue] = useState(text)
   const [inputValue, setInputValue] = useState(text)
   const [onEditing, setOnEditing] = useState(false)
 
   function handleSubmit(event) {
     event.preventDefault()
-    const value = event.currentTarget.textarea.value
+    const value = event.currentTarget[name].value
 
     onChanged(value)
 
@@ -36,7 +36,7 @@ function Textarea({ text, onChanged }) {
           ? <FormStyled onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
               <TextareaStyled
                 type="text"
-                name="textarea"
+                name={name}
                 onChange={event => setInputValue(event.currentTarget.value)}
                 value={inputValue}
                 onFocus={(event) => event.target.select()}

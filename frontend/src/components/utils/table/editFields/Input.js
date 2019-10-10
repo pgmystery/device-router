@@ -8,14 +8,14 @@ import { TextSpan, IconButton } from '../Table'
 import pencilIcon from '../../../images/pencil_icon.svg'
 
 
-function Input({ text, onChanged }) {
+function Input({ text, onChanged, name="input"}) {
   const [textValue, setTextValue] = useState(text)
   const [inputValue, setInputValue] = useState(text)
   const [onEditing, setOnEditing] = useState(false)
 
   function handleSubmit(event) {
     event.preventDefault()
-    const value = event.currentTarget.input.value
+    const value = event.currentTarget[name].value
 
     onChanged(value)
 
@@ -36,7 +36,7 @@ function Input({ text, onChanged }) {
           ? <FormStyled onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
               <InputElement
                 type="text"
-                name="input"
+                name={name}
                 onChange={event => setInputValue(event.currentTarget.value)}
                 value={inputValue}
                 onFocus={(event) => event.target.select()}

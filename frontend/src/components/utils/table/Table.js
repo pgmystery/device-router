@@ -6,17 +6,17 @@ import TableHeadline from './TableHeadline'
 import TableItem from './TableItem'
 
 
-function Table({ headerItems, items, noItemsText }) {
+function Table({ headerItems, items, noItemsText="No Items" }) {
   return (
-    <TableStyled>
+    <TableStyled itemsCount={Object.keys(headerItems).length}>
       {
-        headerItems === undefined || <TableHeadline items={headerItems} />
+        headerItems === undefined || <TableHeadline items={headerItems} order={Object.keys(items[0])} />
       }
       {
         items === undefined ||
           items.length > 0
             ? items.map((itemComponents, index) => 
-                <TableItem key={index} itemComponents={itemComponents} order={Object.keys(headerItems)}></TableItem>
+                <TableItem key={index} itemComponents={itemComponents} order={Object.keys(items[0])}></TableItem>
               )
             : <TableNotItemsText>{noItemsText}</TableNotItemsText>
       }
@@ -27,7 +27,7 @@ function Table({ headerItems, items, noItemsText }) {
 const TableStyled = styled.div`
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(5, auto);
+  grid-template-columns: ${({ itemsCount }) => `repeat(${itemsCount}, auto)`};
 `
 
 const TableNotItemsText = styled.div`

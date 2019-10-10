@@ -2,11 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 
 
-function TableHeadline({ items }) {
+function TableHeadline({ items, order }) {
   return (
     <TableHeadlineStyled>
       {
-        Object.keys(items).map(itemKey => (
+        order.map(itemKey => (
         <TableHeadlineItem 
             keyName={itemKey}
             key={itemKey}
