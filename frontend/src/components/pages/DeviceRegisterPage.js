@@ -4,9 +4,13 @@ import ReactSVG from 'react-svg'
 
 import Request from '../../utils/Request'
 import Wrapper from '../utils/Wrapper'
-import Button, { ButtonDanger } from '../utils/Button'
+import PageHeader from '../utils/PageHeader'
+import Button, { ButtonDanger, ButtonPrimary, ButtonSuccess } from '../utils/Button'
 import deleteIcon from '../images/delete_icon.svg'
-import DeviceRegisterHeader from './deviceRegisterList/DeviceRegisterHeader'
+import plusIcon from '../images/plus_icon.svg'
+import reloadIcon from '../images/reload_icon.svg'
+import rounectorFile from '../../files/rounector/Rounector.dmg'
+import LinkUnstyled from '../utils/LinkUnstyled'
 
 import Table from '../utils/table/Table'
 import Input from '../utils/table/editFields/Input'
@@ -71,7 +75,29 @@ function DeviceRegisterPage() {
 
   return (
     <Wrapper>
-      <DeviceRegisterHeader refreshClick={getRegisterTokenList} />
+      <PageHeader leftComponent={
+        <AnchorUnstyled href={rounectorFile} download>
+          <ButtonPrimary>Download Rounector</ButtonPrimary>
+        </AnchorUnstyled>
+      } rightComponent={
+        <>
+          <LinkUnstyled to='/registerlist/new' color={'#ffffff'}>
+            <CreateRegisterTokenButton>
+              Create Register-Token
+              <ReactSVG src={plusIcon} beforeInjection={svg => {
+                  svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #ffffff; margin-left: 10px;')
+                }}
+              />
+            </CreateRegisterTokenButton>
+          </LinkUnstyled>
+          <RefreshButton onClick={refreshRegisterList}>
+            <ReactSVG src={reloadIcon} beforeInjection={svg => {
+                svg.setAttribute('style', 'width: 26px; height: 26px; display: flex; fill: #000000;')
+              }}
+            />
+          </RefreshButton>
+        </>
+      }/>
       {
         registerTokenList && 
         <Table
@@ -100,6 +126,22 @@ export const IconButton = styled(Button)`
 
 const ButtonDelete = styled(ButtonDanger)`
   margin: auto;
+`
+
+const AnchorUnstyled = styled.a`
+  color: inherit;
+  text-decoration: inherit;
+  cursor: inherit;
+`
+
+const RefreshButton = styled(Button)`
+  border-radius: 50%;
+  padding: 6px;
+  height: 38px;
+`
+
+const CreateRegisterTokenButton = styled(ButtonSuccess)`
+  margin: 0;
 `
 
 

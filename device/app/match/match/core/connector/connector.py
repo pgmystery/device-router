@@ -13,9 +13,9 @@ import socketio
 # https://python-socketio.readthedocs.io/en/latest/client.html
 
 class Connector(object):
-  def __init__(self, url):
+  def __init__(self, url, access_token):
     self.url = url
-    self.id = 0  # TODO: Need to change this!
+    self.access_token = access_token
     self.client = socketio.Client()
     self.client.connector = self
 
@@ -26,7 +26,9 @@ class Connector(object):
 
   def connect(self, headers=None):
     if headers is None:
-      headers = {}
+      headers = {
+        "access_token": self.access_token,
+      }
     print('START CONNECTION')
     self.client.connect(self.url, headers)
 

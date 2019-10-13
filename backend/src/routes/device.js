@@ -14,7 +14,14 @@ const deviceRouter = Router()
 deviceRouter.get('/', async (req, res) => {
   try {
     const userId = req.session.user.id
-    const devices = await Device.find({userId})
+
+    let devices
+    if (Object.keys(req.query).includes('online')) {
+      devices = await Device.find({userId, online: true})
+    }
+    else {
+      devices = await Device.find({userId})
+    }
 
     const devicesKeys = Device.getKeys()
   
@@ -40,6 +47,10 @@ deviceRouter.post('/auth', async (req, res) => {
 
     const newDevice = new Device(fields)
     const newDeviceSaved = await newDevice.save()
+
+    await RegisterToken.findOneAndDelete({token: req.body.registerToken})
+
+    console.log(newDeviceSaved)
 
     res.send(newDeviceSaved)
   }

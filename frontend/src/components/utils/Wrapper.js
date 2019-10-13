@@ -4,13 +4,13 @@ import styled from 'styled-components/macro'
 import MainTheme from '../Theme'
 
 
-function Wrapper({ children, flex }) {
+function Wrapper({ children, flex, className }) {
   const style = {
     display: flex ? 'flex' : 'block'
   }
 
   return (
-    <WrapperStyled style={style}>{children}</WrapperStyled>
+    <WrapperStyled className={className} style={style}>{children}</WrapperStyled>
   )
 }
 

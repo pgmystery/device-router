@@ -26,11 +26,14 @@ class Match(MatchDaemon):
     self.logger = Logger()
     self.logger.log("MATCH-Service startet")
 
-    self.settings = Settings(self)
-
     self.auth = Auth()
     if self.auth.check():
-      self.connector = Connector(self.url)
+      self.settings = Settings(self)
+
+      if (self.settings.settings["remote_host"] != ""):
+        self.url = "http://" + self.settings.settings["remote_host"]
+
+      self.connector = Connector(self.url, self.settings.settings["auth"]["access_token"])
       self.mainSocket = MainSocket(self, '/device')
       self.connector.register_namespace(self.mainSocket)
       self.connector.connect()

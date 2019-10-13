@@ -66,7 +66,7 @@ function DevicesPage() {
   return (
     <Wrapper>
       <PageHeader rightComponent={
-        <RefreshButton onClick={getDeviceList} />
+        <RefreshButton onClick={refreshDeviceList} />
       }/>
       {
         devicesList &&

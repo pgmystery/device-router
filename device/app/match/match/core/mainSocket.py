@@ -11,7 +11,7 @@ class MainSocket(SocketNamespace):
 
   def on_connect(self):
     print('CONNECTED!!!')
-    self.emit('login', self.client.connector.id)  # TODO: CHANGE THIS
+    # self.emit('login', self.match.client.connector.id)
 
   def on_disconnect(self):
     print('DISCONNECTED!!!')

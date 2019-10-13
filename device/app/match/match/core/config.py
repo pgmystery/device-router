@@ -45,7 +45,25 @@ class Settings:
     else:
       return None
 
+  @staticmethod
+  def set_setting_options(section, value, config=None):
+    app_path = path()
+    if not config:
+      if os.path.isfile(app_path + "/config.json"):
+        try:
+          config = load_config(app_path + "/config.json")
+        except:
+          pass
+    if section in config:
+      config[section] = value
+      save_config(app_path + "/config.json", config)
+
 
 def load_config(path):
   with open(path) as configfile:
     return json.load(configfile)
+
+
+def save_config(path, data):
+  with open(path, 'wb') as configfile:
+    json.dump(data, configfile)

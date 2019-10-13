@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-import os
 from threading import Thread
-import ast
 
+from ..config import Settings
 from ..connector.connector import Connector
 from .eshellSocket import EShellSocket
 from .virtualShell import VirtualShell
@@ -24,7 +23,8 @@ class EShell(object):
   def __init__(self, url, mainSocketId):
     self.url = url
     self.mainSocketId = mainSocketId
-    self.connector = Connector(url)
+    self.access_token = Settings.get_setting_options("auth")["access_token"]
+    self.connector = Connector(url, self.access_token)
     self.eshellSocket = self.connector.register_namespace(EShellSocket('/eshell', self.on_cmd))
     self.eshellSocket.connectedCallback = self.on_socket_connect
     self.eshellSocket.eshellSessionJoinedCallback = self.eshell_session_joined
