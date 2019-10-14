@@ -3,7 +3,7 @@ const Device = require('../db/models/Device')
 
 class DeviceSocket {
   constructor(io) {
-    this.connectedDevices = []
+    this.connectedDevices = {}
 
     this.init()
 
@@ -14,7 +14,9 @@ class DeviceSocket {
       if ('access_token' in socket.handshake.headers) {
         const deviceModel = await Device.findOne({accessToken: socket.handshake.headers['access_token']})
         if (!deviceModel.online) {
-          socket.deviceId = deviceModel._id
+          const deviceId = deviceModel._id
+          // socket.deviceId = deviceId
+          this.connectedDevices[socket.id] = deviceId
           next()
         }
       }
@@ -22,33 +24,32 @@ class DeviceSocket {
 
     this.deviceChannel.on('connection', async socket => {
       console.log('NEW CONNECTION FROM DEVICE')
+      const deviceId = this.connectedDevices[socket.id]
 
-      await Device.findByIdAndUpdate(socket.deviceId, {online: true}, {useFindAndModify: false})
+      await Device.findByIdAndUpdate(deviceId, {online: true}, {useFindAndModify: false})
 
       socket.on('disconnect', async () => {
-        await Device.findByIdAndUpdate(socket.deviceId, {online: false}, {useFindAndModify: false})
+        await Device.findByIdAndUpdate(deviceId, {online: false}, {useFindAndModify: false})
 
-        this.connectedDevices = this.connectedDevices.filter(
-          device => device.socket !== socket.id
-        )
+        delete this.connectedDevices[socket.id]
       })
 
-      socket.on('login', deviceId => {
-        console.log('LOGIN FROM DEVICE')
+      // socket.on('login', deviceId => {
+      //   console.log('LOGIN FROM DEVICE')
 
-        this.connectedDevices.every(device => 
-          device.id !== deviceId)
-            ? (this.connectedDevices = [...this.connectedDevices, {
-                id: deviceId,
-                socket: socket.id,
-              }])
-            : socket.disconnect()
-      })
+      //   this.connectedDevices.every(device => 
+      //     device.id !== deviceId)
+      //       ? (this.connectedDevices = [...this.connectedDevices, {
+      //           id: deviceId,
+      //           socket: socket.id,
+      //         }])
+      //       : socket.disconnect()
+      // })
 
-      socket.on('join', (status, userId) => {
-        //   if (status == !'accept') return mainChannel.to(userId).emit('start_eshell', false)
+      // socket.on('join', (status, userId) => {
+      //   //   if (status == !'accept') return mainChannel.to(userId).emit('start_eshell', false)
 
-      })
+      // })
     })
   }
 
