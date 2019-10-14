@@ -33,22 +33,23 @@ class EShell(object):
     self.sessions = {}
     # match.analyser.analyse_data["eshell"] = self.check_status
 
-  def check_status(self, status):
-    status = status.split("|")
-    if "start" == status[0]:
-      self.create_session(status[1])
-      return True
+  # def check_status(self, status):
+  #   status = status.split("|")
+  #   if "start" == status[0]:
+  #     self.create_session(status[1])
+  #     return True
 
   def on_socket_connect(self):
     print("ESHELL - SOCKET CONNECTED!")
 
   def create_session(self, session_data):
     if not self.connector.client.connected:
+      print(session_data)
       headers = {
         'type': 'device',
         'sessionid': str(session_data['sessionId']),
-        'user': session_data['userSocket'],
-        'deviceid': str(self.connector.id),
+        # 'user': session_data['userSocket'],
+        'accesstoken': str(self.connector.access_token),
       }
       self.connector.connect(headers=headers)
 

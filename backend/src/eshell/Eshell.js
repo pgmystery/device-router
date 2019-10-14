@@ -5,7 +5,8 @@ class EShell {
     this.eshellSessions = []
   }
 
-  createSession(data, callbackFunction) {
+  createSession(data) {
+    console.log(data)
     EShellModel.create(data)
       .then(session => {
         eshellSessions = [...eshellSessions, session]

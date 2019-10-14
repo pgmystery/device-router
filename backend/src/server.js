@@ -9,7 +9,7 @@ const { PORT, NODE_ENV, SESS_NAME, SESS_LIFETIME, SESS_SECRET } = require('./con
 
 const mongoose = require('./db/db')()
 
-require('./sockets/SocketHandler')(server)
+require('./sockets/SocketHandler')(server, app)
 
 app.disable('x-powered-by')
 
@@ -37,3 +37,6 @@ app.use(session({
 routes(app)
 
 server.listen(PORT, () => console.log(`Server ready on port ${PORT}`))
+
+
+module.exports = app

@@ -9,7 +9,7 @@ class EShell {
     this.sessions = []
   }
 
-  createSession({ namespace='eshell', query={}, termCallbacks={} }={}) {
+  createSession({ namespace='eshell', data, termCallbacks={} }={}) {
     const newSession = {
       termInput: inputFunction => newSession.termInput = inputFunction,  // Crazy, but it works...
       term: null,
@@ -17,7 +17,7 @@ class EShell {
       connected: false,
       isRdy: false,
 
-      connect: () => this.connectSession(newSession, { namespace, query }),
+      connect: () => this.connectSession(newSession, namespace, data),
       disconnect: () => this.disconnectSession(newSession),
       remove: () => this.removeSession(newSession),
     }
@@ -43,30 +43,36 @@ class EShell {
     ]
   }
 
-  connectSession(session, { namespace='eshell', query={} }={}) {
-    const socket = SocketIO({ namespace, query })
+  connectSession(session, namespace='eshell', data) {
+    const socket = SocketIO({ namespace, query: {type: 'user'} })
     session.socket = socket
 
     socket.on('connect', () => {
       console.log('ESHELL_SOCKET CONNECTED')
-      session.connected = true
+      console.log(data)
+      socket.emit('authenticate', {userId: data.userId, deviceId: data.deviceId})
 
-      socket.on('rdy', data => {
-        console.log('RDY FROM DEVICE')
+      socket.on('authenticated', () => {
 
-        // TODO: OVERRIDE IS NOT WOKRING :(
-        // session = {
-        //   ...session,
-        //   ...data,
-        // }
-        for (let [key, value] of Object.entries(data)) {
-          session[key] = value
-        }
-
-        session.isRdy = true
+        session.connected = true
+  
+        socket.on('rdy', data => {
+          console.log('RDY FROM DEVICE')
+  
+          // TODO: OVERRIDE IS NOT WOKRING :(
+          // session = {
+          //   ...session,
+          //   ...data,
+          // }
+          for (let [key, value] of Object.entries(data)) {
+            session[key] = value
+          }
+  
+          session.isRdy = true
+        })
+  
+        socket.on('msg', data => session.termInput(data.msg))
       })
-
-      socket.on('msg', data => session.termInput(data.msg))
     })
 
     return session.socket

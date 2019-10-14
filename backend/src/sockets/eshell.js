@@ -1,39 +1,34 @@
 const EShell = require('../eshell/Eshell')
 const Device = require('../db/models/Device')
+const User = require('../db/models/User')
 
 // HOW IT WORKS:
 // user -> on_connect ->
 
 class EshellSocket {
-  constructor(io) {
+  constructor(io, app) {
     this.eshellSessionUniqueNumber = 0
     this.eshell = new EShell()
-    console.log(this.eshell)
     this.sessions = []
     this.eshellChannel = io.of('/eshell')
 
-    this.eshellChannel.use((socket, next) => {
+    this.eshellChannel.use(async (socket, next) => {
       console.log('ESHELL-MIDDLEWARE')
-      console.log(socket.handshake.query)
-  
+
       if (socket.handshake.query.type === 'user') {
         console.log('ESHELL-MIDDLEWARE USER')
         next()
       }
       else if (socket.handshake.headers['type'] === 'device') {
         console.log('ESHELL-MIDDLEWARE DEVICE')
-        console.log(socket.handshake.headers)
         const sessionId = Number(socket.handshake.headers['sessionid'])
-        const userSocket = socket.handshake.headers['user']
-        const deviceId = socket.handshake.headers['deviceid']
-        console.log(sessions)
-        console.log(sessionId)
-        console.log(userSocket)
-        console.log(deviceId)
-        if (sessions.find(session =>
-            session.id === sessionId
-            && session.user === userSocket
-            && session.deviceId === deviceId
+        const deviceModel = await Device.findOne({accessToken: socket.handshake.headers['accesstoken']})
+        const deviceId = deviceModel._id
+        console.log('deviceId', typeof deviceId)
+        console.log(this.sessions)
+        if (this.sessions.find(session =>
+          session.id === sessionId
+            && session.deviceId === String(deviceId)
         ).status === 0) {
           next()
         }
@@ -43,48 +38,67 @@ class EshellSocket {
       }
     })
   
-    this.eshellChannel.on("connection", socket => {
+    this.eshellChannel.on("connection", async socket => {
       console.log('NEW ESHELL CONNECTION')
-      // console.log(socket.handshake)
       if (socket.handshake.query.type === 'user') {
-        console.log('NEW ESHELL-CONNECT FROM USER')
-        console.log(this.eshell)
-        this.eshell.createSession()
-        // TODO: AUTH!!! CHECK IF USER HAS RIGHT TO CONNECT TO THE DEVICE
-        const eshellSession = {
-          id: this.eshellSessionUniqueNumber++,
-          user: socket.id,
-          userMainSocket: socket.handshake.query.userToken,
-          deviceId: socket.handshake.query.deviceId,
-          status: 0
-        }
+        socket.auth = false
+        socket.on('authenticate', data => {
+          checkUserId(data.userId)
+            .then((userId) => {
+              console.log('NEW ESHELL-CONNECT FROM USER')
 
-        socket.join('eshell-' + eshellSession.id)
-        this.deviceChannel  // TODO: -> define deviceChannel
-          .to(connectedDevices.find(device => device.id === Number(eshellSession.deviceId)).socket)
-          .emit('start_eshell', {id: eshellSession.id, user: socket.id})
-        this.sessions = [...sessions, eshellSession]
-  
-        socket.on('cmd', (cmd) => {
-          const sessionId = cmd.sessionId
-          this.sessions = sessions.find(session =>
-              session.id === sessionId
-              && session.user === socket.id
-              // && session.deviceId === deviceId
-          )
-          console.log(sessions)
-          socket.to(eshellSession.deviceSocket).emit('cmd', cmd)
+              const eshellSession = {
+                id: this.eshellSessionUniqueNumber++,
+                user: socket.id,
+                deviceId: data.deviceId,
+                status: 0
+              }
+
+              socket.join('eshell-' + eshellSession.id)
+
+              const deviceSocket = app.settings.deviceSocket
+
+              const deviceSocketId = Object.keys(deviceSocket.connectedDevices).find(key => String(deviceSocket.connectedDevices[key]) === String(data.deviceId))
+              deviceSocket.deviceChannel
+                .to(deviceSocketId)
+                .emit('start_eshell', {id: eshellSession.id, user: socket.id})
+              this.sessions = [...this.sessions, eshellSession]
+
+              socket.on('cmd', (cmd) => {
+                const sessionId = cmd.sessionId
+                const eshellSession = this.sessions.find(session =>
+                  session.id === sessionId
+                    && session.user === socket.id
+                )
+                socket.to(eshellSession.deviceSocket).emit('cmd', cmd)
+              })
+
+              socket.auth = true
+              socket.emit('authenticated')
+            })
+            .catch(err => {
+              console.log(err)
+              console.log('Disconnecting socket ', socket.id)
+              socket.disconnect()
+            })
         })
+
+        setTimeout(() => {
+          if (!socket.auth) {
+            console.log('Disconnecting socket ', socket.id)
+            socket.disconnect('unauthorized')
+          }
+        }, 1000)
       }
       else if (socket.handshake.headers['type'] === 'device') {
-        console.log('NEW CONNECTION FROM A DEVICE!!!')
+        console.log('NEW ESHELL-CONNECTION FROM A DEVICE!!!')
         const sessionId = Number(socket.handshake.headers['sessionid'])
-        const userSocket = socket.handshake.headers['user']
-        const deviceId = socket.handshake.headers['deviceid']
-        this.sessions = sessions.find(session =>
-            session.id === sessionId
-            && session.user === userSocket
-            && session.deviceId === deviceId
+        const accessToken = socket.handshake.headers['accesstoken']
+
+        const deviceModel = await Device.findOne({accessToken})
+        const eshellSession = this.sessions.find(session =>
+          session.id === sessionId
+            && session.deviceId === String(deviceModel._id)
         )
         eshellSession.deviceSocket = socket.id
         console.log('JOIN CHANNEL', 'eshell-' + eshellSession.id)
@@ -95,7 +109,7 @@ class EshellSocket {
   
         socket.on('rdy', sessionId => {
           console.log('rdy from device!!!s')
-          this.sessions = sessions.find(session =>
+          const eshellSession = this.sessions.find(session =>
               session.id === sessionId
               && session.deviceSocket === socket.id
               && session.status === 1
@@ -108,10 +122,9 @@ class EshellSocket {
   
         socket.on('msg', (msg) => {
           const sessionId = msg.sessionId
-          this.sessions = sessions.find(session =>
+          const eshellSession = this.sessions.find(session =>
               session.id === sessionId
               && session.deviceSocket === socket.id
-              // && session.deviceId === deviceId
           )
           console.log(msg)
           console.log('Send MSG to room')
@@ -124,6 +137,18 @@ class EshellSocket {
       }
     })
 
+  }
+}
+
+async function checkUserId(userId) {
+  console.log(userId)
+  try {
+    await User.findById(userId)
+  
+    return userId
+  }
+  catch(err) {
+    throw new Error('unauthorized')
   }
 }
 

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from "react"
+import { connect } from 'react-redux'
 import styled from 'styled-components/macro'
 import Request from '../../utils/Request'
 
@@ -8,7 +9,11 @@ import Header from './EShellPage/Header'
 import EShell from '../../eshell/EShell'
 
 
-function EShellPage({ location }) {
+const mapStateToProps = ({ session }) => ({
+  session
+})
+
+function EShellPage({ session, location }) {
   const [devices, setDevices] = useState([])
   const [eshell, setEshell] = useState(new EShell())
   const [eshellSession, setEshellSession] = useState([])
@@ -23,10 +28,9 @@ function EShellPage({ location }) {
   function createEShellSession() {
     const newSession = 
       eshell.createSession({
-        query: {  // TODO: Change this to a better auth!
-          type: 'user',
-          // userToken: mainSocket.id,
-          deviceId: selectedDevice,  // TODO: Get the device-id from the db
+        data: {
+          userId: session.id,
+          deviceId: selectedDevice,
         }
       })
     setEshellSession([
@@ -89,4 +93,6 @@ const NoSessionsText = styled.p`
   text-align: center;
 `
 
-export default EShellPage
+export default connect(
+  mapStateToProps
+)(EShellPage)

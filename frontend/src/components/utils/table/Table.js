@@ -10,7 +10,7 @@ function Table({ headerItems, items, noItemsText="No Items" }) {
   return (
     <TableStyled itemsCount={Object.keys(headerItems).length}>
       {
-        headerItems === undefined || <TableHeadline items={headerItems} order={Object.keys(items[0])} />
+        (headerItems === undefined || items.length === 0) || <TableHeadline items={headerItems} order={Object.keys(items[0])} />
       }
       {
         items === undefined ||
