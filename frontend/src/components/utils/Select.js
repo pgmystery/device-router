@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components/macro'
 
 
-function Select({ list=false, children }) {
+function Select({ list=false, children, onChange=() => {}, name='select' }) {
   return (
     <SelectWrapper>
-      <SelectStyled >
+      <SelectStyled onChange={onChange} name={name}>
         {
           list
             ? children

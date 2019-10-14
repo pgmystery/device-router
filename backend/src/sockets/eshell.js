@@ -1,11 +1,14 @@
 const EShell = require('../eshell/Eshell')
+const Device = require('../db/models/Device')
 
 // HOW IT WORKS:
 // user -> on_connect ->
 
 class EshellSocket {
   constructor(io) {
-    this.eshell = EShell()
+    this.eshellSessionUniqueNumber = 0
+    this.eshell = new EShell()
+    console.log(this.eshell)
     this.sessions = []
     this.eshellChannel = io.of('/eshell')
 
@@ -45,17 +48,19 @@ class EshellSocket {
       // console.log(socket.handshake)
       if (socket.handshake.query.type === 'user') {
         console.log('NEW ESHELL-CONNECT FROM USER')
+        console.log(this.eshell)
         this.eshell.createSession()
-        this.eshellSession = {
-          id: eshellSessionUniqueNumber++,
+        // TODO: AUTH!!! CHECK IF USER HAS RIGHT TO CONNECT TO THE DEVICE
+        const eshellSession = {
+          id: this.eshellSessionUniqueNumber++,
           user: socket.id,
           userMainSocket: socket.handshake.query.userToken,
           deviceId: socket.handshake.query.deviceId,
           status: 0
         }
-  
+
         socket.join('eshell-' + eshellSession.id)
-        this.deviceChannel
+        this.deviceChannel  // TODO: -> define deviceChannel
           .to(connectedDevices.find(device => device.id === Number(eshellSession.deviceId)).socket)
           .emit('start_eshell', {id: eshellSession.id, user: socket.id})
         this.sessions = [...sessions, eshellSession]

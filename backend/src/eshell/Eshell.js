@@ -1,9 +1,11 @@
 const EShellModel = require('../db/models/EShellModel')
 
-function EShell() {
-  let eshellSessions = []
+class EShell {
+  constructor() {
+    this.eshellSessions = []
+  }
 
-  function createSession(data, callbackFunction) {
+  createSession(data, callbackFunction) {
     EShellModel.create(data)
       .then(session => {
         eshellSessions = [...eshellSessions, session]
