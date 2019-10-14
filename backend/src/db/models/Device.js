@@ -30,6 +30,10 @@ const deviceSchema = mongoose.Schema({
   description: {
     type: String,
   },
+  online: {
+    type: Boolean,
+    required: true,
+  }
 })
 
 deviceSchema.pre('save', function(next) {
@@ -45,6 +49,16 @@ deviceSchema.pre('save', function(next) {
 deviceSchema.statics.doesNotExist = async function(field) {
   return await this.where(field).countDocuments() === 0
 }
+
+deviceSchema.statics.getKeys = () => (
+  {
+    'name': 'Name',
+    'type': 'Type',
+    'version': 'Version',
+    'description': 'Description',
+    'online': 'Online',
+  }
+)
 
 const Device = mongoose.model('Device', deviceSchema)
 

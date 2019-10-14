@@ -1,5 +1,5 @@
 class UserSocket {
-  constructor(io, eshellSocket) {
+  constructor(io, deviceSocket, eshellSocket) {
     this.connectedUsers = []
     this.userChannel = io.of('/user')
 
@@ -32,6 +32,14 @@ class UserSocket {
         })
 
 
+      })
+
+      socket.on('start_eshell', deviceId => {
+        console.log('STARTING ESHELL...')
+
+        const device = deviceSocket.connectedDevices.find(device => device.id === Number(deviceId))
+        if (!device) return socket.emit('start_eshell', socket.id)
+        deviceSocket.deviceChannel.to(device.socket).emit('start_eshell', socket.id)
       })
     })
   }

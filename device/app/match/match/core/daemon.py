@@ -19,7 +19,7 @@ class MatchDaemon(object):
     self.start()
 
   def run(self):
-    print("STARTING UNFINITY LOOP")
+    print("STARTING INFINITY LOOP")
     """
     The Daemon-running function.
     """

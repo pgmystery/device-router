@@ -1,7 +1,7 @@
-import React  from "react"
-import SocketIO from "../components/socketio/SocketIO";
+import React  from 'react'
+import SocketIO from '../socketio/SocketIO'
 
-import EShellTerm from "./EShellTerm"
+import EShellTerm from './EShellTerm'
 
 
 class EShell {

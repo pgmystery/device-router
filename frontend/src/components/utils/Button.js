@@ -53,6 +53,14 @@ export const Button = styled(ButtonComponent)`
   :active {
     background-color: #cbd0d5;
   }
+
+  ${
+    props =>
+      props.disabled &&
+        `background-color: #827d7d !important;
+        border-color: #c7c6cc !important;
+        cursor: not-allowed !important;`
+  }
 `
 
 export const ButtonPrimary = styled(Button)`

@@ -1,24 +1,38 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
+import ReactSVG from 'react-svg'
 
 import Request from '../../utils/Request'
 import Wrapper from '../utils/Wrapper'
-import Button from '../utils/Button'
-import DeviceRegisterList from './deviceRegisterList/DeviceRegisterList'
-import DeviceRegisterHeader from './deviceRegisterList/DeviceRegisterHeader'
+import PageHeader from '../utils/PageHeader'
+import Button, { ButtonDanger, ButtonPrimary, ButtonSuccess } from '../utils/Button'
+import deleteIcon from '../images/delete_icon.svg'
+import plusIcon from '../images/plus_icon.svg'
+import reloadIcon from '../images/reload_icon.svg'
+import rounectorFile from '../../files/rounector/Rounector.dmg'
+import LinkUnstyled from '../utils/LinkUnstyled'
 
-import Name from './deviceRegisterList/editFields/Name'
-import Token from './deviceRegisterList/editFields/Token'
-import StartDate from './deviceRegisterList/editFields/StartDate'
-import EndDate from './deviceRegisterList/editFields/EndDate'
+import Table from '../utils/table/Table'
+import Input from '../utils/table/editFields/Input'
+import Token from '../utils/table/editFields/Token'
+import Date from '../utils/table/editFields/Date'
 
 
 function DeviceRegisterPage() {
   const [registerTokenList, setRegisterTokenList] = useState()
 
   useEffect(() => {
-    getRegisterTokenList().then(registerTokenList => setRegisterTokenList(registerTokenList))
+    refreshRegisterList()
   }, [])
+
+  function refreshRegisterList() {
+    getRegisterTokenList()
+      .then(registerTokenList => {
+        registerTokenList.keys.delete = 'Delete'
+        setRegisterTokenList(registerTokenList)
+      })
+      .catch(err => console.error(err))
+  }
 
   function getRegisterTokenList() {
     const request = new Request('/api/device/register')
@@ -28,24 +42,30 @@ function DeviceRegisterPage() {
   function updateRegisterToken(id, data) {
     const request = new Request('/api/device/register')
     request.patch({id, data})
-      .then(updatedToken => getRegisterTokenList().then(registerTokenList => setRegisterTokenList(registerTokenList)))
+      .then(updatedToken => refreshRegisterList())
   }
 
   function deleteRegisterToken(id) {
     const request = new Request('/api/device/register')
     request.delete({id})
-      .then(deletedToken => getRegisterTokenList().then(registerTokenList => setRegisterTokenList(registerTokenList)))
+      .then(deletedToken => refreshRegisterList())
   }
 
-  function setListItems(listItems) {
+  function getListItems(listItems) {
     if (listItems.length > 0) {
       const newListItems = listItems.map(item => {
         return {
-          name: <Name id={item._id} text={item.name} onChanged={updateRegisterToken}/>,
-          token: <Token id={item._id} text={item.token} onRefresh={updateRegisterToken}/>,
-          startDate: <StartDate id={item._id} text={item.startDate} onChanged={updateRegisterToken}/>,
-          endDate: <EndDate id={item._id} text={item.endDate} onChanged={updateRegisterToken}/>,
-          delete: () => deleteRegisterToken(item._id),
+          name: <Input text={item.name} onChanged={newName => updateRegisterToken(item._id, {name: newName})}/>,
+          token: <Token text={item.token} onRefresh={() => updateRegisterToken(item._id, {token: true})}/>,
+          startDate: <Date text={item.startDate} name="startDate" onChanged={newDate => updateRegisterToken(item._id, {startDate: newDate})}/>,
+          endDate: <Date text={item.endDate} name="endDate" onChanged={newDate => updateRegisterToken(item._id, {endDate: newDate})}/>,
+          delete:
+            <ButtonDelete onClick={() => deleteRegisterToken(item._id)}>
+              <ReactSVG src={deleteIcon} beforeInjection={svg => {
+                  svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #ffffff;')
+                }}
+              />
+            </ButtonDelete>,
         }
       })
       return newListItems
@@ -55,10 +75,36 @@ function DeviceRegisterPage() {
 
   return (
     <Wrapper>
-      <DeviceRegisterHeader refreshClick={getRegisterTokenList} />
+      <PageHeader leftComponent={
+        <AnchorUnstyled href={rounectorFile} download>
+          <ButtonPrimary>Download Rounector</ButtonPrimary>
+        </AnchorUnstyled>
+      } rightComponent={
+        <>
+          <LinkUnstyled to='/registerlist/new' color={'#ffffff'}>
+            <CreateRegisterTokenButton>
+              Create Register-Token
+              <ReactSVG src={plusIcon} beforeInjection={svg => {
+                  svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #ffffff; margin-left: 10px;')
+                }}
+              />
+            </CreateRegisterTokenButton>
+          </LinkUnstyled>
+          <RefreshButton onClick={refreshRegisterList}>
+            <ReactSVG src={reloadIcon} beforeInjection={svg => {
+                svg.setAttribute('style', 'width: 26px; height: 26px; display: flex; fill: #000000;')
+              }}
+            />
+          </RefreshButton>
+        </>
+      }/>
       {
         registerTokenList && 
-        <DeviceRegisterList headerItems={registerTokenList.keys} items={setListItems(registerTokenList.tokens)} />
+        <Table
+          headerItems={registerTokenList.keys}
+          items={getListItems(registerTokenList.tokens)}
+          noItemsText="You don't have any Register-Tokens :("
+        />
       }
     </Wrapper>
   )
@@ -76,6 +122,26 @@ export const IconButton = styled(Button)`
   min-height: 16px;
   min-width: 16px;
   border: 1px solid #c9c9ca;
+`
+
+const ButtonDelete = styled(ButtonDanger)`
+  margin: auto;
+`
+
+const AnchorUnstyled = styled.a`
+  color: inherit;
+  text-decoration: inherit;
+  cursor: inherit;
+`
+
+const RefreshButton = styled(Button)`
+  border-radius: 50%;
+  padding: 6px;
+  height: 38px;
+`
+
+const CreateRegisterTokenButton = styled(ButtonSuccess)`
+  margin: 0;
 `
 
 

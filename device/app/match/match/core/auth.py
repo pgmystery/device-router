@@ -22,11 +22,18 @@ class Auth():
           "version": self.info_settings["version"],
         }
 
-        response = Request.post('/api/device/auth', data)
+        rawResponse = Request.post('/api/device/auth', data)
+        response = rawResponse.json()
 
-        print("REQUEST_RESPONSE_BEGIN")
-        print(response)
-        print("REQUEST_RESPONSE_AFTER")
+        self.info_settings["name"] = response["name"]
+        self.info_settings["id"] = response["_id"]
+        Settings.set_setting_options("info", self.info_settings)
 
-        return False
-    return False
+        self.auth_settings = {
+          "access_token": response["accessToken"],
+        }
+        Settings.set_setting_options("auth", self.auth_settings)
+
+        return True
+      return False
+    return True
