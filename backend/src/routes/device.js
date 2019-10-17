@@ -50,8 +50,6 @@ deviceRouter.post('/auth', async (req, res) => {
 
     await RegisterToken.findOneAndDelete({token: req.body.registerToken})
 
-    console.log(newDeviceSaved)
-
     res.send(newDeviceSaved)
   }
   catch(err) {
@@ -170,15 +168,6 @@ deviceRouter.get('/type', async (req, res) => {
 
   res.send(deviceTypes)
 })
-
-// deviceRouter.post('/type', async (req, res) => {
-//   const newDeviceTypes = new DeviceType(req.body)
-//   newDeviceTypesSaved = await newDeviceTypes.save()
-
-//   console.log(newDeviceTypesSaved)
-
-//   res.send(newDeviceTypesSaved)
-// })
 
 
 module.exports = deviceRouter

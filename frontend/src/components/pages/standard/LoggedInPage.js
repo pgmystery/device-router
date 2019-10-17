@@ -1,44 +1,31 @@
-import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
+import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import LostConnectionPage from '../LostConnectionPage'
-// import EShellPage from './pages/EShellPage'
-
-import SocketIO  from '../../../socketio/SocketIO'
-
 import Navigation from '../../utils/navigation/Navigation'
 import { DropdownMenuSeparator } from '../../utils/DropdownMenu'
 
 
-const mapStateToProps = ({ session }) => ({
-  session
-})
-
-export let mainSocket = null
-
-function LoggedInPage({ children, session }) {
+function LoggedInPage({ children }) {
   const [mainSocketConnected, setMainSocketConnected] = useState(false)
 
-  useEffect(() => {
-    mainSocket = SocketIO({ namespace: 'user' })
+  // useEffect(() => {
 
-    mainSocket.on('connect', () => {
-      mainSocket.emit('authenticate', {id: session.id})
-
-      mainSocket.on('authenticated', () => {
-        setMainSocketConnected(true)
-      })
-    })
+  //   mainSocket.on('connect', () => {
+  //     mainSocket.on('authenticated', () => {
+  //       setMainSocketConnected(true)
+  //     })
+  //   })
   
-    mainSocket.on('disconnect', () => {
-      setMainSocketConnected(false)
-    })
+  //   mainSocket.on('disconnect', () => {
+  //     setMainSocketConnected(false)
+  //   })
 
-    mainSocket.on('msg', msg => {
-      console.log(msg)
-    })
-  }, [])
+  //   mainSocket.on('msg', msg => {
+  //     console.log(msg)
+  //   })
+
+  // }, [])
 
   const navLinks = [
     {
@@ -94,6 +81,4 @@ const HeaderStyled = styled.header`
 `
 
 
-export default connect(
-  mapStateToProps
-)(LoggedInPage)
+export default LoggedInPage
