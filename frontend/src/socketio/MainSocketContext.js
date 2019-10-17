@@ -1,48 +1,30 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 
 export const MainSocketContext = React.createContext(null)
 
-export function MainSocketProvider({ children, session }) {
-  const [mainSocket, setMainSocket] = useState()
+let mainSocket = null
 
+export function MainSocketProvider({ children, session }) {
   return (
-    <MainSocketContext.Provider value={[mainSocket, setMainSocket]}>
+    <MainSocketContext.Provider value={[mainSocket, io => setMainSocket(io, session)]}>
       {children}
     </MainSocketContext.Provider>
   )
 }
 
-// function MainSocket(session) {
-//   return {
-//     mainSocket: null,
-//     isConnected: false,
+function setMainSocket(io, session) {
+  if (!mainSocket) {
+    mainSocket = io
+  
+    mainSocket.on('connect', () => {
+      mainSocket.emit('authenticate', {id: session.id})
+    })
 
-//     createConnection: () => {
-//       if (!isConnected) {
-//         mainSocket
-//       }
-//     }
-//   }
+    mainSocket.on('disconnect', () => {
+      mainSocket = null
+    })
+  }
 
-//   const mainSocket = null
-//   const isConnected = false
-//   function createConnection() {
-//     if (!isConnected) {
-//       mainSocket = SocketIO({ namespace: 'user' })
-//     }
-//     return mainSocket
-//   }
-
-//   function closeConnection() {
-//     if (isConnected) {
-//       mainSocket.disconnect()
-//     }
-//   }
-
-//   // mainSocket.on('connect', () => {
-//   //   mainSocket.emit('authenticate', {id: session.id})
-//   // })
-
-//   // return mainSocket
-// }
+  return mainSocket
+}

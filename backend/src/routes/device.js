@@ -58,28 +58,33 @@ deviceRouter.post('/auth', async (req, res) => {
 })
 
 deviceRouter.get('/register', async (req, res) => {
-  const userId = req.session.user.id
-  const registerTokensOriginal = await RegisterToken.find({userId})
-
-  const registerTokens = registerTokensOriginal.map(tokenObject => {
-    return {
-      ...tokenObject._doc,
-      startDate: tokenObject.startDate.getDate()
-        + '.'
-        + (tokenObject.startDate.getMonth() + 1)
-        + '.'
-        + tokenObject.startDate.getFullYear(),
-      endDate: tokenObject.endDate.getDate()
-        + '.'
-        + (tokenObject.endDate.getMonth() + 1)
-        + '.'
-        + tokenObject.endDate.getFullYear(),
-    }
-  })
-
-  const registerTokensKeys = RegisterToken.getKeys()
-
-  res.send({ tokens: registerTokens, keys: registerTokensKeys })
+  try {
+    const userId = req.session.user.id
+    const registerTokensOriginal = await RegisterToken.find({userId})
+  
+    const registerTokens = registerTokensOriginal.map(tokenObject => {
+      return {
+        ...tokenObject._doc,
+        startDate: tokenObject.startDate.getDate()
+          + '.'
+          + (tokenObject.startDate.getMonth() + 1)
+          + '.'
+          + tokenObject.startDate.getFullYear(),
+        endDate: tokenObject.endDate.getDate()
+          + '.'
+          + (tokenObject.endDate.getMonth() + 1)
+          + '.'
+          + tokenObject.endDate.getFullYear(),
+      }
+    })
+  
+    const registerTokensKeys = RegisterToken.getKeys()
+  
+    res.send({ tokens: registerTokens, keys: registerTokensKeys })
+  }
+  catch(err) {
+    res.status(400).send(parseError('invalid request'))
+  }
 })
 
 deviceRouter.post('/register', async (req, res) => {

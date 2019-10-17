@@ -1,6 +1,3 @@
-import SocketIO from '../socketio/SocketIO'
-
-
 export const register = user => (
   fetch('api/users', {
     method: 'POST',
@@ -11,23 +8,15 @@ export const register = user => (
   })
 )
 
-// export const login = user => (
-//   fetch('api/session', {
-//     method: 'POST',
-//     body: JSON.stringify(user),
-//     headers: {
-//       'Content-Type': 'application/json',
-//     },
-//   })
-// )
-
-export const login = (user, mainSocketState) => {
-  const [mainSocket, setMainSocket] = mainSocketState
-
-  if (mainSocket == null) {
-    return SocketIO({ namespace: 'user' })
-  }
-}
+export const login = user => (
+  fetch('api/session', {
+    method: 'POST',
+    body: JSON.stringify(user),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+)
 
 export const logout = () => (
   fetch('api/session', {method: 'DELETE'})

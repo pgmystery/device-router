@@ -1,5 +1,4 @@
 const User = require('../db/models/User')
-const 
 
 class UserSocket {
   constructor(io) {

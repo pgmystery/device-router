@@ -4,28 +4,31 @@ import styled from 'styled-components/macro'
 import LostConnectionPage from '../LostConnectionPage'
 import Navigation from '../../utils/navigation/Navigation'
 import { DropdownMenuSeparator } from '../../utils/DropdownMenu'
+import SocketIO  from '../../../socketio/SocketIO'
+import { MainSocketContext } from '../../../socketio/MainSocketContext'
 
 
 function LoggedInPage({ children }) {
   const [mainSocketConnected, setMainSocketConnected] = useState(false)
+  const setMainSocket = useContext(MainSocketContext)[1]
 
-  // useEffect(() => {
+  useEffect(() => {
+    const mainSocket = setMainSocket(SocketIO({ namespace: 'user' }))
 
-  //   mainSocket.on('connect', () => {
-  //     mainSocket.on('authenticated', () => {
-  //       setMainSocketConnected(true)
-  //     })
-  //   })
+    mainSocket.on('connect', () => {
+      mainSocket.on('authenticated', () => {
+        setMainSocketConnected(true)
+      })
+    })
   
-  //   mainSocket.on('disconnect', () => {
-  //     setMainSocketConnected(false)
-  //   })
+    mainSocket.on('disconnect', () => {
+      setMainSocketConnected(false)
+    })
 
-  //   mainSocket.on('msg', msg => {
-  //     console.log(msg)
-  //   })
-
-  // }, [])
+    mainSocket.on('msg', msg => {
+      console.log(msg)
+    })
+  }, [])
 
   const navLinks = [
     {
