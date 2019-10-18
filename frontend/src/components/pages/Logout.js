@@ -1,8 +1,7 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { logout } from '../../actions/session'
-import { MainSocketContext } from '../../socketio/MainSocketContext'
 
 
 const mapStateToProps = ({ session }) => ({
@@ -14,9 +13,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 function Logout({ logout }) {
-  const mainSocket = useContext(MainSocketContext)[0]
-  mainSocket.disconnect()
-
   logout()
 
   return <Redirect to='/' />

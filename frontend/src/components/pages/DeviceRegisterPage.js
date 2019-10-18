@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components/macro'
 import ReactSVG from 'react-svg'
 
-import request from '../../utils/Request'
+import Request from '../../utils/Request'
 import Wrapper from '../utils/Wrapper'
 import PageHeader from '../utils/PageHeader'
 import Button, { ButtonDanger, ButtonPrimary, ButtonSuccess } from '../utils/Button'
@@ -35,16 +35,19 @@ function DeviceRegisterPage() {
   }
 
   function getRegisterTokenList() {
-    return request.get({ url: '/api/device/register' })
+    const request = new Request('/api/device/register')
+    return request.get()
   }
 
   function updateRegisterToken(id, data) {
-    request.patch({ url: '/api/device/register', id, data })
+    const request = new Request('/api/device/register')
+    request.patch({id, data})
       .then(updatedToken => refreshRegisterList())
   }
 
   function deleteRegisterToken(id) {
-    request.delete({ url: '/api/device/register', id })
+    const request = new Request('/api/device/register')
+    request.delete({id})
       .then(deletedToken => refreshRegisterList())
   }
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { connect } from 'react-redux'
 import styled from 'styled-components/macro'
-import request from '../../utils/Request'
+import Request from '../../utils/Request'
 
 import Wrapper from '../utils/Wrapper'
 import Header from './EShellPage/Header'
@@ -69,7 +69,6 @@ function EShellPage({ session, location }) {
         devices={devices}
         eshellConnected={eshellConnected}
         createSessionHandler={createSessionHandler}
-        stopSessionHandler={stopEshellConnection}
         setSelectedDevice={setSelectedDevice}
         disableConnectButton={eshellConnectionStarted || devices.length === 0}
       />
@@ -81,7 +80,8 @@ function EShellPage({ session, location }) {
   )
 
   function getDeviceList() {
-    return request.get({url: '/api/device?online=true'})
+    const request = new Request('/api/device?online=true')
+    return request.get()
   }
 }
 

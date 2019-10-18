@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
-import request from '../../utils/Request'
+import Request from '../../utils/Request'
 
 import Wrapper from '../utils/Wrapper'
 import { ButtonSuccess } from '../utils/Button'
@@ -22,7 +22,8 @@ function DeviceRegisterNew() {
       const formData = new FormData(event.currentTarget)
       const data = Object.fromEntries(formData)
 
-      request.post({ url: '/api/device/register', data })
+      const request = new Request('/api/device/register')
+      request.post({ data })
         .then(() => setIsCreated(true))
         .catch(err => {
           console.log(err)
