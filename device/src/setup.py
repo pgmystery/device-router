@@ -122,12 +122,12 @@ class Setup:
 				print(output)
 			else:
 				print("ERROR - No init-path found on the system")
-			# Copy lmatch-file to /usr/bin/:
+			# Copy drouter-file to /usr/bin/:
 			if os.path.isdir("/usr/bin/"):
-				print("Copy lmatch-file to /usr/bin/")
-				shutil.copy(self.path + "/bin/lmatch", "/usr/bin/lmatch")
-				print("Set currect rights of \"/usr/bin/lmatch\"")
-				os.chmod("/usr/bin/lmatch", 0755)
+				print("Copy drouter-file to /usr/bin/")
+				shutil.copy(self.path + "/bin/drouter", "/usr/bin/drouter")
+				print("Set currect rights of \"/usr/bin/drouter\"")
+				os.chmod("/usr/bin/drouter", 0755)
 		else:
 			print("ERROR - No \"match\" directory or the file \"match.sh\"")
 

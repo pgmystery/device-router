@@ -38,9 +38,6 @@ class Match(MatchDaemon):
       self.connector.register_namespace(self.mainSocket)
       self.connector.connect()
       self.eshell = EShell(self.url, self.mainSocket.client.sid)
-    # while True:
-    #     pass
-    # print('END APP')
 
 
 if __name__ == "__main__":

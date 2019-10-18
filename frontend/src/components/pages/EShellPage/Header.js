@@ -3,7 +3,7 @@ import styled from 'styled-components/macro'
 import ReactSVG from 'react-svg'
 
 import PageHeader from '../../utils/PageHeader'
-import Button, { ButtonSuccess } from '../../utils/Button'
+import Button, { ButtonSuccess, ButtonDanger } from '../../utils/Button'
 import Select, { Option } from '../../utils/Select'
 import settingsIcon from '../../images/settings.svg'
 import fullscreenIcon from '../../images/fullscreen2_icon.svg'
@@ -12,25 +12,19 @@ import searchIcon from '../../images/search.svg'
 
 function Header({ disableConnectButton, devices, eshellConnected, createSessionHandler, stopSessionHandler, setSelectedDevice }) {
   function getEshellConnectButton() {
-    if (eshellConnected) {
-      return eshellConnectButton({
-        onClick: stopSessionHandler,
-        text: 'Stop connection...'
-      })
-    }
-    return eshellConnectButton({
-      onClick: createSessionHandler,
-      text: 'Create Session',
-      disabled: disableConnectButton,
-    })
-  }
-
-  function eshellConnectButton({ onClick, text, disabled=false }) {
     return (
       <ButtonSuccess
-        onClick={onClick}
-        disabled={disabled}
-      >{text}</ButtonSuccess>
+        onClick={createSessionHandler}
+        disabled={disableConnectButton}
+      >Connect</ButtonSuccess>
+    )
+  }
+
+  function getEshellDisconnectButton() {
+    return (
+      <ButtonDanger
+        onClick={stopSessionHandler}
+      >Stop Connection</ButtonDanger>
     )
   }
 
@@ -52,7 +46,11 @@ function Header({ disableConnectButton, devices, eshellConnected, createSessionH
               <Option key={device._id} data-id={device._id}>{device.name}</Option>
             ))}
           </Select>
-        { getEshellConnectButton() }
+        {
+          eshellConnected
+            ? getEshellDisconnectButton()
+            : getEshellConnectButton()
+        }
       </>
     )
   }

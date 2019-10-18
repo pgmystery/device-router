@@ -11,7 +11,6 @@ class MainSocket(SocketNamespace):
 
   def on_connect(self):
     print('CONNECTED!!!')
-    # self.emit('login', self.match.client.connector.id)
 
   def on_disconnect(self):
     print('DISCONNECTED!!!')
@@ -22,7 +21,4 @@ class MainSocket(SocketNamespace):
     self.match.eshell.create_session({
       'userSocket': data['user'],
       'sessionId': data['id'],
-      'channel_name': 'test',
-      'sub_session': 'test',
-      'session_key': 'test',
     })

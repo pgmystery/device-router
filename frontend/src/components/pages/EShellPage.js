@@ -16,7 +16,7 @@ const mapStateToProps = ({ session }) => ({
 function EShellPage({ session, location }) {
   const [devices, setDevices] = useState([])
   const [eshell, setEshell] = useState(new EShell())
-  const [eshellSession, setEshellSession] = useState([])
+  const [eshellSessions, setEshellSessions] = useState([])
   const [eshellConnectionStarted, setEshellConnectionStarted] = useState(false)
   const [eshellConnected, setEshellConnected] = useState(false)
   const [selectedDevice, setSelectedDevice] = useState()
@@ -33,8 +33,8 @@ function EShellPage({ session, location }) {
           deviceId: selectedDevice,
         }
       })
-    setEshellSession([
-      ...eshellSession,
+    setEshellSessions([
+      ...eshellSessions,
       newSession,
     ])
     return newSession
@@ -56,7 +56,8 @@ function EShellPage({ session, location }) {
   }
 
   function stopEshellConnection() {
-    eshellSession.disconnect()
+    console.log('DISCONNECT ESHELL: ', eshellSessions[0])
+    eshellSessions[0].disconnect()
   }
 
   function createSessionHandler(event) {
@@ -73,8 +74,8 @@ function EShellPage({ session, location }) {
         setSelectedDevice={setSelectedDevice}
         disableConnectButton={eshellConnectionStarted || devices.length === 0}
       />
-      { eshellSession.length > 0
-          ? eshellSession[0].term
+      { eshellSessions.length > 0
+          ? eshellSessions[0].term
           : <NoSessionsText>No EShell-Sessions...</NoSessionsText>
       }
     </Wrapper>
