@@ -19,6 +19,7 @@ export let mainSocket = null
 
 function LoggedInPage({ children, session }) {
   const [mainSocketConnected, setMainSocketConnected] = useState(false)
+  const { setMainSocket } = useContext(MainSocketContext)
 
   useEffect(() => {
     mainSocket = SocketIO({ namespace: 'user' })
@@ -84,6 +85,19 @@ function LoggedInPage({ children, session }) {
     return <LostConnectionPage />
   }
 
+<<<<<<< HEAD
+  function getMainSocket(mainSocket) {
+    if (mainSocket) {
+      setMainSocketConnected(true)
+
+      mainSocket.on('disconnect', () => {
+        setMainSocketConnected(false)
+      })
+    }
+  }
+
+=======
+>>>>>>> master
   return (
     getPage()
   )

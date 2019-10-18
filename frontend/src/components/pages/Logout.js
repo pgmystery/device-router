@@ -13,6 +13,9 @@ const mapDispatchToProps = dispatch => ({
 })
 
 function Logout({ logout }) {
+  const { mainSocket } = useContext(MainSocketContext)
+  mainSocket.disconnect()
+
   logout()
 
   return <Redirect to='/' />
