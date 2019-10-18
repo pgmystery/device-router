@@ -1,19 +1,43 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import LostConnectionPage from '../LostConnectionPage'
+// import EShellPage from './pages/EShellPage'
+
+import SocketIO  from '../../../socketio/SocketIO'
+
 import Navigation from '../../utils/navigation/Navigation'
 import { DropdownMenuSeparator } from '../../utils/DropdownMenu'
-import SocketIO  from '../../../socketio/SocketIO'
-import { MainSocketContext } from '../../../socketio/MainSocketContext'
 
 
-function LoggedInPage({ children }) {
+const mapStateToProps = ({ session }) => ({
+  session
+})
+
+export let mainSocket = null
+
+function LoggedInPage({ children, session }) {
   const [mainSocketConnected, setMainSocketConnected] = useState(false)
-  const setMainSocket = useContext(MainSocketContext)[1]
 
   useEffect(() => {
-    setMainSocket(SocketIO({ namespace: 'user' }), getMainSocket)
+    mainSocket = SocketIO({ namespace: 'user' })
+
+    mainSocket.on('connect', () => {
+      mainSocket.emit('authenticate', {id: session.id})
+
+      mainSocket.on('authenticated', () => {
+        setMainSocketConnected(true)
+      })
+    })
+  
+    mainSocket.on('disconnect', () => {
+      setMainSocketConnected(false)
+    })
+
+    mainSocket.on('msg', msg => {
+      console.log(msg)
+    })
   }, [])
 
   const navLinks = [
@@ -60,20 +84,6 @@ function LoggedInPage({ children }) {
     return <LostConnectionPage />
   }
 
-  function getMainSocket(mainSocket) {
-    if (mainSocket) {
-      setMainSocketConnected(true)
-
-      mainSocket.on('disconnect', () => {
-        setMainSocketConnected(false)
-      })
-  
-      mainSocket.on('msg', msg => {
-        console.log(msg)
-      })
-    }
-  }
-
   return (
     getPage()
   )
@@ -84,4 +94,6 @@ const HeaderStyled = styled.header`
 `
 
 
-export default LoggedInPage
+export default connect(
+  mapStateToProps
+)(LoggedInPage)

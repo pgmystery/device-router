@@ -50,6 +50,8 @@ deviceRouter.post('/auth', async (req, res) => {
 
     await RegisterToken.findOneAndDelete({token: req.body.registerToken})
 
+    console.log(newDeviceSaved)
+
     res.send(newDeviceSaved)
   }
   catch(err) {
@@ -58,33 +60,28 @@ deviceRouter.post('/auth', async (req, res) => {
 })
 
 deviceRouter.get('/register', async (req, res) => {
-  try {
-    const userId = req.session.user.id
-    const registerTokensOriginal = await RegisterToken.find({userId})
-  
-    const registerTokens = registerTokensOriginal.map(tokenObject => {
-      return {
-        ...tokenObject._doc,
-        startDate: tokenObject.startDate.getDate()
-          + '.'
-          + (tokenObject.startDate.getMonth() + 1)
-          + '.'
-          + tokenObject.startDate.getFullYear(),
-        endDate: tokenObject.endDate.getDate()
-          + '.'
-          + (tokenObject.endDate.getMonth() + 1)
-          + '.'
-          + tokenObject.endDate.getFullYear(),
-      }
-    })
-  
-    const registerTokensKeys = RegisterToken.getKeys()
-  
-    res.send({ tokens: registerTokens, keys: registerTokensKeys })
-  }
-  catch(err) {
-    res.status(400).send(parseError('invalid request'))
-  }
+  const userId = req.session.user.id
+  const registerTokensOriginal = await RegisterToken.find({userId})
+
+  const registerTokens = registerTokensOriginal.map(tokenObject => {
+    return {
+      ...tokenObject._doc,
+      startDate: tokenObject.startDate.getDate()
+        + '.'
+        + (tokenObject.startDate.getMonth() + 1)
+        + '.'
+        + tokenObject.startDate.getFullYear(),
+      endDate: tokenObject.endDate.getDate()
+        + '.'
+        + (tokenObject.endDate.getMonth() + 1)
+        + '.'
+        + tokenObject.endDate.getFullYear(),
+    }
+  })
+
+  const registerTokensKeys = RegisterToken.getKeys()
+
+  res.send({ tokens: registerTokens, keys: registerTokensKeys })
 })
 
 deviceRouter.post('/register', async (req, res) => {
@@ -173,6 +170,15 @@ deviceRouter.get('/type', async (req, res) => {
 
   res.send(deviceTypes)
 })
+
+// deviceRouter.post('/type', async (req, res) => {
+//   const newDeviceTypes = new DeviceType(req.body)
+//   newDeviceTypesSaved = await newDeviceTypes.save()
+
+//   console.log(newDeviceTypesSaved)
+
+//   res.send(newDeviceTypesSaved)
+// })
 
 
 module.exports = deviceRouter

@@ -7,7 +7,6 @@ import { BrowserRouter } from 'react-router-dom'
 import { checkLoggedIn } from './utils/session'
 import * as serviceWorker from './serviceWorker'
 
-
 const renderApp = preloadedState => {
   const store = configureStore(preloadedState)
 

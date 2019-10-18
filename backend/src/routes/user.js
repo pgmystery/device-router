@@ -7,7 +7,7 @@ const userRoutes = Router()
 
 userRoutes.post('', async (req, res) => {
   try {
-    const fields = sliceKeysFromObject(req.body, signUp._ids._byKey.keys())
+    const fields = sliceKeysFromObject(req.body, signUp._ids._byKey.keys())  // TODO: NOT GOOD...
     await signUp.validateAsync(fields)
 
     const newUser = new User(fields)

@@ -44,7 +44,7 @@ function Input({ text, onChanged, name="input"}) {
               />
               <SubmitButton>Change</SubmitButton>
             </FormStyled>
-          : <TextSpan onClick={() => setOnEditing(true)}>{textValue}</TextSpan>
+          : <TextSpan>{textValue}</TextSpan>
       }
       <IconButton onClick={() => setOnEditing(!onEditing)}>
         <ReactSVG src={pencilIcon} beforeInjection={svg => {

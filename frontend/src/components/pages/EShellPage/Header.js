@@ -10,11 +10,11 @@ import fullscreenIcon from '../../images/fullscreen2_icon.svg'
 import searchIcon from '../../images/search.svg'
 
 
-function Header({ disableConnectButton, devices, eshellConnected, createSessionHandler, stopSessionHandler, setSelectedDevice }) {
+function Header({ disableConnectButton, devices, eshellConnected, createSessionHandler, setSelectedDevice }) {
   function getEshellConnectButton() {
     if (eshellConnected) {
       return eshellConnectButton({
-        onClick: stopSessionHandler,
+        // onClick: stopEshellConnection,
         text: 'Stop connection...'
       })
     }
@@ -89,6 +89,11 @@ function Header({ disableConnectButton, devices, eshellConnected, createSessionH
 
 const PageHeaderStyled = styled(PageHeader)`
   height: auto;
+`
+
+const StartSessionForm = styled.form`
+  display: flex;
+  align-items: center;
 `
 
 const IconButton = styled(Button)`

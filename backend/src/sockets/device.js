@@ -15,6 +15,7 @@ class DeviceSocket {
         const deviceModel = await Device.findOne({accessToken: socket.handshake.headers['access_token']})
         if (!deviceModel.online) {
           const deviceId = deviceModel._id
+          // socket.deviceId = deviceId
           this.connectedDevices[socket.id] = deviceId
           next()
         }
@@ -32,6 +33,23 @@ class DeviceSocket {
 
         delete this.connectedDevices[socket.id]
       })
+
+      // socket.on('login', deviceId => {
+      //   console.log('LOGIN FROM DEVICE')
+
+      //   this.connectedDevices.every(device => 
+      //     device.id !== deviceId)
+      //       ? (this.connectedDevices = [...this.connectedDevices, {
+      //           id: deviceId,
+      //           socket: socket.id,
+      //         }])
+      //       : socket.disconnect()
+      // })
+
+      // socket.on('join', (status, userId) => {
+      //   //   if (status == !'accept') return mainChannel.to(userId).emit('start_eshell', false)
+
+      // })
     })
   }
 
