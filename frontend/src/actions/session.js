@@ -13,7 +13,7 @@ const logoutCurrentUser = () => ({
   type: LOGOUT_CURRENT_USER
 })
 
-export const login = (user, ) => async dispatch => {
+export const login = user => async dispatch => {
   const response = await apiUtil.login(user)
   const data = await response.json()
 
