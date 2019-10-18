@@ -47,7 +47,7 @@ function Date({ text, onChanged, name="date" }) {
               />
               <SubmitButton>Change</SubmitButton>
             </form>
-          : <TextSpan onClick={() => setOnEditing(true)}>{textValue}</TextSpan>
+          : <TextSpan>{textValue}</TextSpan>
       }
       <IconButton onClick={() => setOnEditing(!onEditing)}>
         <ReactSVG src={calendarIcon} beforeInjection={svg => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Route } from 'react-router-dom'
 
 import { AuthRoute, ProtectedRoute } from '../utils/routes'
@@ -13,8 +13,8 @@ import DeviceRegisterNew from './pages/DeviceRegisterNew'
 import DevicesPage from './pages/DevicesPage'
 import EShellPage from './pages/EShellPage'
 
-
 function PageHandler() {
+
   return (
     <>
       <ProtectedRoute path='/' >
@@ -59,18 +59,8 @@ function PageHandler() {
         </LoggedInPage>
       </ProtectedRoute>
 
-      <AuthRoute path='/' >
-        <Route
-          exact
-          path='/login'
-          component={LoginPage}
-        />
-        <Route
-          exact
-          path='/register'
-          component={RegisterPage}
-        />
-      </AuthRoute>
+      <AuthRoute path='/login' component={LoginPage} />
+      <AuthRoute path='/register' component={RegisterPage} />
     </>
   )
 }
