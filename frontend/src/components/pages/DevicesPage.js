@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
-import Request from '../../utils/Request'
+import request from '../../utils/Request'
 import Wrapper from '../utils/Wrapper'
 import PageHeader from '../utils/PageHeader'
 import Table, { TextSpan } from '../utils/table/Table'
@@ -20,8 +20,7 @@ function DevicesPage() {
   }, [])
 
   function getDeviceList() {
-    const request = new Request('/api/device')
-    return request.get()
+    return request.get({ url: '/api/device' })
   }
 
   function updateDevice(id, data) {

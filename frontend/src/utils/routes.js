@@ -7,26 +7,22 @@ const mapStateToProps = ({ session: { id } }) => ({
   loggedIn: Boolean(id)
 })
 
-const Auth = ({ loggedIn, path, component: Component }) => (
-  <Route
-    path={path}
-    render={props => (
-      loggedIn
-        ? <Redirect to='/dashboard' />
-        : <Component {...props} />
-    )}
-  />
+const Auth = ({ loggedIn, path, children }) => (
+  loggedIn
+    ? <Redirect to="/dashboard" />
+    : <Route
+        path={path}
+        render={props => children}
+      />
 )
 
 const Protected = ({ loggedIn, path, children }) => (
-  <Route
-    path={path}
-    render={props => (
-      loggedIn
-        ? children
-        : <Redirect to='/login' />
-    )}
-  />
+  loggedIn
+    ? <Route
+        path={path}
+        render={props => children}
+      />
+    : <Redirect to="/login" />
 )
 
 export const AuthRoute = withRouter(

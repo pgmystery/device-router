@@ -15,7 +15,6 @@ const registerTokenSchema = new mongoose.Schema({
     required: true,
   },
   startDate: {
-    // https://mongoosejs.com/docs/schematypes.html#dates
     type: Date,
     required: true,
   },
@@ -23,7 +22,6 @@ const registerTokenSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  // MAC-Adress ?
 })
 
 registerTokenSchema.statics.getKeys = function() {

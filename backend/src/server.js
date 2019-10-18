@@ -1,13 +1,13 @@
 const express = require('express') // Server Libary
-const app = express()
+app = express()
 const server = require('http').createServer(app)
 const cors = require('cors') // Libary to allow request to the server globally
 const session = require('express-session')
-const MongoStore = require('connect-mongo')(session)
+const mongoStore = require('./db/mongoStore')(session)
 const routes = require('./routes')
 const { PORT, NODE_ENV, SESS_NAME, SESS_LIFETIME, SESS_SECRET } = require('./config')
 
-const mongoose = require('./db/db')()
+app.locals.mongoStore = mongoStore
 
 require('./sockets/SocketHandler')(server, app)
 
@@ -22,11 +22,7 @@ app.use(session({
   secret: SESS_SECRET,
   saveUninitialized: false,
   resave: false,
-  store: new MongoStore({
-    mongooseConnection: mongoose.connection,
-    collection: 'session',
-    ttl: parseInt(SESS_LIFETIME) / 1000
-  }),
+  store: mongoStore,
   cookie: {
     sameSite: true,
     secure: NODE_ENV === 'production',

@@ -1,5 +1,6 @@
 import { backendUrl } from '../components/App'
 
+
 class Request {
   constructor(url) {
     this.url = url
@@ -49,4 +50,4 @@ class Request {
   }
 }
 
-export default Request
+export default new Request()
