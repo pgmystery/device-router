@@ -9,7 +9,6 @@ function mongoStore(session) {
   return new MongoStoreSession({
     mongooseConnection: mongoose.connection,
     collection: 'session',
-    // autoRemoveInterval: 1
     ttl: parseInt(SESS_LIFETIME) / 1000
   })
 }

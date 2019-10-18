@@ -13,21 +13,7 @@ function LoggedInPage({ children }) {
   const setMainSocket = useContext(MainSocketContext)[1]
 
   useEffect(() => {
-    const mainSocket = setMainSocket(SocketIO({ namespace: 'user' }))
-
-    mainSocket.on('connect', () => {
-      mainSocket.on('authenticated', () => {
-        setMainSocketConnected(true)
-      })
-    })
-  
-    mainSocket.on('disconnect', () => {
-      setMainSocketConnected(false)
-    })
-
-    mainSocket.on('msg', msg => {
-      console.log(msg)
-    })
+    setMainSocket(SocketIO({ namespace: 'user' }), getMainSocket)
   }, [])
 
   const navLinks = [
@@ -72,6 +58,20 @@ function LoggedInPage({ children }) {
       )
     }
     return <LostConnectionPage />
+  }
+
+  function getMainSocket(mainSocket) {
+    if (mainSocket) {
+      setMainSocketConnected(true)
+
+      mainSocket.on('disconnect', () => {
+        setMainSocketConnected(false)
+      })
+  
+      mainSocket.on('msg', msg => {
+        console.log(msg)
+      })
+    }
   }
 
   return (

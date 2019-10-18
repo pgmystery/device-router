@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { login } from '../../actions/session'
 import LoginForm from './login/LoginForm'

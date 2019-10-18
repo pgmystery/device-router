@@ -15,15 +15,6 @@ import EShellPage from './pages/EShellPage'
 
 
 function PageHandler() {
-  // const [mainSocket, setMainSocket] = useState(null)
-
-  // useEffect(() => {
-  //   if (!mainSocket) {
-  //     const socket = SocketIO({ namespace: 'user' })
-  //     setMainSocket()
-  //   }
-  // }, [])
-
   return (
     <>
       <ProtectedRoute path='/' >

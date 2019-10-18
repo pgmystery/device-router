@@ -56,16 +56,6 @@ class UserSocket {
       })
     })
   }
-
-  send(channel, msg='') {
-    if (socket) {
-      socket.emit(channel, msg)
-    }
-  }
-
-  receive() {
-
-  }
 }
 
 
