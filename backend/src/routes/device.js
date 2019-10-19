@@ -50,6 +50,8 @@ deviceRouter.post('/auth', async (req, res) => {
 
     await RegisterToken.findOneAndDelete({token: req.body.registerToken})
 
+    app.locals.userSocket.emit(registerToken.userId, 'newDevice', newDeviceSaved)
+
     res.send(newDeviceSaved)
   }
   catch(err) {

@@ -1,22 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import ReactSVG from 'react-svg'
+
+import { MainSocketContext } from '../../../socketio/MainSocketContext'
 
 import bellIcon from '../../images/bell.svg'
 import bellActiveIcon from '../../images/bellActive.svg'
 import Popover from '../Popover'
 
 
-NotificationWidget.propTypes = {
-  notifications: PropTypes.array,
-}
-
-NotificationWidget.defaultTypes = {
-  notifications: []
-}
-
-function NotificationWidget({ notifications }) {
+function NotificationWidget() {
+  const [notifications, setNotifications] = useState([])
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   function handleClick(event) {

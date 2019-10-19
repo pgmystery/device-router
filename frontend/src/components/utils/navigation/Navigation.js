@@ -42,7 +42,7 @@ function Navigation({ links, profileLinks }) {
           {getLinks()}
         </NavigationLeftStyled>
         <NavigationRightStyled>
-          <NotificationWidget notifications={[1, 2, 3]} />
+          <NotificationWidget />
           <ProfileWidget links={profileLinks} />
         </NavigationRightStyled>
       </Wrapper>

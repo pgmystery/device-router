@@ -2,6 +2,7 @@ const User = require('../db/models/User')
 
 class UserSocket {
   constructor(io) {
+    this.io = io
     this.connectedUsers = {}
     this.userChannel = io.of('/user')
     this.socket = null
@@ -55,6 +56,12 @@ class UserSocket {
         }
       })
     })
+  }
+
+  emit(userId, channel, msg={}) {
+    this.userChannel
+      .to(userId)
+      .emit(channel, msg)
   }
 }
 
