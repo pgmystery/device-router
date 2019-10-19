@@ -10,7 +10,7 @@ function SocketHandler(server, app) {
   app.locals.deviceSocket = deviceSocket
   const eshellSocket = new EshellSocket(socket, deviceSocket)
   app.locals.eshellSocket = eshellSocket
-  const userSocket = new UserSocket(socket, app)
+  const userSocket = new UserSocket(socket)
   app.locals.userSocket = userSocket
 }
 

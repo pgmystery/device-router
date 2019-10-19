@@ -38,7 +38,10 @@ export function MainSocketProvider({ children, session }) {
   }, [mainSocketCallback])
 
   return (
-    <MainSocketContext.Provider value={[mainSocket, (io, callback) => setMainSocket(io, session, callback, [mainSocketCallback, setMainSocketCallback])]}>
+    <MainSocketContext.Provider value={{
+      mainSocket,
+      setMainSocket: (io, callback) => setMainSocket(io, session, callback, [mainSocketCallback, setMainSocketCallback])
+    }}>
       {children}
     </MainSocketContext.Provider>
   )

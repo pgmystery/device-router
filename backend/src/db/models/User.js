@@ -83,8 +83,8 @@ const User = mongoose.model('User', userSchema)
 
 function makeHash(length) {
   if (length < 15) length = Math.floor(Math.random() * 25) + 15 
-  let result           = ''
-  const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let result  = ''
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   const charactersLength = characters.length
   for ( let i = 0; i < length; i++ ) {
      result += characters.charAt(Math.floor(Math.random() * charactersLength))
