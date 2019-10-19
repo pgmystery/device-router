@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react"
 import { connect } from 'react-redux'
 import styled from 'styled-components/macro'
+import ReactSVG from 'react-svg'
 import request from '../../utils/Request'
 
 import Wrapper from '../utils/Wrapper'
 import Header from './EShellPage/Header'
+import closeFullscreenIcon from '../images/fullscreen_icon.svg'
 
 import EShell from '../../eshell/EShell'
 import EShellTerm from "../../eshell/EShellTerm"
@@ -92,6 +94,14 @@ function EShellPage({ session, location }) {
           ? <EShellTerm input={currentEShellSession.input} output={currentEShellSession.output} fullscreen={currentSessionFullscreen}/>
           : <NoSessionsText>No EShell-Sessions...</NoSessionsText>
       }
+      {
+        currentSessionFullscreen
+        && <CloseFullscreenButton onClick={() => setCurrentSessionFullscreen(false)}>
+            <ReactSVG src={closeFullscreenIcon} beforeInjection={svg => {
+                svg.setAttribute('style', 'width: 48px; height: 48px; fill: #ffffff;')
+              }}/>
+          </CloseFullscreenButton>
+      }
     </Wrapper>
   )
 
@@ -107,6 +117,33 @@ const NoSessionsText = styled.p`
   width: 100%;
   text-align: center;
 `
+
+const CloseFullscreenButton = styled.button`
+  z-index: 255;
+  position: fixed;
+  border-radius: 10%;
+  right: 25px;
+  top: 5px;
+  width: 50px;
+  height: 50px;
+  opacity: 0.3;
+  background-color: transparent;
+  color: #ffffff;
+  font-size: 30px;
+  padding: 0;
+  border: 1px solid #b9b9b9;
+
+  :hover {
+    opacity: 0.5;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  :active {
+    opacity: 0.4;
+  }
+`
+
 
 export default connect(
   mapStateToProps

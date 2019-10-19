@@ -5,9 +5,7 @@ import ReactSVG from 'react-svg'
 import PageHeader from '../../utils/PageHeader'
 import Button, { ButtonSuccess, ButtonDanger } from '../../utils/Button'
 import Select, { Option } from '../../utils/Select'
-import settingsIcon from '../../images/settings.svg'
 import fullscreenIcon from '../../images/fullscreen2_icon.svg'
-import searchIcon from '../../images/search.svg'
 
 
 function Header({ disableConnectButton, devices, eshellConnected, createSessionHandler, stopSessionHandler, setSelectedDevice, toggleShellFullscreen }) {
@@ -58,24 +56,14 @@ function Header({ disableConnectButton, devices, eshellConnected, createSessionH
   function rightHeader() {
     return (
       <>
-        {/* <IconButton>
-          <ReactSVG src={searchIcon} beforeInjection={svg => {
-              svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #6f6f6f;')
-            }}
-          />
-        </IconButton> */}
-        <IconButton onClick={toggleShellFullscreen}>
-          <ReactSVG src={fullscreenIcon} beforeInjection={svg => {
-              svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #6f6f6f;')
-            }}
-          />
-        </IconButton>
-        {/* <IconButton>
-          <ReactSVG src={settingsIcon} beforeInjection={svg => {
-              svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #6f6f6f;')
-            }}
-          />
-        </IconButton> */}
+        {eshellConnected &&
+          <IconButton onClick={toggleShellFullscreen}>
+            <ReactSVG src={fullscreenIcon} beforeInjection={svg => {
+                svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #6f6f6f;')
+              }}
+            />
+          </IconButton>
+        }
       </>
     )
   }
