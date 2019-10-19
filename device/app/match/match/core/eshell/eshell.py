@@ -39,7 +39,8 @@ class EShellSession(Thread):
     self.connector = Connector(url, access_token)
     self.socket = self.connector.register_namespace(EShellSocket('/eshell', self.on_cmd))
     self.socket.client.sessionId = sessionId
-    self.socket.eshellSessionJoinedCallback = self.eshell_session_joined
+    self.socket.eshellSessionJoinedCallback = self.on_eshell_session_joined
+    self.socket.termSizeCallback = self.on_term_size_changed
     headers = {
       'type': 'device',
       'sessionid': str(sessionId),
@@ -49,7 +50,7 @@ class EShellSession(Thread):
 
     Thread.__init__(self)
 
-  def eshell_session_joined(self, sessionData):
+  def on_eshell_session_joined(self, sessionData):
     print('ESHELL -> SESSION JOINED!!!')
     self.createVirtualShell()
     self.start_virtual_shell()
@@ -59,7 +60,12 @@ class EShellSession(Thread):
   def on_cmd(self, data):
     print('ON_CMD!!!')
     print(data)
-    self.send_cmd(data['cmd'])
+    self.send_cmd(data)
+
+  def on_term_size_changed(self, termSize):
+    if self.virtual_shell:
+      print(termSize)
+      self.virtual_shell.setWindowSize(termSize['cols'], termSize['rows'])
 
   def createVirtualShell(self):
     self.virtual_shell = VirtualShell(self.on_vs_message)
@@ -79,13 +85,9 @@ class EShellSession(Thread):
       self.virtual_shell.send(cmd)
 
   def on_vs_message(self, output):
-    msg = {
-      'sessionId': self.sessionId,
-      'msg': output,
-    }
     if self.socket.client.connected:
       try:
-        self.socket.emit('msg', msg)
+        self.socket.emit('msg', output)
       except:
         self.close()
     else:

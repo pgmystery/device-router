@@ -95,7 +95,13 @@ function EShellPage({ session, location }) {
           setCurrentSessionFullscreen(!currentSessionFullscreen)}}
       />
       { eshellSessions.length > 0
-          ? eshellSessions.map(session => <EShellTerm key={session.sessionId} input={session.input} output={session.output} fullscreen={currentSessionFullscreen}/>)
+          ? eshellSessions.map(session => <EShellTerm
+              key={session.sessionId}
+              input={session.input}
+              output={session.output}
+              windowSizeChanged={session.windowSizeChanged}
+              fullscreen={currentSessionFullscreen}
+            />)
           : <NoSessionsText>No EShell-Sessions...</NoSessionsText>
       }
       {

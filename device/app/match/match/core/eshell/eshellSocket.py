@@ -9,6 +9,7 @@ class EShellSocket(SocketNamespace):
     self.connectedCallback = None
     self.disconnectedCallback = None
     self.eshellSessionJoinedCallback = None
+    self.termSizeCallback = None
 
   def on_connect(self):
     if self.connectedCallback:
@@ -24,6 +25,10 @@ class EShellSocket(SocketNamespace):
 
   def on_cmd(self, data):
     self.outputCallback(data)
+
+  def on_term_size(self, termSize):
+    if self.termSizeCallback:
+      self.termSizeCallback(termSize)
 
   def close(self):
     self.client.disconnect()

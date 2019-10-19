@@ -12,7 +12,8 @@ class EShell {
       sessionId: this.uniqueSessionId++,
 
       input: inputFunction => newSession.input = inputFunction,  // Crazy, but it works...
-      output: data => this.send(newSession, data),
+      output: data => this.send({ session: newSession, data }),
+      windowSizeChanged: (cols, rows) => this.send({ channel: 'term_size', session: newSession, data: {cols, rows} }),
 
       connected: false,
       isRdy: false,
@@ -56,7 +57,7 @@ class EShell {
           session.isRdy = true
         })
   
-        socket.on('msg', data => session.input(data.msg))
+        socket.on('msg', data => session.input(data))
       })
     })
 
@@ -67,12 +68,9 @@ class EShell {
     session.socket.disconnect()
   }
 
-  send(session, data) {
+  send({ channel='cmd', session, data }) {
     if (session.connected && session.isRdy) {
-      session.socket.emit('cmd', {
-        sessionId: session.id,
-        cmd: data,
-      })
+      session.socket.emit(channel, data)
     }
   }
 }

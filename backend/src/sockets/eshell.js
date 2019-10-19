@@ -121,7 +121,9 @@ class EshellSocket {
       this.removeSession(eshellSession)
     })
 
-    socket.on('cmd', (cmd) => this.cmdHandlerUser(cmd, socket))
+    socket.on('cmd', cmd => this.sendToDevice(socket, 'cmd', eshellSession.id, cmd))
+
+    socket.on('term_size', termSize => this.sendToDevice(socket, 'term_size', eshellSession.id, termSize))
   }
 
   async registerDeviceToSession(socket) {
@@ -168,7 +170,7 @@ class EshellSocket {
       this.removeSession(eshellSession)
     })
 
-    socket.on('msg', msg => this.msgHandlerDevice(msg, socket))
+    socket.on('msg', msg => this.msgHandlerDevice(socket, eshellSession.id, msg))
   }
 
   addSession(data) {
@@ -190,22 +192,19 @@ class EshellSocket {
     }
   }
 
-  cmdHandlerUser(cmd, socket) {
-    const sessionId = cmd.sessionId
+  sendToDevice(socket, channel, sessionId, data) {
     const eshellSession = this.sessions.find(session =>
       session.id === sessionId
         && session.user === socket.id
     )
-    socket.to(eshellSession.deviceSocket).emit('cmd', cmd)
+    socket.to(eshellSession.deviceSocket).emit(channel, data)
   }
 
-  msgHandlerDevice(msg, socket) {
-    const sessionId = msg.sessionId
+  msgHandlerDevice(socket, sessionId, msg) {
     const eshellSession = this.sessions.find(session =>
         session.id === sessionId
         && session.deviceSocket === socket.id
     )
-    console.log(msg)
     socket.broadcast.to('eshell-' + eshellSession.id).emit('msg', msg)
   }
 }

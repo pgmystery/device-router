@@ -3,23 +3,41 @@ import styled from 'styled-components/macro'
 import useWindowSize from '../utils/hooks/useWindowSize'
 
 import { Terminal } from "xterm"
+import { FitAddon } from 'xterm-addon-fit';
 
 
-function EShellTerm({ input, output, fullscreen=false }) {
-  const [windowWidth, windowHeight] = useWindowSize()
+function EShellTerm({ input, output, windowSizeChanged, fullscreen=false }) {
+  // const [fitAddon, setFitAddon] = useState(new FitAddon())
   const [term, setTerm] = useState(new Terminal())
+  const [windowWidth, windowHeight] = useWindowSize()
   const [termAttachedToNode, setTermAttachedToNode] = useState(false)
+  const [termWidthOffset, setTermWidthOffset] = useState(0)
 
   const measuredRef = useCallback(node => {
     if (node) {
       if (!termAttachedToNode) {
+        // term.loadAddon(fitAddon)
+
+        const termWidthOffset = window.innerWidth - node.offsetWidth
+        setTermWidthOffset(termWidthOffset)
+
         term.open(node)
+
+        const cols = Math.floor((window.innerWidth - termWidthOffset) / term._core.charMeasure.width)
+        const rows = Math.floor(node.offsetHeight / term._core.charMeasure.height)
+
+        term.resize(cols, rows)
+        windowSizeChanged(cols, rows)
+
+        // fitAddon.fit()
         setTermAttachedToNode(true)
       }
       else {
+        const cols = Math.floor((windowWidth - termWidthOffset) / term._core.charMeasure.width)
         const rows = Math.floor(node.offsetHeight / term._core.charMeasure.height)
-        const cols = Math.floor(node.offsetWidth / term._core.charMeasure.width)
+
         term.resize(cols, rows)
+        windowSizeChanged(cols, rows)
       }
     }
   })
