@@ -83,7 +83,13 @@ class EShellSession(Thread):
       'sessionId': self.sessionId,
       'msg': output,
     }
-    self.socket.emit('msg', msg)
+    if self.socket.client.connected:
+      try:
+        self.socket.emit('msg', msg)
+      except:
+        self.close()
+    else:
+      self.close()
 
   def close(self):
     if (self.virtual_shell):
