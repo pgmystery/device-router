@@ -64,8 +64,8 @@ deviceRouter.get('/register', async (req, res) => {
     const userId = req.session.user.id
     const registerTokensOriginal = await RegisterToken.find({userId})
   
-    const registerTokens = registerTokensOriginal.map(tokenObject => {
-      return {
+    const registerTokens = registerTokensOriginal.map(tokenObject => (
+      {
         ...tokenObject._doc,
         startDate: tokenObject.startDate.getDate()
           + '.'
@@ -78,8 +78,8 @@ deviceRouter.get('/register', async (req, res) => {
           + '.'
           + tokenObject.endDate.getFullYear(),
       }
-    })
-  
+    ))
+
     const registerTokensKeys = RegisterToken.getKeys()
   
     res.send({ tokens: registerTokens, keys: registerTokensKeys })

@@ -14,7 +14,7 @@ const mapDispatchToProps = dispatch => ({
 })
 
 function Logout({ logout }) {
-  const mainSocket = useContext(MainSocketContext)[0]
+  const { mainSocket } = useContext(MainSocketContext)
   mainSocket.disconnect()
 
   logout()

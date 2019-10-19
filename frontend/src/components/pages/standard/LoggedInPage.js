@@ -9,7 +9,7 @@ import { MainSocketContext } from '../../../socketio/MainSocketContext'
 
 function LoggedInPage({ children }) {
   const [mainSocketConnected, setMainSocketConnected] = useState(false)
-  const setMainSocket = useContext(MainSocketContext)[1]
+  const { setMainSocket } = useContext(MainSocketContext)
 
   useEffect(() => {
     setMainSocket(SocketIO({ namespace: 'user' }), getMainSocket)
@@ -64,10 +64,6 @@ function LoggedInPage({ children }) {
 
       mainSocket.on('disconnect', () => {
         setMainSocketConnected(false)
-      })
-  
-      mainSocket.on('msg', msg => {
-        console.log(msg)
       })
     }
   }
