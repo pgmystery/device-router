@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useCallback } from "react"
+import styled from 'styled-components/macro'
 import useWindowSize from '../utils/hooks/useWindowSize'
 
 import { Terminal } from "xterm"
 
 
-function EShellTerm({ input, output }) {
+function EShellTerm({ input, output, fullscreen=false }) {
   const [windowWidth, windowHeight] = useWindowSize()
   const [term, setTerm] = useState(new Terminal())
   const [termAttachedToNode, setTermAttachedToNode] = useState(false)
 
-  // https://www.dropbox.com/search/personal?path=%2F&preview=id%3ATdvMtGpBntAAAAAAAASnhA&query=eshell.js&search_session_id=79639764872554691998409907760409&search_token=9uCJS6B75Pj6VIETXg7iYMZRjXgpGEMU9wFxzeivwsI%3D
+  console.log(fullscreen)
 
   const measuredRef = useCallback(node => {
     if (node) {
@@ -41,8 +42,20 @@ function EShellTerm({ input, output }) {
   }
 
   return (
-    <div ref={measuredRef} />
+    <TermContainer fullscreen={fullscreen} ref={measuredRef} />
   )
 }
+
+const TermContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgb(0, 0, 0);
+  position: ${({ fullscreen }) => fullscreen ? 'fixed' : 'static'};
+`
+
 
 export default EShellTerm

@@ -1,7 +1,4 @@
-import React  from 'react'
 import SocketIO from '../socketio/SocketIO'
-
-import EShellTerm from './EShellTerm'
 
 
 class EShell {
@@ -11,7 +8,8 @@ class EShell {
 
   createSession({ namespace='eshell', data, termCallbacks={} }={}) {
     const newSession = {
-      termInput: inputFunction => newSession.termInput = inputFunction,  // Crazy, but it works...
+      input: inputFunction => newSession.input = inputFunction,  // Crazy, but it works...
+      output: data => this.send(newSession, data),
       term: null,
 
       connected: false,
@@ -22,11 +20,7 @@ class EShell {
       remove: () => this.removeSession(newSession),
     }
 
-    newSession.term = <EShellTerm
-      input={newSession.termInput}
-      output={data => this.send(newSession, data)}
-      {...termCallbacks}  // only if I want to rewrite the parameters, its not in use yet
-    />
+    console.log('termCallbacks', termCallbacks)
 
     this.sessions = [...this.sessions, newSession]
 
@@ -59,11 +53,6 @@ class EShell {
         socket.on('rdy', data => {
           console.log('RDY FROM DEVICE')
   
-          // TODO: OVERRIDE IS NOT WOKRING :(
-          // session = {
-          //   ...session,
-          //   ...data,
-          // }
           for (let [key, value] of Object.entries(data)) {
             session[key] = value
           }
@@ -71,7 +60,7 @@ class EShell {
           session.isRdy = true
         })
   
-        socket.on('msg', data => session.termInput(data.msg))
+        socket.on('msg', data => session.input(data.msg))
       })
     })
 

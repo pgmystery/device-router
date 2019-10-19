@@ -21,8 +21,6 @@ class EShell(object):
 
   def remove_session(self, socket):
       print("ESHELL - SOCKET DISCONNECTED!")
-      print(socket.sid)
-      print(self.sessions)
       if hasattr(socket, 'sessionId'):
         if (socket.sessionId in self.sessions):
             self.sessions[socket.sessionId].close()
@@ -34,11 +32,13 @@ class EShellSession(Thread):
   def __init__(self, url, sessionId, access_token):
     self.exit = False
     self.running = False
+    self.virtual_shell = None
 
     self.sessionId = sessionId
 
     self.connector = Connector(url, access_token)
     self.socket = self.connector.register_namespace(EShellSocket('/eshell', self.on_cmd))
+    self.socket.client.sessionId = sessionId
     self.socket.eshellSessionJoinedCallback = self.eshell_session_joined
     headers = {
       'type': 'device',
@@ -86,4 +86,6 @@ class EShellSession(Thread):
     self.socket.emit('msg', msg)
 
   def close(self):
+    if (self.virtual_shell):
+      self.virtual_shell.close()
     self.exit = True

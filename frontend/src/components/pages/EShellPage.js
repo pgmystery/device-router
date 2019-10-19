@@ -7,6 +7,7 @@ import Wrapper from '../utils/Wrapper'
 import Header from './EShellPage/Header'
 
 import EShell from '../../eshell/EShell'
+import EShellTerm from "../../eshell/EShellTerm"
 
 
 const mapStateToProps = ({ session }) => ({
@@ -17,6 +18,8 @@ function EShellPage({ session, location }) {
   const [devices, setDevices] = useState([])
   const [eshell, setEshell] = useState(new EShell())
   const [eshellSessions, setEshellSessions] = useState([])
+  const [currentEShellSession, setCurrentEShellSession] = useState(null)
+  const [currentSessionFullscreen, setCurrentSessionFullscreen] = useState(false)
   const [eshellConnectionStarted, setEshellConnectionStarted] = useState(false)
   const [eshellConnected, setEshellConnected] = useState(false)
   const [selectedDevice, setSelectedDevice] = useState()
@@ -26,13 +29,21 @@ function EShellPage({ session, location }) {
   }, [])
 
   function createEShellSession() {
+    if (currentEShellSession) {
+      currentEShellSession.remove()
+    }
     const newSession = 
       eshell.createSession({
         data: {
           userId: session.id,
           deviceId: selectedDevice,
+        },
+        termCallbacks: {
+          fullsreen: currentSessionFullscreen,
         }
       })
+
+    setCurrentEShellSession(newSession)
     setEshellSessions([
       ...eshellSessions,
       newSession,
@@ -57,7 +68,7 @@ function EShellPage({ session, location }) {
 
   function stopEshellConnection() {
     console.log('DISCONNECT ESHELL: ', eshellSessions[0])
-    eshellSessions[0].disconnect()
+    currentEShellSession.disconnect()
   }
 
   function createSessionHandler(event) {
@@ -73,9 +84,12 @@ function EShellPage({ session, location }) {
         stopSessionHandler={stopEshellConnection}
         setSelectedDevice={setSelectedDevice}
         disableConnectButton={eshellConnectionStarted || devices.length === 0}
+        toggleShellFullscreen={() => {
+          console.log('SET FULLSCREEN')
+          setCurrentSessionFullscreen(!currentSessionFullscreen)}}
       />
       { eshellSessions.length > 0
-          ? eshellSessions[0].term
+          ? <EShellTerm input={currentEShellSession.input} output={currentEShellSession.output} fullscreen={currentSessionFullscreen}/>
           : <NoSessionsText>No EShell-Sessions...</NoSessionsText>
       }
     </Wrapper>

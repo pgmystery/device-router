@@ -35,6 +35,7 @@ class VirtualShell(Thread):
       stderr=self.slave_fd,
       universal_newlines=True,
       env=my_env,
+      shell=True,
     )
 
   def run(self):
@@ -75,4 +76,7 @@ class VirtualShell(Thread):
       pass
 
   def close(self):
-    os.killpg(os.getpgid(self.p.pid), signal.SIGTERM)
+    try:
+      os.killpg(os.getpgid(self.p.pid), signal.SIGTERM)
+    except:
+      pass
