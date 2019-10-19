@@ -10,8 +10,6 @@ function EShellTerm({ input, output, fullscreen=false }) {
   const [term, setTerm] = useState(new Terminal())
   const [termAttachedToNode, setTermAttachedToNode] = useState(false)
 
-  console.log(fullscreen)
-
   const measuredRef = useCallback(node => {
     if (node) {
       if (!termAttachedToNode) {

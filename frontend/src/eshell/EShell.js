@@ -3,14 +3,16 @@ import SocketIO from '../socketio/SocketIO'
 
 class EShell {
   constructor() {
+    this.uniqueSessionId = 0
     this.sessions = []
   }
 
   createSession({ namespace='eshell', data, termCallbacks={} }={}) {
     const newSession = {
+      sessionId: this.uniqueSessionId++,
+
       input: inputFunction => newSession.input = inputFunction,  // Crazy, but it works...
       output: data => this.send(newSession, data),
-      term: null,
 
       connected: false,
       isRdy: false,
@@ -19,8 +21,6 @@ class EShell {
       disconnect: () => this.disconnectSession(newSession),
       remove: () => this.removeSession(newSession),
     }
-
-    console.log('termCallbacks', termCallbacks)
 
     this.sessions = [...this.sessions, newSession]
 
@@ -42,8 +42,6 @@ class EShell {
     session.socket = socket
 
     socket.on('connect', () => {
-      console.log('ESHELL_SOCKET CONNECTED')
-      console.log(data)
       socket.emit('authenticate', {userId: data.userId, deviceId: data.deviceId})
 
       socket.on('authenticated', () => {
@@ -51,8 +49,6 @@ class EShell {
         session.connected = true
   
         socket.on('rdy', data => {
-          console.log('RDY FROM DEVICE')
-  
           for (let [key, value] of Object.entries(data)) {
             session[key] = value
           }

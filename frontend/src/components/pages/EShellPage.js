@@ -31,8 +31,15 @@ function EShellPage({ session, location }) {
   }, [])
 
   function createEShellSession() {
+    let currentEShellSessions = eshellSessions
+
     if (currentEShellSession) {
       currentEShellSession.remove()
+      const sessionIndex = currentEShellSessions.indexOf(currentEShellSession)
+      currentEShellSessions = [
+        ...currentEShellSessions.slice(0, sessionIndex),
+        ...currentEShellSessions.slice(sessionIndex + 1)
+      ]
     }
     const newSession = 
       eshell.createSession({
@@ -46,10 +53,13 @@ function EShellPage({ session, location }) {
       })
 
     setCurrentEShellSession(newSession)
-    setEshellSessions([
-      ...eshellSessions,
+
+    currentEShellSessions = [
+      ...currentEShellSessions,
       newSession,
-    ])
+    ]
+
+    setEshellSessions(currentEShellSessions)
     return newSession
   }
 
@@ -69,12 +79,7 @@ function EShellPage({ session, location }) {
   }
 
   function stopEshellConnection() {
-    console.log('DISCONNECT ESHELL: ', eshellSessions[0])
     currentEShellSession.disconnect()
-  }
-
-  function createSessionHandler(event) {
-    startEshellConnection(selectedDevice)
   }
 
   return (
@@ -82,16 +87,15 @@ function EShellPage({ session, location }) {
       <Header
         devices={devices}
         eshellConnected={eshellConnected}
-        createSessionHandler={createSessionHandler}
+        createSessionHandler={startEshellConnection}
         stopSessionHandler={stopEshellConnection}
         setSelectedDevice={setSelectedDevice}
         disableConnectButton={eshellConnectionStarted || devices.length === 0}
         toggleShellFullscreen={() => {
-          console.log('SET FULLSCREEN')
           setCurrentSessionFullscreen(!currentSessionFullscreen)}}
       />
       { eshellSessions.length > 0
-          ? <EShellTerm input={currentEShellSession.input} output={currentEShellSession.output} fullscreen={currentSessionFullscreen}/>
+          ? eshellSessions.map(session => <EShellTerm key={session.sessionId} input={session.input} output={session.output} fullscreen={currentSessionFullscreen}/>)
           : <NoSessionsText>No EShell-Sessions...</NoSessionsText>
       }
       {
