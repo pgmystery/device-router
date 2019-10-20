@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 
 
 export const MainSocketContext = React.createContext(null)
@@ -24,7 +24,6 @@ export function MainSocketProvider({ children, session, startMainSocketListeners
               setAuthenticated(true)
 
               if (callback) {
-                console.log('callback', callback)
                 callback(mainSocket)
               }
             })

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback, useMemo } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import ReactSVG from 'react-svg'
@@ -11,21 +11,16 @@ import Popover from '../Popover'
 
 
 function NotificationWidget() {
-  console.log('START OF NOTIFICATION_WIDGET')
-
   const [isNewNotification, setIsNewNotification] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [notifications, setNotifications] = useState([1])
+  const [notifications, setNotifications] = useState([])
+  const [newNotifications, setNewNotifications] = useState([])
   const { addMainSocketListeners, mainSocket } = useContext(MainSocketContext)
 
   useEffect(() => {
-    setNotifications([2, 3])
-
     addMainSocketListeners([
-      ['notification', addNotification
-      , [notifications]],
-      ['notifications', addNotifications
-      , [notifications]],
+      ['notification', addNotification],
+      ['notifications', setNewNotifications]
     ])
   }, [])
 
@@ -46,32 +41,44 @@ function NotificationWidget() {
     }
   }, [isMenuOpen])
 
+  useEffect(() => {
+    if (newNotifications.length > 0) {
+      addNotifications(newNotifications)
+    } 
+  }, [newNotifications])
+
 
   function addNotification(newNotification) {
-    console.log('NEW NOTIFICATION', notifications)
-    addNotifications([newNotification])
+    setNewNotifications([newNotification])
   }
 
   function addNotifications(newNotifications) {
-    // let newNotifi = false
-    // newNotifications.forEach(notification => {
-    //   isMenuOpen
-    //     ? notification.new = false
-    //     : newNotifi = notification.new
-    // })
+    let newNotifi = false
+    newNotifications.forEach(notification => {
+      if (isMenuOpen) {
+        notification.new = false
+      }
+      else {
+        if (notification.new) {
+          newNotifi = true
+        }
+      }
+    })
 
-    console.log(notifications)
+    setNotifications([
+      ...newNotifications,
+      ...notifications,
+    ])
 
-    // setNotifications([4, 5, 6])
+    if (isMenuOpen) {
+      setIsNewNotification(false)
+      mainSocket.emit('notificationsReaded')
+    }
+    else {
+      setIsNewNotification(newNotifi)
+    }
 
-    // setNotifications([
-    //   ...newNotifications,
-    //   ...notifications,
-    // ])
-
-    // isMenuOpen
-    //   ? setIsNewNotification(false) && mainSocket.emit('notificationsReaded')
-    //   : setIsNewNotification(newNotifi)
+    setNewNotifications([])
   }
 
   function removeNotification(index) {
@@ -79,10 +86,10 @@ function NotificationWidget() {
 
     mainSocket.emit('notificationDelete', notification._id)
 
-    // setNotifications([
-    //   ...notifications.slice(0, index),
-    //   ...notifications.slice(index + 1),
-    // ])
+    setNotifications([
+      ...notifications.slice(0, index),
+      ...notifications.slice(index + 1),
+    ])
   }
 
   function handleClick(event) {
@@ -90,16 +97,18 @@ function NotificationWidget() {
     setIsMenuOpen(!isMenuOpen)
   }
 
-  return useMemo(() => (
+  return (
     <NotificationWidgetStyled>
       <div onClick={handleClick}>
         {
           isNewNotification
-            ? <ReactSVG
-                src={bellActiveIcon} 
-                beforeInjection={svg => {
-                  svg.setAttribute('style', 'width: 32px; height: 32px; fill: #d77237;')
-              }} />
+            ? <NotificationBellActice>
+                <ReactSVG
+                  src={bellActiveIcon} 
+                  beforeInjection={svg => {
+                    svg.setAttribute('style', 'width: 32px; height: 32px; fill: #d77237;')
+                }} />
+              </NotificationBellActice>
             : <ReactSVG
                 src={bellIcon} 
                 beforeInjection={svg => {
@@ -125,7 +134,7 @@ function NotificationWidget() {
         />
       }
     </NotificationWidgetStyled>
-  ))
+  )
 }
 
 
@@ -146,7 +155,6 @@ function NotificationWidgetCounter({ children }) {
 function NotificationItem({ title, msg, index, onDelete }) {
   return (
     <NotificationItemStyled>
-      <div>{title}</div>
       <div>{msg}</div>
       <button onClick={() => onDelete(index)}>Delete</button>
     </NotificationItemStyled>
@@ -171,6 +179,24 @@ const NotificationWidgetCounterStyled = styled.p`
   left: 30px;
   padding: 3px 5px;
   font-size: 10px;
+`
+
+const NotificationBellActice = styled.div`
+    z-index: 1;
+    animation-name: notification-alert;
+    animation-duration: 200ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-direction: alternate-reverse;
+
+  @keyframes notification-alert {
+      from {
+          transform:rotate(-10deg);
+      }
+      to {
+          transform:rotate(10deg);
+      }
+  }
 `
 
 const NotificationWidgetPopoverStyled = styled(Popover)`
