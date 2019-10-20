@@ -7,6 +7,7 @@ import { MainSocketContext } from '../../../socketio/MainSocketContext'
 
 import bellIcon from '../../images/bell.svg'
 import bellActiveIcon from '../../images/bellActive.svg'
+import removeIcon from '../../images/deleteIcon.svg'
 import Popover from '../Popover'
 
 
@@ -129,7 +130,7 @@ function NotificationWidget() {
                 onDelete={removeNotification}
                 key={index}
               />)
-              : <NoNotificationsText>No new Notifications :(</NoNotificationsText>
+              : <NoNotificationsText>No new Notifications</NoNotificationsText>
           }
         />
       }
@@ -155,8 +156,16 @@ function NotificationWidgetCounter({ children }) {
 function NotificationItem({ title, msg, index, onDelete }) {
   return (
     <NotificationItemStyled>
-      <div>{msg}</div>
-      <button onClick={() => onDelete(index)}>Delete</button>
+      <NotificationItemText>{msg}</NotificationItemText>
+      <NotificationItemIcon>
+        <ReactSVG
+          src={removeIcon}
+          onClick={() => onDelete(index)}
+          beforeInjection={svg => {
+            svg.setAttribute('style', 'width: 32px; height: 32px; fill: #e15e5ede;')
+          }}
+        />
+      </NotificationItemIcon>
     </NotificationItemStyled>
   )
 }
@@ -204,11 +213,28 @@ const NotificationWidgetPopoverStyled = styled(Popover)`
 `
 
 const NotificationItemStyled = styled.div`
+  display: flex;
+  justify-content: center;
+  align-content: center;
 
+  :hover {
+    background-color: #f7f8f9;
+  }
+`
+
+const NotificationItemText = styled.p`
+  flex: 5;
+  text-align: center;
+`
+
+const NotificationItemIcon = styled.p`
+  flex: 1;
+  margin: auto;
 `
 
 const NoNotificationsText = styled.p`
   text-align: center;
+  padding: 20px;
 `
 
 

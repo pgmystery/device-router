@@ -19,6 +19,7 @@ function Popover({ body, header, className }) {
       <PopoverArrowStyled></PopoverArrowStyled>
       { header && <PopoverHeader>{header}</PopoverHeader> }
       { body && <PopoverBody>{body}</PopoverBody> }
+      <PopoverFooter />
     </PopoverStyled>
   )
 }
@@ -54,12 +55,33 @@ const PopoverHeader = styled.h4`
 
 const PopoverBody = styled.div`
   background-color: #ffffff;
-  border-bottom-left-radius: 5%;
-  border-bottom-right-radius: 5%;
-  padding: 10px;
   max-height: 70vh;
   overflow-y: auto;
-  border: 1px solid #b5b0b0;
+  border-top: 1px solid #b5b0b0;
+  border-left: 1px solid #b5b0b0;
+  border-right: 1px solid #b5b0b0;
+  
+  > {
+    margin: 20px 0;
+  }
+
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+`
+
+const PopoverFooter = styled.div`
+  height: 2px;
+  background-color: #ffffff;
+  border-bottom-left-radius: 100%;
+  border-bottom-right-radius: 100%;
+  border-left: 1px solid #b5b0b0;
+  border-right: 1px solid #b5b0b0;
+  border-bottom: 1px solid #b5b0b0;
 `
 
 
