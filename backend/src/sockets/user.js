@@ -1,4 +1,5 @@
 const User = require('../db/models/User')
+const Notification = require('../db/models/Notification')
 
 class UserSocket {
   constructor(io) {
@@ -26,6 +27,19 @@ class UserSocket {
           }
           this.connectedUsers = {...this.connectedUsers, [socket.id]: userId}
           socket.emit('authenticated')
+
+          const notifications = await Notification.find({userId}, {__v: 0, userId: 0})
+          if (notifications.length > 0) {
+            socket.emit('notifications', notifications)
+          }
+
+          socket.on('notificationsReaded', async () => {
+            await Notification.updateMany({userId, new: true}, {new: false}, {useFindAndModify: false})
+          })
+
+          socket.on('notificationDelete', async notificationId => {
+            await Notification.findOneAndDelete({_id: notificationId, userId})
+          })
         }
         catch(err) {
           console.log('Disconnecting socket ', socket.id);
@@ -59,9 +73,17 @@ class UserSocket {
   }
 
   emit(userId, channel, msg={}) {
-    this.userChannel
-      .to(userId)
-      .emit(channel, msg)
+    const userSocketId = Object.keys(this.connectedUsers).find(key => String(this.connectedUsers[key]) === String(userId))
+    if (this.userChannel.connected[userSocketId]) {
+      this.userChannel
+        .to(userSocketId)
+        .emit(channel, msg)
+
+      return true
+    }
+    else {
+      return false
+    }
   }
 }
 

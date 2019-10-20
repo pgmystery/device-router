@@ -1,4 +1,5 @@
 const Device = require('../db/models/Device')
+const Notification = require('../db/models/Notification')
 
 
 class DeviceSocket {
@@ -25,10 +26,22 @@ class DeviceSocket {
       console.log('NEW CONNECTION FROM DEVICE')
       const deviceId = this.connectedDevices[socket.id]
 
-      await Device.findByIdAndUpdate(deviceId, {online: true}, {useFindAndModify: false})
+      const deviceModel = await Device.findByIdAndUpdate(deviceId, {online: true}, {useFindAndModify: false})
+
+      Notification.create({
+        userId: deviceModel.userId,
+        title: `${deviceModel.name} goes Online`,
+        msg: `${deviceModel.name} is now ONLINE!`,
+      })
 
       socket.on('disconnect', async () => {
-        await Device.findByIdAndUpdate(deviceId, {online: false}, {useFindAndModify: false})
+        const deviceModel = await Device.findByIdAndUpdate(deviceId, {online: false}, {useFindAndModify: false})
+
+        Notification.create({
+          userId: deviceModel.userId,
+          title: `${deviceModel.name} goes Offline`,
+          msg: `${deviceModel.name} is now OFFLINE!`,
+        })
 
         delete this.connectedDevices[socket.id]
       })

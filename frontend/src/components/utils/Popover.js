@@ -5,12 +5,12 @@ import PropTypes from 'prop-types'
 
 Popover.propTypes = {
   header: PropTypes.string,
-  body: PropTypes.string,
+  body: PropTypes.node,
 }
 
 Popover.defaultProps = {
   header: '(NO HEADER)',
-  body: '(NO BODY)',
+  body: <p>(NO BODY)</p>,
 }
 
 function Popover({ body, header, className }) {
@@ -28,6 +28,7 @@ const PopoverStyled = styled.div`
   border: 1px solid #b5b0b0;
   border-radius: 5%;
   top: 40px;
+  min-width: 250px;
 `
 
 const PopoverArrowStyled = styled.div`
@@ -58,6 +59,8 @@ const PopoverBody = styled.div`
   border-bottom-left-radius: 5%;
   border-bottom-right-radius: 5%;
   padding: 10px;
+  max-height: 70vh;
+  overflow-y: auto;
 `
 
 
