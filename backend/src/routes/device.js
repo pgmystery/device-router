@@ -7,6 +7,7 @@ const { generateToken } = require('../jwt/jwt')
 const { deviceValidation } = require('../validations/device')
 const DeviceType = require('../db/models/DeviceType')
 const Device = require('../db/models/Device')
+const Notification = require('../db/models/Notification')
 
 
 const deviceRouter = Router()
@@ -49,6 +50,12 @@ deviceRouter.post('/auth', async (req, res) => {
     const newDeviceSaved = await newDevice.save()
 
     await RegisterToken.findOneAndDelete({token: req.body.registerToken})
+
+    Notification.create({
+      userId: registerToken.userId,
+      title: 'New Device',
+      msg: `Device '${newDeviceSaved.name}' registered!`,
+    })
 
     res.send(newDeviceSaved)
   }
