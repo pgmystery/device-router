@@ -3,34 +3,26 @@ import styled from 'styled-components/macro'
 import ReactSVG from 'react-svg'
 
 import PageHeader from '../../utils/PageHeader'
-import Button, { ButtonSuccess } from '../../utils/Button'
+import Button, { ButtonSuccess, ButtonDanger } from '../../utils/Button'
 import Select, { Option } from '../../utils/Select'
-import settingsIcon from '../../images/settings.svg'
 import fullscreenIcon from '../../images/fullscreen2_icon.svg'
-import searchIcon from '../../images/search.svg'
 
 
-function Header({ disableConnectButton, devices, eshellConnected, createSessionHandler, stopSessionHandler, setSelectedDevice }) {
+function Header({ disableConnectButton, devices, eshellConnected, createSessionHandler, stopSessionHandler, setSelectedDevice, toggleShellFullscreen }) {
   function getEshellConnectButton() {
-    if (eshellConnected) {
-      return eshellConnectButton({
-        onClick: stopSessionHandler,
-        text: 'Stop connection...'
-      })
-    }
-    return eshellConnectButton({
-      onClick: createSessionHandler,
-      text: 'Create Session',
-      disabled: disableConnectButton,
-    })
-  }
-
-  function eshellConnectButton({ onClick, text, disabled=false }) {
     return (
       <ButtonSuccess
-        onClick={onClick}
-        disabled={disabled}
-      >{text}</ButtonSuccess>
+        onClick={createSessionHandler}
+        disabled={disableConnectButton}
+      >Connect</ButtonSuccess>
+    )
+  }
+
+  function getEshellDisconnectButton() {
+    return (
+      <ButtonDanger
+        onClick={stopSessionHandler}
+      >Stop Connection</ButtonDanger>
     )
   }
 
@@ -47,12 +39,16 @@ function Header({ disableConnectButton, devices, eshellConnected, createSessionH
           devices && devices.length > 0 &&
           (setSelectedDevice(devices[0]._id))
         }
-          <Select list={true} onChange={selectChangeHandler}>
+          <Select list={true} onChange={selectChangeHandler} disabled={eshellConnected}>
             {devices.map(device => (
               <Option key={device._id} data-id={device._id}>{device.name}</Option>
             ))}
           </Select>
-        { getEshellConnectButton() }
+        {
+          eshellConnected
+            ? getEshellDisconnectButton()
+            : getEshellConnectButton()
+        }
       </>
     )
   }
@@ -60,24 +56,14 @@ function Header({ disableConnectButton, devices, eshellConnected, createSessionH
   function rightHeader() {
     return (
       <>
-        <IconButton>
-          <ReactSVG src={searchIcon} beforeInjection={svg => {
-              svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #6f6f6f;')
-            }}
-          />
-        </IconButton>
-        <IconButton>
-          <ReactSVG src={fullscreenIcon} beforeInjection={svg => {
-              svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #6f6f6f;')
-            }}
-          />
-        </IconButton>
-        <IconButton>
-          <ReactSVG src={settingsIcon} beforeInjection={svg => {
-              svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #6f6f6f;')
-            }}
-          />
-        </IconButton>
+        {eshellConnected &&
+          <IconButton onClick={toggleShellFullscreen}>
+            <ReactSVG src={fullscreenIcon} beforeInjection={svg => {
+                svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #6f6f6f;')
+              }}
+            />
+          </IconButton>
+        }
       </>
     )
   }

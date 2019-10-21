@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom'
-import styled from 'styled-components/macro'
 import LostConnectionPage from '../LostConnectionPage'
 import Navigation from '../../utils/navigation/Navigation'
 import { DropdownMenuSeparator } from '../../utils/DropdownMenu'
@@ -46,14 +45,13 @@ function LoggedInPage({ children }) {
     if (mainSocketConnected) {
       return (
         <>
-          <HeaderStyled>
+          <header>
             <Navigation
               links={navLinks}
               profileLinks={profileLinks}
             ></Navigation>
-          </HeaderStyled>
+          </header>
           <main>{children}</main>
-          <footer></footer>
         </>
       )
     }
@@ -74,10 +72,6 @@ function LoggedInPage({ children }) {
     getPage()
   )
 }
-
-const HeaderStyled = styled.header`
-  height: 64px;
-`
 
 
 export default LoggedInPage

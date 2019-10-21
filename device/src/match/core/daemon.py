@@ -25,7 +25,6 @@ class MatchDaemon(object):
     """
     while self.running:
       time.sleep(1)
-    # time.sleep(5)
 
 
 class SendOnline(Thread):
@@ -36,14 +35,10 @@ class SendOnline(Thread):
     self.runnning = True
     self.offline = False
 
-  # self.start()
-
   def run(self):
     if self.match.access_token:
       while self.runnning:
         time.sleep(5)
-        # try:
-        # r = self.match.messenger.patch(self.match.lighter_url + self.match.messenger.hardware_url, data, auth=(self.match.messenger.username, self.match.messenger.password))
         r = self.match.messenger.post(self.match.lighter_url + "/hardware/online/",
                                       {"access_token": self.match.access_token})
         if r.status_code != 200:
@@ -54,9 +49,6 @@ class SendOnline(Thread):
         else:
           if self.offline == True:
             self.offline = False
-          # self.match.logger.log("PATCH to \"" + r.url + "\" was working: status_code: " + str(r.status_code) + "", "info")
           self.match.analyser.analyse(r.json())
-      # except:
-      # 	self.match.logger.log("ERROR on sending a PATCH for the time", "error")
     else:
       return False

@@ -1,18 +1,19 @@
-import React  from 'react'
 import SocketIO from '../socketio/SocketIO'
-
-import EShellTerm from './EShellTerm'
 
 
 class EShell {
   constructor() {
+    this.uniqueSessionId = 0
     this.sessions = []
   }
 
   createSession({ namespace='eshell', data, termCallbacks={} }={}) {
     const newSession = {
-      termInput: inputFunction => newSession.termInput = inputFunction,  // Crazy, but it works...
-      term: null,
+      sessionId: this.uniqueSessionId++,
+
+      input: inputFunction => newSession.input = inputFunction,  // Crazy, but it works...
+      output: data => this.send({ session: newSession, data }),
+      windowSizeChanged: (cols, rows) => this.send({ channel: 'term_size', session: newSession, data: {cols, rows} }),
 
       connected: false,
       isRdy: false,
@@ -21,12 +22,6 @@ class EShell {
       disconnect: () => this.disconnectSession(newSession),
       remove: () => this.removeSession(newSession),
     }
-
-    newSession.term = <EShellTerm
-      input={newSession.termInput}
-      output={data => this.send(newSession, data)}
-      {...termCallbacks}  // only if I want to rewrite the parameters, its not in use yet
-    />
 
     this.sessions = [...this.sessions, newSession]
 
@@ -48,8 +43,6 @@ class EShell {
     session.socket = socket
 
     socket.on('connect', () => {
-      console.log('ESHELL_SOCKET CONNECTED')
-      console.log(data)
       socket.emit('authenticate', {userId: data.userId, deviceId: data.deviceId})
 
       socket.on('authenticated', () => {
@@ -57,13 +50,6 @@ class EShell {
         session.connected = true
   
         socket.on('rdy', data => {
-          console.log('RDY FROM DEVICE')
-  
-          // TODO: OVERRIDE IS NOT WOKRING :(
-          // session = {
-          //   ...session,
-          //   ...data,
-          // }
           for (let [key, value] of Object.entries(data)) {
             session[key] = value
           }
@@ -71,7 +57,7 @@ class EShell {
           session.isRdy = true
         })
   
-        socket.on('msg', data => session.termInput(data.msg))
+        socket.on('msg', data => session.input(data))
       })
     })
 
@@ -82,12 +68,9 @@ class EShell {
     session.socket.disconnect()
   }
 
-  send(session, data) {
+  send({ channel='cmd', session, data }) {
     if (session.connected && session.isRdy) {
-      session.socket.emit('cmd', {
-        sessionId: session.id,
-        cmd: data,
-      })
+      session.socket.emit(channel, data)
     }
   }
 }

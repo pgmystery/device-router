@@ -7,19 +7,17 @@ class EShellSocket(SocketNamespace):
     super(EShellSocket, self).__init__(namespace)
     self.outputCallback = outputCallback
     self.connectedCallback = None
+    self.disconnectedCallback = None
     self.eshellSessionJoinedCallback = None
+    self.termSizeCallback = None
 
   def on_connect(self):
     if self.connectedCallback:
       self.connectedCallback()
 
-  # def connect(self):
-  # 	# self.client.v
-
-  def on_start_eshell(self, userId):
-    print(userId)
-
-  # self.emit("start_eshell", "accept", userId)  # Need the new eshell socket.id as parameter
+  def on_disconnect(self):
+    if self.disconnectedCallback:
+      self.disconnectedCallback(self.client)
 
   def on_eshell_session_joined(self, sessionData):
     if self.eshellSessionJoinedCallback:
@@ -27,6 +25,10 @@ class EShellSocket(SocketNamespace):
 
   def on_cmd(self, data):
     self.outputCallback(data)
+
+  def on_term_size(self, termSize):
+    if self.termSizeCallback:
+      self.termSizeCallback(termSize)
 
   def close(self):
     self.client.disconnect()
