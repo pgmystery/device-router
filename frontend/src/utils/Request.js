@@ -39,14 +39,24 @@ class Request {
   }
 
   send({ url=this.url, method='GET', id='', data }={}) {
-    return fetch(backendUrl + url + '/' + id, {
-      method,
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    return new Promise((resolve, reject) => {
+      fetch(backendUrl + url + '/' + id, {
+        method,
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => {
+        if (res.ok) {
+          resolve(res.json())
+        }
+        else {
+          reject(res.json())
+        }
+      })
+      .catch(res => reject(res.json()))
     })
-    .then(res => res.json())
   }
 }
 

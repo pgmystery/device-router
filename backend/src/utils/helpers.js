@@ -7,6 +7,9 @@ const sessionizeUser = user => ({
   id: user.id,
   username: user.username,
   picture: user.picture,
+  firstname: user.firstname,
+  secondname: user.secondname,
+  email: user.email,
 })
 
 const sliceKeysFromObject = (obj, list) => ({

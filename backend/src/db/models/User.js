@@ -65,6 +65,25 @@ userSchema.pre('save', function(next) {
   next()
 })
 
+userSchema.pre('findOneAndUpdate', function(next) {
+  if (this._update.firstname) {
+    this._update.firstname = this._update.firstname.trim()
+  }
+  if (this._update.secondname) {
+    this._update.secondname = this._update.secondname.trim()
+  }
+  if (this._update.username) {
+    this._update.username = this._update.username.trim()
+  }
+  if (this._update.email) {
+    this._update.email = this._update.email.trim()
+  }
+  if (this._update.password) {
+    this._update.password = hashSync(this._update.password, 10)
+  }
+  next()
+})
+
 userSchema.statics.doesNotExist = async function(field) {
   return await this.where(field).countDocuments() === 0
 }

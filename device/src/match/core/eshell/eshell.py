@@ -23,9 +23,9 @@ class EShell(object):
       print("ESHELL - SOCKET DISCONNECTED!")
       if hasattr(socket, 'sessionId'):
         if (socket.sessionId in self.sessions):
-            self.sessions[socket.sessionId].close()
-            del self.sessions[socket.sessionId]
-            print('ESHELL-SESSION STOPPED!')
+          self.sessions[socket.sessionId].close()
+          del self.sessions[socket.sessionId]
+          print('ESHELL-SESSION STOPPED!')
 
 
 class EShellSession(Thread):
@@ -94,6 +94,7 @@ class EShellSession(Thread):
       self.close()
 
   def close(self):
+    self.socket.client.disconnect()
     if (self.virtual_shell):
       self.virtual_shell.close()
     self.exit = True

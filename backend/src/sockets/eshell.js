@@ -51,12 +51,11 @@ class EshellSocket {
     const sessionId = Number(socket.handshake.headers['sessionid'])
     const deviceModel = await Device.findOne({accessToken: socket.handshake.headers['accesstoken']})
     const deviceId = deviceModel._id
-    if (
-      this.sessions.find(session =>
-        session.id === sessionId
-        && session.deviceId === String(deviceId)
-      ).status === 0
-    ) {
+    const session = this.sessions.find(session =>
+      session.id === sessionId
+      && session.deviceId === String(deviceId)
+    )
+    if (session && session.status === 0) {
       return true
     }
 

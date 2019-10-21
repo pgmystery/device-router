@@ -17,7 +17,7 @@ app.on('ready', function() {
     })
 
 // TODO: DELETE THIS BEFORE RELEASE!!!
-    // mainWindow.toggleDevTools()
+    mainWindow.toggleDevTools()
 // TODO: DELETE THIS BEFORE RELEASE!!!
 
     mainWindow.loadFile(path.join(__dirname, 'interface/index.html'))
