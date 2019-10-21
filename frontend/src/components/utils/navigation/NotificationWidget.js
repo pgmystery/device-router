@@ -227,7 +227,7 @@ const NotificationItemText = styled.p`
   text-align: center;
 `
 
-const NotificationItemIcon = styled.p`
+const NotificationItemIcon = styled.div`
   flex: 1;
   margin: auto;
 `

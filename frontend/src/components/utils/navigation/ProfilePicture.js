@@ -7,8 +7,8 @@ const mapStateToProps = ({ session }) => ({
   session
 })
 
-function ProfilePicture({ session }) {
-  return <ProfilePictureStyled src={'data:image/png;base64,' + session.picture} />
+function ProfilePicture({ session, className }) {
+  return <ProfilePictureStyled src={'data:image/png;base64,' + session.picture} className={className} />
 }
 
 const ProfilePictureStyled = styled.img`

@@ -6,7 +6,7 @@ import { Terminal } from "xterm"
 import { FitAddon } from 'xterm-addon-fit';
 
 
-function EShellTerm({ input, output, windowSizeChanged, fullscreen=false }) {
+function EShellTerm({ input, output, windowSizeChanged, fullscreen=false, className }) {
   // const [fitAddon, setFitAddon] = useState(new FitAddon())
   const [term, setTerm] = useState(new Terminal())
   const [windowWidth, windowHeight] = useWindowSize()
@@ -58,7 +58,7 @@ function EShellTerm({ input, output, windowSizeChanged, fullscreen=false }) {
   }
 
   return (
-    <TermContainer fullscreen={fullscreen} ref={measuredRef} />
+    <TermContainer className={className} fullscreen={fullscreen} ref={measuredRef} />
   )
 }
 

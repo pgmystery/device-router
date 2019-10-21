@@ -83,7 +83,7 @@ function EShellPage({ session, location }) {
   }
 
   return (
-    <Wrapper>
+    <WrapperStyled flex={true}>
       <Header
         devices={devices}
         eshellConnected={eshellConnected}
@@ -95,7 +95,7 @@ function EShellPage({ session, location }) {
           setCurrentSessionFullscreen(!currentSessionFullscreen)}}
       />
       { eshellSessions.length > 0
-          ? eshellSessions.map(session => <EShellTerm
+          ? eshellSessions.map(session => <EShellTermStyled
               key={session.sessionId}
               input={session.input}
               output={session.output}
@@ -112,13 +112,23 @@ function EShellPage({ session, location }) {
               }}/>
           </CloseFullscreenButton>
       }
-    </Wrapper>
+    </WrapperStyled>
   )
 
   function getDeviceList() {
     return request.get({url: '/api/device?online=true'})
   }
 }
+
+const WrapperStyled = styled(Wrapper)`
+  flex-direction: column;
+  height: 100%;
+`
+
+const EShellTermStyled = styled(EShellTerm)`
+  flex-grow: 1;
+  margin-bottom: 20px;
+`
 
 const NoSessionsText = styled.p`
   color: #a6a6a6;

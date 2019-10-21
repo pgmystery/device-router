@@ -74,6 +74,7 @@ function Header({ disableConnectButton, devices, eshellConnected, createSessionH
 }
 
 const PageHeaderStyled = styled(PageHeader)`
+  flex-shrink: 0;
   height: auto;
 `
 
