@@ -148,7 +148,10 @@ const StepBox = styled.div`
   border-radius: 2%;
   text-align: center;
   cursor: pointer;
-  transition: transform .2s ease-in-out;
+
+  svg.mainIcon {
+    transition: transform 0.3s ease-in-out;
+  }
 
   :hover {
     background-color: #f0f0f0;
