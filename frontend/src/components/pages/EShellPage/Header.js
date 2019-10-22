@@ -12,7 +12,7 @@ function Header({ connectToDevice, disableConnectButton, devices, eshellConnecte
   function getEshellConnectButton() {
     return (
       <ButtonSuccess
-        onClick={createSessionHandler}
+        onClick={() => createSessionHandler()}
         disabled={disableConnectButton}
       >Connect</ButtonSuccess>
     )
