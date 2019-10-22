@@ -129,7 +129,7 @@ function Profile({ session }) {
             <HalfWidthWrapper>
               <Label>E-Mail:</Label>
               <LabelInputStyled
-                type="text"
+                type="email"
                 name="email"
                 placeholder="E-Mail"
                 value={email}
