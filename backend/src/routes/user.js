@@ -2,10 +2,12 @@ const Router = require('express').Router
 const User = require('../db/models/User')
 const { signUp } = require('../validations/user')
 const { parseError, sessionizeUser, sliceKeysFromObject } = require('../utils/helpers')
+const RegisterToken = require('../db/models/RegisterToken')
+const Device = require('../db/models/Device')
 
-const userRoutes = Router()
+const userRouter = Router()
 
-userRoutes.post('', async (req, res) => {
+userRouter.post('', async (req, res) => {
   try {
     const fields = sliceKeysFromObject(req.body, signUp._ids._byKey.keys())
     await signUp.validateAsync(fields)
@@ -21,7 +23,7 @@ userRoutes.post('', async (req, res) => {
   }
 })
 
-userRoutes.patch('', async (req, res) => {
+userRouter.patch('', async (req, res) => {
   try {
     const userId = req.session.user.id
   
@@ -39,5 +41,20 @@ userRoutes.patch('', async (req, res) => {
   }
 })
 
+userRouter.get('/dashboard', async (req, res) => {
+  try {
+    const userId = req.session.user.id
+  
+    const userModel = await User.findById(userId)
+    const registerTokens = await RegisterToken.find({userId})
+    const devices = await Device.find({userId})
+  
+    res.send({registerTokens, devices, connectedToDevice: userModel.connectedToDevice})
+  }
+  catch(err) {
+    res.status(400).send(parseError(err))
+  }
+})
 
-module.exports = userRoutes
+
+module.exports = userRouter

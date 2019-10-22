@@ -6,6 +6,7 @@ class EshellSocket {
     this.io = io
     this.eshellSessionUniqueNumber = 0
     this.sessions = []
+    this.userSessions = {}
     this.deviceSocket = deviceSocket
     this.eshellChannel = io.of('/eshell')
 
@@ -98,6 +99,8 @@ class EshellSocket {
       status: 0
     })
 
+    this.userSessions[socket.id] = data.userId
+
     socket.join('eshell-' + eshellSession.id)
 
     const deviceSocketId = Object.keys(this.deviceSocket.connectedDevices).find(key => String(this.deviceSocket.connectedDevices[key]) === String(data.deviceId))
@@ -110,14 +113,16 @@ class EshellSocket {
 
       const eshellSession = this.sessions.find(session => session.user === socket.id)
 
-      this.eshellChannel.in('eshell-' + eshellSession.id).clients((err, clients) => {
-        if (!err) {
-          if (clients.length == 1) {
-            this.eshellChannel.connected[clients[0]].disconnect()
+      if (eshellSession) {
+        this.eshellChannel.in('eshell-' + eshellSession.id).clients((err, clients) => {
+          if (!err) {
+            if (clients.length == 1) {
+              this.eshellChannel.connected[clients[0]].disconnect()
+            }
           }
-        }
-      })
-      this.removeSession(eshellSession)
+        })
+        this.removeSession(eshellSession)
+      }
     })
 
     socket.on('cmd', cmd => this.sendToDevice(socket, 'cmd', eshellSession.id, cmd))
@@ -143,7 +148,7 @@ class EshellSocket {
     eshellSession.status = 1
     socket.emit('eshell_session_joined', eshellSession)
 
-    socket.on('rdy', sessionId => {
+    socket.on('rdy', async sessionId => {
       console.log('rdy from device!!!s')
       const eshellSession = this.sessions.find(session =>
           session.id === sessionId
@@ -154,6 +159,9 @@ class EshellSocket {
 
       socket.broadcast.to('eshell-' + eshellSession.id).emit('rdy', eshellSession)
       eshellSession.status = 2
+
+      const userId = this.userSessions[String(eshellSession.user)]
+      await User.findByIdAndUpdate(userId, {connectedToDevice: true}, {useFindAndModify: true})
     })
 
     socket.on('disconnect', () => {
@@ -161,12 +169,14 @@ class EshellSocket {
 
       const eshellSession = this.sessions.find(session => session.deviceSocket === socket.id)
 
-      this.eshellChannel.in('eshell-' + eshellSession.id).clients((err, clients) => {
-        if (!err) {
-          clients.forEach(client => this.eshellChannel.connected[client].disconnect())
-        }
-      })
-      this.removeSession(eshellSession)
+      if (eshellSession) {
+        this.eshellChannel.in('eshell-' + eshellSession.id).clients((err, clients) => {
+          if (!err) {
+            clients.forEach(client => this.eshellChannel.connected[client].disconnect())
+          }
+        })
+        this.removeSession(eshellSession)
+      }
     })
 
     socket.on('msg', msg => this.msgHandlerDevice(socket, eshellSession.id, msg))
@@ -180,13 +190,15 @@ class EshellSocket {
   }
 
   removeSession(session) {
-    if (session.id && this.sessions > 0) {
-      sessionIndex = this.sessions.findIndex(itemSession = itemSession.id === session.id)
+    if (session.id >= 0 && this.sessions.length > 0) {
+      const sessionIndex = this.sessions.findIndex(itemSession => itemSession.id === session.id)
       if (sessionIndex >= 0) {
         this.sessions = [
           ...this.sessions.slice(0, sessionIndex),
           ...this.sessions.slice(sessionIndex + 1),
         ]
+
+        delete this.userSessions[session.user]
       }
     }
   }
