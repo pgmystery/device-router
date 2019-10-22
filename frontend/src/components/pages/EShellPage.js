@@ -28,10 +28,14 @@ function EShellPage({ session, location }) {
 
   useEffect(() => {
     getDeviceList().then(deviceList => setDevices(deviceList.devices))
+    const deviceToConnectAtStart = location.device
+    if (deviceToConnectAtStart) {
+      startEshellConnection(deviceToConnectAtStart._id)
+    }
   }, [])
 
-  function createEShellSession() {
-    let currentEShellSessions = eshellSessions
+  function createEShellSession(deviceId=null) {
+  let currentEShellSessions = eshellSessions
 
     if (currentEShellSession) {
       currentEShellSession.remove()
@@ -41,11 +45,12 @@ function EShellPage({ session, location }) {
         ...currentEShellSessions.slice(sessionIndex + 1)
       ]
     }
+
     const newSession = 
       eshell.createSession({
         data: {
           userId: session.id,
-          deviceId: selectedDevice,
+          deviceId: deviceId ? deviceId : selectedDevice,
         },
         termCallbacks: {
           fullsreen: currentSessionFullscreen,
@@ -63,10 +68,10 @@ function EShellPage({ session, location }) {
     return newSession
   }
 
-  function startEshellConnection() {
+  function startEshellConnection(deviceId=null) {
     setEshellConnectionStarted(true)
 
-    const newSession = createEShellSession()
+    const newSession = createEShellSession(deviceId)
 
     const eshellSocket = newSession.connect()
 
@@ -85,6 +90,7 @@ function EShellPage({ session, location }) {
   return (
     <WrapperStyled flex={true}>
       <Header
+        connectToDevice={location.device}
         devices={devices}
         eshellConnected={eshellConnected}
         createSessionHandler={startEshellConnection}

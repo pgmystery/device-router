@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components/macro'
 import ReactSVG from 'react-svg'
 
@@ -8,7 +8,7 @@ import Select, { Option } from '../../utils/Select'
 import fullscreenIcon from '../../images/fullscreen2_icon.svg'
 
 
-function Header({ disableConnectButton, devices, eshellConnected, createSessionHandler, stopSessionHandler, setSelectedDevice, toggleShellFullscreen }) {
+function Header({ connectToDevice, disableConnectButton, devices, eshellConnected, createSessionHandler, stopSessionHandler, setSelectedDevice, toggleShellFullscreen }) {
   function getEshellConnectButton() {
     return (
       <ButtonSuccess
@@ -39,7 +39,7 @@ function Header({ disableConnectButton, devices, eshellConnected, createSessionH
           devices && devices.length > 0 &&
           (setSelectedDevice(devices[0]._id))
         }
-          <Select list={true} onChange={selectChangeHandler} disabled={eshellConnected}>
+          <Select list={true} onChange={selectChangeHandler} disabled={eshellConnected} value={connectToDevice && connectToDevice.name}>
             {devices.map(device => (
               <Option key={device._id} data-id={device._id}>{device.name}</Option>
             ))}
