@@ -8,13 +8,18 @@ import Wrapper from '../utils/Wrapper'
 import Label from '../utils/Label'
 import LabelInput from '../utils/inputs/LabelInput'
 import ProfilePicture from '../utils/navigation/ProfilePicture'
+import { updateSession } from '../../actions/session'
 
 
 const mapStateToProps = ({ session }) => ({
   session
 })
 
-function Profile({ session }) {
+const mapDispatchToProps = dispatch => ({
+  updateSession: user => dispatch(updateSession(user))
+})
+
+function Profile({ session, updateSession }) {
   const [username, setUsername] = useState(session.username)
   const [firstname, setFirstname] = useState(session.firstname)
   const [secondname, setSecondname] = useState(session.secondname)
@@ -22,42 +27,48 @@ function Profile({ session }) {
   const [newPasswordConfirm, setNewPasswordConfirm] = useState('')
   const [email, setEmail] = useState(session.email)
 
-  async function changeProfile([state, setState], type, newValue) {
+  function changeProfile([state, setState], type, newValue) {
     if (newValue.length > 0 && newValue !== state) {
       return request.patch({ url: '/api/users', data: {[type]: newValue}})
         .then(newProfileData => {
           if (setState) {
             setState(newProfileData[type])
+            updateSession(newProfileData)
           }
+          return true
         })
-        .catch(err => console.error(err))
+        .catch(() => false)
     }
   }
 
-  async function newPasswordChanged(password) {
+  function newPasswordChanged(password) {
     if (newPassword !== password ) {
       setNewPassword(password)
 
       if (password.length > 0 && password === newPasswordConfirm) {
-        changeProfile([newPassword, null], 'password', password)
+        return changeProfile([newPassword, null], 'password', password)
           .then(() => {
             setNewPassword('')
             setNewPasswordConfirm('')
+            return true
           })
+          .catch(() => false)
       }
     }
   }
 
-  async function newPasswordConfirmChanged(password) {
+  function newPasswordConfirmChanged(password) {
     if (newPasswordConfirm !== password ) {
       setNewPasswordConfirm(password)
 
       if (password.length > 0 && password === newPassword) {
-        changeProfile([newPasswordConfirm, null], 'password', password)
+        return changeProfile([newPasswordConfirm, null], 'password', password)
           .then(() => {
             setNewPassword('')
             setNewPasswordConfirm('')
+            return true
           })
+          .catch(() => false)
       }
     }
   }
@@ -180,5 +191,6 @@ const TwoFieldWrapper = styled.div`
 
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Profile)

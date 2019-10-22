@@ -60,7 +60,7 @@ function DeviceRegisterPage() {
           delete:
             <ButtonDelete onClick={() => deleteRegisterToken(item._id)}>
               <ReactSVG src={deleteIcon} beforeInjection={svg => {
-                  svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #ffffff;')
+                  svg.setAttribute('style', 'width: 16px; height: 16px; display: flex; fill: #ffffff;')
                 }}
               />
             </ButtonDelete>,
@@ -115,8 +115,6 @@ export const TextSpan = styled.span`
 
 export const IconButton = styled(Button)`
   display: inline-flex;
-  padding: 0;
-  margin: 0 0 0 10px;
   min-height: 16px;
   min-width: 16px;
   border: 1px solid #c9c9ca;
