@@ -87,6 +87,7 @@ function Dashboard({ session }) {
         }
         <ReactSVG src={icon} beforeInjection={svg => {
           svg.setAttribute('style', `width: 100px; height: 100px; fill: ${done ? '#28a745' : '#00649f'};`)
+          svg.classList.add('mainIcon')
         }} />
         { arrowRight && <ArrowRight done={done}/> }
       </StepBox>
@@ -147,9 +148,14 @@ const StepBox = styled.div`
   border-radius: 2%;
   text-align: center;
   cursor: pointer;
+  transition: transform .2s ease-in-out;
 
   :hover {
     background-color: #f0f0f0;
+
+    svg.mainIcon {
+      transform: scale(1.1);
+    }
   }
 `
 
