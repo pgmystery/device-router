@@ -107,13 +107,13 @@ async function check_device(loginData) {
                 .then(device_version => {
                     rounector.data['device_type'] = device_name
                     rounector.data['device_version'] = device_version
-                    loadFrameNext()
+                    return loadFrameNext()
                 })
                 .catch(err => {
                     dialog.showMessageBox(null, {
                         type: 'error',
                         title: 'Error!',
-                        message: err,
+                        message: String(err),
                     })
                 })
         })
@@ -124,10 +124,11 @@ async function check_device(loginData) {
             checkVersion(loginData, version)
                 .then(device_version => {
                     rounector.data['device_version'] = device_version
-                    loadFrameNext()
+                    return loadFrameNext()
                 })
         })
     }
+    alert('Connection denied')
 }
 
 async function checkVersion(loginData, device_versions) {
@@ -138,25 +139,12 @@ async function checkVersion(loginData, device_versions) {
             server: loginData,
             commands: [ cmd ]
         }
-        return new Promise((resolve, reject) => {
+        await new Promise((resolve, reject) => {
             rounector.connect(host, result => {
                 if (result.includes(validateString)) {
                     resolve(version.replace(/_/g, '.'))
-                }
-                else {
-                    reject('Connection denied')
                 }
             })
         })
     }
 }
-
-// ip_type, ipv4
-// ssh_ipv4, 192.168.1.1
-// ssh_ipv6,
-// ssh_port, 22
-// ssh_username, vyos
-// password_type, password
-// key_type, rsa
-// key_path,
-// ssh_password, vyos

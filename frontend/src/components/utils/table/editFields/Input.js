@@ -8,7 +8,7 @@ import { TextSpan, IconButton } from '../Table'
 import pencilIcon from '../../../images/pencil_icon.svg'
 
 
-function Input({ text, onChanged, name="input"}) {
+function Input({ text, onChanged, name="input", icon=true}) {
   const [textValue, setTextValue] = useState(text)
   const [inputValue, setInputValue] = useState(text)
   const [onEditing, setOnEditing] = useState(false)
@@ -46,11 +46,14 @@ function Input({ text, onChanged, name="input"}) {
             </FormStyled>
           : <TextSpan onClick={() => setOnEditing(true)}>{textValue}</TextSpan>
       }
-      <IconButton onClick={() => setOnEditing(!onEditing)}>
-        <ReactSVG src={pencilIcon} beforeInjection={svg => {
-          svg.setAttribute('style', 'width: 16px; height: 16px; display: flex;')
-        }} />
-      </IconButton>
+      {
+        icon
+        &&<IconButton onClick={() => setOnEditing(!onEditing)}>
+            <ReactSVG src={pencilIcon} beforeInjection={svg => {
+              svg.setAttribute('style', 'width: 16px; height: 16px; display: flex;')
+            }} />
+          </IconButton>
+      }
     </>
   )
 }

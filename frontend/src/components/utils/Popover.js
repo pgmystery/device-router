@@ -25,6 +25,7 @@ function Popover({ body, header, className }) {
 }
 
 const PopoverStyled = styled.div`
+  z-index: 10;
   position: absolute;
   top: 40px;
   min-width: 250px;

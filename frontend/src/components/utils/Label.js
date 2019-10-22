@@ -2,9 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 
 
-function Label({ children, className }) {
+function Label(props) {
+  const { children, className } = props
+
   return(
-    <LabelStyled className={className}>{children}</LabelStyled>
+    <LabelStyled className={className} {...props}>{children}</LabelStyled>
   )
 }
 

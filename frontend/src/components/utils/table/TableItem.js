@@ -31,11 +31,6 @@ const TableItemText = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  :hover {
-    word-wrap: break-word;
-    hyphens: auto;
-  }
 `
 
 

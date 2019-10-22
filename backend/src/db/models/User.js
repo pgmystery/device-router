@@ -33,9 +33,8 @@ const userSchema = new mongoose.Schema({
   picture: {
     type: String,
   },
-  devices: {
-    type: Array,
-    default: [],
+  date: {
+    type: Date,
   }
 },
   {
@@ -48,11 +47,11 @@ userSchema.pre('save', function(next) {
   this.secondname = this.secondname.trim()
   this.username = this.username.trim()
   this.email = this.email.trim()
+  this.date = new Date()
   this.isEmailVerified = false
   if (this.isModified('password')) {
     this.password = hashSync(this.password, 10)
   }
-  this.devices = []
   if (this.picture == undefined) {
     const hash = makeHash(this.username.hashCode().length)
     options = {
@@ -62,6 +61,25 @@ userSchema.pre('save', function(next) {
       size: 420,
     }
     this.picture = new Identicon(hash, options).toString()
+  }
+  next()
+})
+
+userSchema.pre('findOneAndUpdate', function(next) {
+  if (this._update.firstname) {
+    this._update.firstname = this._update.firstname.trim()
+  }
+  if (this._update.secondname) {
+    this._update.secondname = this._update.secondname.trim()
+  }
+  if (this._update.username) {
+    this._update.username = this._update.username.trim()
+  }
+  if (this._update.email) {
+    this._update.email = this._update.email.trim()
+  }
+  if (this._update.password) {
+    this._update.password = hashSync(this._update.password, 10)
   }
   next()
 })
