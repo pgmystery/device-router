@@ -11,6 +11,7 @@ import plusIcon from '../images/plus_icon.svg'
 import reloadIcon from '../images/reload_icon.svg'
 import rounectorFile from '../../files/rounector/Rounector.dmg'
 import LinkUnstyled from '../utils/LinkUnstyled'
+import AnchorUnstyled from '../utils/AnchorUnstyled'
 
 import Table from '../utils/table/Table'
 import Input from '../utils/table/editFields/Input'
@@ -123,12 +124,6 @@ export const IconButton = styled(Button)`
 
 const ButtonDelete = styled(ButtonDanger)`
   margin: auto;
-`
-
-const AnchorUnstyled = styled.a`
-  color: inherit;
-  text-decoration: inherit;
-  cursor: inherit;
 `
 
 const RefreshButton = styled(Button)`

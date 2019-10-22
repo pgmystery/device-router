@@ -1,6 +1,7 @@
 const User = require('../db/models/User')
 const Notification = require('../db/models/Notification')
 
+
 class UserSocket {
   constructor(io) {
     this.io = io

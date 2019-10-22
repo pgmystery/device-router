@@ -37,11 +37,13 @@ class DeviceSocket {
       socket.on('disconnect', async () => {
         const deviceModel = await Device.findByIdAndUpdate(deviceId, {online: false}, {useFindAndModify: false})
 
-        Notification.create({
-          userId: deviceModel.userId,
-          title: `${deviceModel.name} goes Offline`,
-          msg: `${deviceModel.name} is now OFFLINE!`,
-        })
+        if (deviceModel) {
+          Notification.create({
+            userId: deviceModel.userId,
+            title: `${deviceModel.name} goes Offline`,
+            msg: `${deviceModel.name} is now OFFLINE!`,
+          })
+        }
 
         delete this.connectedDevices[socket.id]
       })

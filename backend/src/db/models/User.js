@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
   },
   date: {
     type: Date,
+  },
+  connectedToDevice: {
+    type: Boolean,
+    default: false,
   }
 },
   {
@@ -48,6 +52,7 @@ userSchema.pre('save', function(next) {
   this.username = this.username.trim()
   this.email = this.email.trim()
   this.date = new Date()
+  this.connectedToDevice = false
   this.isEmailVerified = false
   if (this.isModified('password')) {
     this.password = hashSync(this.password, 10)
