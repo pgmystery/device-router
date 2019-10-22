@@ -23,6 +23,10 @@ export const login = user => async dispatch => {
   return dispatch(receiveErrors(data))
 }
 
+export const updateSession = user => async dispatch => {
+  return dispatch(receiveCurrentUser(user))
+}
+
 export const register = user => async dispatch => {
   const response = await apiUtil.register(user)
   const data = await response.json()
