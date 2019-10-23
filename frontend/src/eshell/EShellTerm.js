@@ -84,6 +84,7 @@ const TermContainer = styled.div`
   top: 0;
   bottom: 0;
   position: ${({ fullscreen }) => fullscreen ? 'fixed' : 'static'};
+  z-index: 200;
 `
 
 
