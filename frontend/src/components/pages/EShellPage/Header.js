@@ -8,7 +8,7 @@ import Select, { Option } from '../../utils/Select'
 import fullscreenIcon from '../../images/fullscreen2_icon.svg'
 
 
-function Header({ connectToDevice, disableConnectButton, devices, eshellConnected, createSessionHandler, stopSessionHandler, setSelectedDevice, toggleShellFullscreen }) {
+function Header({ connectToDevice, disableConnectButton, devices, eshellConnected, createSessionHandler, stopSessionHandler, setSelectedDeviceId, toggleShellFullscreen }) {
   function getEshellConnectButton() {
     return (
       <ButtonSuccess
@@ -29,7 +29,7 @@ function Header({ connectToDevice, disableConnectButton, devices, eshellConnecte
   function selectChangeHandler(e) {
     const index = e.target.selectedIndex
     const optionElement = e.target.childNodes[index]
-    setSelectedDevice(optionElement.dataset.id)
+    setSelectedDeviceId(optionElement.dataset.id)
   }
 
   function leftHeader() {
@@ -37,7 +37,7 @@ function Header({ connectToDevice, disableConnectButton, devices, eshellConnecte
       <>
         {
           devices && devices.length > 0 &&
-          (setSelectedDevice(devices[0]._id))
+          (setSelectedDeviceId(devices[0]._id))
         }
           <Select list={true} onChange={selectChangeHandler} disabled={eshellConnected} value={connectToDevice && connectToDevice.name}>
             {devices.map(device => (

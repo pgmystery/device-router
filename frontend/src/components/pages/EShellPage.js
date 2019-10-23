@@ -24,13 +24,12 @@ function EShellPage({ session, location }) {
   const [currentSessionFullscreen, setCurrentSessionFullscreen] = useState(false)
   const [eshellConnectionStarted, setEshellConnectionStarted] = useState(false)
   const [eshellConnected, setEshellConnected] = useState(false)
-  const [selectedDevice, setSelectedDevice] = useState()
+  const [selectedDeviceId, setSelectedDeviceId] = useState()
 
   useEffect(() => {
     getDeviceList().then(deviceList => setDevices(deviceList.devices))
-    const deviceToConnectAtStart = location.device
-    if (deviceToConnectAtStart) {
-      startEshellConnection(deviceToConnectAtStart._id)
+    if (location.device) {
+      startEshellConnection(location.device._id)
     }
   }, [])
 
@@ -50,7 +49,7 @@ function EShellPage({ session, location }) {
       eshell.createSession({
         data: {
           userId: session.id,
-          deviceId: deviceId ? deviceId : selectedDevice,
+          deviceId: deviceId ? deviceId : selectedDeviceId,
         },
         termCallbacks: {
           fullsreen: currentSessionFullscreen,
@@ -96,7 +95,7 @@ function EShellPage({ session, location }) {
           eshellConnected={eshellConnected}
           createSessionHandler={startEshellConnection}
           stopSessionHandler={stopEshellConnection}
-          setSelectedDevice={setSelectedDevice}
+          setSelectedDeviceId={setSelectedDeviceId}
           disableConnectButton={eshellConnectionStarted || devices.length === 0}
           toggleShellFullscreen={() => {
             setCurrentSessionFullscreen(!currentSessionFullscreen)}}
@@ -130,9 +129,9 @@ function EShellPage({ session, location }) {
 
 const EShellPageStyled = styled.div`
   display: flex;
+  flex-direction: column;
   margin: 0 auto;
   width: 100%;
-  flex-direction: column;
   height: 100%;
 `
 
@@ -144,8 +143,7 @@ const WrapperStyled = styled(Wrapper)`
 const EShellTermStyled = styled(EShellTerm)`
   flex-grow: 1;
   margin-bottom: 20px;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding: 0 12px;
 `
 
 const NoSessionsText = styled.p`
