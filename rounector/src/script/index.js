@@ -14,5 +14,7 @@ document.getElementById('exit')
 )
 
 function showLoadingScreen(state) {
-  document.getElementById('loading_screen').classList.toggle('hide', !state)
+  const loadingScreen = document.getElementById('loading_screen')
+  loadingScreen.classList.toggle('hide', !state)
+  loadingScreen.focus()
 }

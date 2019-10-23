@@ -4,7 +4,7 @@ frameFunctions['rounection'] = startRounection
 loadFrame('rounection')
 
 
-const progressbarSteps = 6
+const progressbarSteps = 7
 
 const rounection_status = document.getElementById('rounection_status')
 const rounection_progessBar = document.getElementById('rounection_progess')
@@ -187,7 +187,7 @@ function startMatch2(command, response, sshObj) {
     }
     else if (responseLine === 'MATCH-DONE') {
       progress = 'cleanUp'
-      setProgress('Finish installation...')
+      setProgress('install App...')
       sshObj.commands.push('rm /tmp/match.tar')
       sshObj.commands.push('rm -R /tmp/match')
       sshObj.commands.push('echo "CLEAN-UP-DONE"')
@@ -198,6 +198,7 @@ function startMatch2(command, response, sshObj) {
 function cleanUp(command, response, sshObj) {
   response.forEach(responseLine => {
     if (responseLine === 'CLEAN-UP-DONE') {
+      setProgress('Finish!')
       progress = 'done'
       flashWindow()
       dialog.showMessageBox(null, {
