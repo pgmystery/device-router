@@ -12,3 +12,7 @@ document.getElementById('exit')
     closeApp()
   }
 )
+
+function showLoadingScreen(state) {
+  document.getElementById('loading_screen').classList.toggle('hide', !state)
+}

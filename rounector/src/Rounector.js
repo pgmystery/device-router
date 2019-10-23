@@ -13,10 +13,11 @@ class Rounector {
             value: this.url.replace('http://', '')
         })
           .then(r => {
-              if (r !== null) {
-                  this.url = 'http://' + r
-              }
-              this.afterUrlPromp.forEach(callback => callback())
+            if (r == null) {
+                closeApp()
+            }
+            this.url = 'http://' + r
+            this.afterUrlPromp.forEach(callback => callback())
           })
     }
 
@@ -34,29 +35,26 @@ class Rounector {
     //  - device_name
     //  - device_info_description
     //  - device_info_id
-    rounection() {
-        const steps = 10
 
-    // CHECK IF THE SERVER IS AVAILABLE:
-        try {
-            this.request.open('GET', this.url, false)
-            this.request.send(null)
-            if (this.request.status !== 200) {
-                return false
+    connect(host, showError=true) {
+        return new Promise((resolve, reject) => {
+            host.onError = err => {
+                if (showError) {
+                    showLoadingScreen(false)
+                    dialog.showMessageBox(null, {
+                        type: 'error',
+                        title: 'Error!',
+                        message: String(err),
+                    })
+                }
+                reject(err)
             }
-        }
-        catch (e) {
-            console.log(e)
-            dialog.showErrorBox('No connection to the webserver', 'Could not connect to the webserver!')
-            return false
-        }
-        console.log("DONE!")
-        return true
-    }
-
-    connect(host, callback) {
-        const SSH = new SSH2shell(host)
-        SSH.connect(callback)
+            host.onEnd = result => {
+                resolve(result)
+            }
+            const SSH = new SSH2shell(host)
+            SSH.connect()
+        })
     }
 
     async connectShell(loginData) {
