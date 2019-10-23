@@ -106,6 +106,7 @@ async function start_connect() {
         }
     }
     catch(err) {
+        console.error(err)
         showLoadingScreen(false)
         alert('Connection denied...')
     }
@@ -152,7 +153,10 @@ async function checkVersion(loginData, device_versions) {
         }
         const result = await rounector.connect(host, false)
         if (result.includes(validateString)) {
-            return version.replace(/_/g, '.')
+            if (version) {
+                return version.replace(/_/g, '.')
+            }
         }
     }
+    throw new Error('Device not supportet')
 }

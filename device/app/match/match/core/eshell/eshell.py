@@ -58,13 +58,10 @@ class EShellSession(Thread):
     print("ESHELL - VIRTUAL-SHELL STARTET")
 
   def on_cmd(self, data):
-    print('ON_CMD!!!')
-    print(data)
     self.send_cmd(data)
 
   def on_term_size_changed(self, termSize):
     if self.virtual_shell:
-      print(termSize)
       self.virtual_shell.setWindowSize(termSize['cols'], termSize['rows'])
 
   def createVirtualShell(self):

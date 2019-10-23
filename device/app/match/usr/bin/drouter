@@ -94,18 +94,18 @@ def restart(args):
 def status(args):
 	u"""Return the status of the 'match'-service"""
 	if is_match_running():
-		console_print(u"The \"match\"-service is running! (\033[1;32;40m ONLINE)")
+		console_print(u"The \"match\"-service is running! (\x1b[32;1mONLINE\x1b[0m)")
 	else:
-		console_print(u"The \"match\-service is NOT running! (\033[1;31;40m OFFLINE)")
+		console_print(u"The \"match\-service is NOT running! (\x1b[31;1mOFFLINE\x1b[0m)")
 
-@command
-def update(args):
-	u"""Check for updates and update the 'match'-service if necessary"""
-	if not is_match_running():
-		return console_print(u"The \"match\"-service is not running!")
-	if not run_match_command("update"):
-		return console_print(u"Could not update the \"match\"-service!")
-	# console_print(u"\"match\"-service stopped!")
+# @command
+# def update(args):
+# 	u"""Check for updates and update the 'match'-service if necessary"""
+# 	if not is_match_running():
+# 		return console_print(u"The \"match\"-service is not running!")
+# 	if not run_match_command("update"):
+# 		return console_print(u"Could not update the \"match\"-service!")
+# 	# console_print(u"\"match\"-service stopped!")
 
 
 def is_match_running():
