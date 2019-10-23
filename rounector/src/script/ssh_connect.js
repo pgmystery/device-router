@@ -63,9 +63,9 @@ document.getElementById('ssh_connect_form').addEventListener('submit', e => {
     start_connect()
 })
 
-function start_connect() {
+async function start_connect() {
+    showLoadingScreen(true)
     const ssh_connect_data = new FormData(document.querySelector('form'))
-    // TODO: LOADING_SCREEN
     const loginData = {}
     const ip_type = ssh_connect_data.get('ip_type')
     rounector.data['ssh_method'] = ip_type
@@ -94,41 +94,52 @@ function start_connect() {
         loginData.passPhrase = rounector.data['ssh_password']
     }
     rounector.data['loginData'] = loginData
-    check_device(loginData)
+    try {
+        const status = await check_device(loginData)
+        if (status) {
+            showLoadingScreen(false)
+            loadFrameNext()
+        }
+        else {
+            showLoadingScreen(false)
+            alert('Connection denied...')
+        }
+    }
+    catch(err) {
+        showLoadingScreen(false)
+        alert('Connection denied...')
+    }
 }
 
 async function check_device(loginData) {
     const device_type = rounector.data['device_type']
-
     if (typeof device_type === 'object') {
-        device_type.forEach(device => {
+        for (let i=0; i < device_type.length; i++) {
+            const device = device_type[i]
             const device_name = device.name
-            checkVersion(loginData, device.version)
-                .then(device_version => {
-                    rounector.data['device_type'] = device_name
-                    rounector.data['device_version'] = device_version
-                    return loadFrameNext()
-                })
-                .catch(err => {
-                    dialog.showMessageBox(null, {
-                        type: 'error',
-                        title: 'Error!',
-                        message: String(err),
-                    })
-                })
-        })
+            try {
+                const device_version = await checkVersion(loginData, device.version)
+                rounector.data['device_type'] = device_name
+                rounector.data['device_version'] = device_version
+                return true
+            }
+            catch(err) {}
+        }
     }
     else if (typeof device_type === 'string') {
         const device_versions = rounector.data['device_version']
-        Object.keys(device_versions).forEach(version => {
-            checkVersion(loginData, version)
-                .then(device_version => {
-                    rounector.data['device_version'] = device_version
-                    return loadFrameNext()
-                })
-        })
+        const device_versions_keys = Object.keys(device_versions)
+        for (let i=0; i < device_versions_keys.length; i++) {
+            const version = device_versions_keys[i]
+            try {
+                const device_version = await checkVersion(loginData, version)
+                rounector.data['device_version'] = device_version
+                return true
+            }
+            catch(err) {}
+        }
     }
-    alert('Connection denied')
+    return false
 }
 
 async function checkVersion(loginData, device_versions) {
@@ -139,12 +150,9 @@ async function checkVersion(loginData, device_versions) {
             server: loginData,
             commands: [ cmd ]
         }
-        await new Promise((resolve, reject) => {
-            rounector.connect(host, result => {
-                if (result.includes(validateString)) {
-                    resolve(version.replace(/_/g, '.'))
-                }
-            })
-        })
+        const result = await rounector.connect(host, false)
+        if (result.includes(validateString)) {
+            return version.replace(/_/g, '.')
+        }
     }
 }
