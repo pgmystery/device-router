@@ -63,9 +63,6 @@ class VirtualShell(Thread):
     pass
 
   def setWindowSize(self, cols, rows):
-    print("VIRTUAL-SHELL - SET_WINDOW_SIZE")
-    print(cols)
-    print(rows)
     # Some very old platforms have a bug that causes the value for
     # termios.TIOCSWINSZ to be truncated. There was a hack here to work
     # around this, but it caused problems with newer platforms so has been

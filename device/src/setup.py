@@ -8,7 +8,6 @@ import subprocess
 class Setup:
 	def __init__(self, update=False):
 		self.path = os.path.dirname(os.path.abspath(__file__))
-		# self.working_dir = os.getcwd()
 		self.update_match = update
 		if os.path.isdir("/etc/"):
 			self.working_dir = "/etc"
@@ -27,23 +26,13 @@ class Setup:
 	def install(self):
 		if os.path.isdir(self.path + "/match") and os.path.isfile(self.path + "/match.sh"):
 			print("Move \"match\"-folder to \"/etc/\"...")
-			# delete old-existing "match"-folder:
 			print(self.working_dir + "/match")
 			print(os.path.isdir(self.working_dir + "/match"))
 			if os.path.isdir(self.working_dir + "/match"):
 				print("Removing old-existing \"match\"-folder")
 				shutil.rmtree(self.working_dir + "/match")
-				# os.removedirs(self.working_dir + "/match")
-				# os.rmdir(self.working_dir + "/match")
 				print(os.path.isdir(self.working_dir + "/match"))
-				# try:
-				# 	shutil.rmtree(self.working_dir + "/match")
-				# except:
-				# 	print("ERROR!")
-				# 	return False
-			# move match folder and the match.sh file:
 			try:
-				# shutil.move(self.path + "/match", self.working_dir)
 				shutil.copytree(self.path + "/match", self.working_dir + "/match")
 			except OSError:
 				print("Permission denied!")
@@ -59,13 +48,6 @@ class Setup:
 				for momo in files:
 					self.chown(os.path.join(root, momo), user="root", group="root")
 					os.chmod(os.path.join(root, momo), 0755)
-				# Systemd: /etc/systemd/system/ (benutzerdefinierte) oder /lib/systemd/system/ (systemeigene)
-				# Upstart: .conf - Dateien im Ordner /etc/init/
-				# SysVinit: alle Dateien im Ordner /etc/init.d/
-				# 	systemInitPaths = {
-				# 		1: "/etc/init.d/",
-				# 		2: "",
-				# 	}
 			# Create VirtualEnv:
 			p = subprocess.Popen(["python", self.path + "/virtualenv/virtualenv.py", self.working_dir + "/match/virtualenv"], stdout=subprocess.PIPE)
 			output, err = p.communicate()
@@ -77,17 +59,6 @@ class Setup:
 			output, err = p.communicate()
 			print(output)
 
-			# Get Python-Version in the VirtualEnv:
-			# p = subprocess.Popen(["ls", self.working_dir + "/match/virtualenv/lib/"], stdout=subprocess.PIPE)
-			# output, err = p.communicate()
-			# python_version = str(output).replace("\n", "")
-			# # Copy Packages to VirtualEnv -> site-packages:
-			# for item in os.listdir(self.path + "/packages/"):
-			# 	if not item == "__init__.py":
-			# 		if os.path.isdir(self.path + "/packages/" + item):
-			# 			shutil.copytree(self.path + "/packages/" + item, self.working_dir + "/match/virtualenv/lib/" + python_version + "/site-packages/" + item)
-			# 		else:
-			# 			shutil.copy(self.path + "/packages/" + item, self.working_dir + "/match/virtualenv/lib/" + python_version + "/site-packages/" + item)
 			if os.path.isdir("/etc/init.d/"):
 				print("Edit \"match.sh\"-file")
 				with open(self.path + "/match.sh", "r+") as match_script_file:
@@ -105,7 +76,6 @@ class Setup:
 						print("ERROR!")
 						return False
 				try:
-					# shutil.move(self.path + "/match.sh", "/etc/init.d/match.sh")
 					shutil.copy(self.path + "/match.sh", "/etc/init.d/match.sh")
 				except OSError:
 					print("Permission denied!")
