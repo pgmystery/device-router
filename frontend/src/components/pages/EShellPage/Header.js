@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components/macro'
 import ReactSVG from 'react-svg'
 
@@ -8,11 +8,11 @@ import Select, { Option } from '../../utils/Select'
 import fullscreenIcon from '../../images/fullscreen2_icon.svg'
 
 
-function Header({ disableConnectButton, devices, eshellConnected, createSessionHandler, stopSessionHandler, setSelectedDevice, toggleShellFullscreen }) {
+function Header({ connectToDevice, disableConnectButton, devices, eshellConnected, createSessionHandler, stopSessionHandler, setSelectedDeviceId, toggleShellFullscreen }) {
   function getEshellConnectButton() {
     return (
       <ButtonSuccess
-        onClick={createSessionHandler}
+        onClick={() => createSessionHandler()}
         disabled={disableConnectButton}
       >Connect</ButtonSuccess>
     )
@@ -29,7 +29,7 @@ function Header({ disableConnectButton, devices, eshellConnected, createSessionH
   function selectChangeHandler(e) {
     const index = e.target.selectedIndex
     const optionElement = e.target.childNodes[index]
-    setSelectedDevice(optionElement.dataset.id)
+    setSelectedDeviceId(optionElement.dataset.id)
   }
 
   function leftHeader() {
@@ -37,9 +37,9 @@ function Header({ disableConnectButton, devices, eshellConnected, createSessionH
       <>
         {
           devices && devices.length > 0 &&
-          (setSelectedDevice(devices[0]._id))
+          (setSelectedDeviceId(devices[0]._id))
         }
-          <Select list={true} onChange={selectChangeHandler} disabled={eshellConnected}>
+          <Select list={true} onChange={selectChangeHandler} disabled={eshellConnected} value={connectToDevice && connectToDevice.name}>
             {devices.map(device => (
               <Option key={device._id} data-id={device._id}>{device.name}</Option>
             ))}
@@ -69,14 +69,9 @@ function Header({ disableConnectButton, devices, eshellConnected, createSessionH
   }
 
   return (
-    <PageHeaderStyled leftComponent={ leftHeader() } rightComponent={ rightHeader() } />
+    <PageHeader leftComponent={ leftHeader() } rightComponent={ rightHeader() } />
   )
 }
-
-const PageHeaderStyled = styled(PageHeader)`
-  flex-shrink: 0;
-  height: auto;
-`
 
 const IconButton = styled(Button)`
   display: inline-flex;

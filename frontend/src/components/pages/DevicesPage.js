@@ -24,8 +24,7 @@ function DevicesPage() {
   }
 
   function updateDevice(id, data) {
-    const request = new Request('/api/device')
-    request.patch({ id, data })
+    request.patch({ url: '/api/device/', id, data })
       .then(updatedDevice => refreshDeviceList())
   }
 
@@ -54,7 +53,7 @@ function DevicesPage() {
               pathname: "/eshell",
               device,
             }} >
-              <ConnectButton>Connect</ConnectButton>
+              <ConnectButton disabled={!device.online}>Connect</ConnectButton>
             </ConnectLink>,
         }
       })

@@ -24,14 +24,17 @@ function EShellPage({ session, location }) {
   const [currentSessionFullscreen, setCurrentSessionFullscreen] = useState(false)
   const [eshellConnectionStarted, setEshellConnectionStarted] = useState(false)
   const [eshellConnected, setEshellConnected] = useState(false)
-  const [selectedDevice, setSelectedDevice] = useState()
+  const [selectedDeviceId, setSelectedDeviceId] = useState()
 
   useEffect(() => {
     getDeviceList().then(deviceList => setDevices(deviceList.devices))
+    if (location.device) {
+      startEshellConnection(location.device._id)
+    }
   }, [])
 
-  function createEShellSession() {
-    let currentEShellSessions = eshellSessions
+  function createEShellSession(deviceId=null) {
+  let currentEShellSessions = eshellSessions
 
     if (currentEShellSession) {
       currentEShellSession.remove()
@@ -41,11 +44,12 @@ function EShellPage({ session, location }) {
         ...currentEShellSessions.slice(sessionIndex + 1)
       ]
     }
+
     const newSession = 
       eshell.createSession({
         data: {
           userId: session.id,
-          deviceId: selectedDevice,
+          deviceId: deviceId ? deviceId : selectedDeviceId,
         },
         termCallbacks: {
           fullsreen: currentSessionFullscreen,
@@ -63,10 +67,10 @@ function EShellPage({ session, location }) {
     return newSession
   }
 
-  function startEshellConnection() {
+  function startEshellConnection(deviceId=null) {
     setEshellConnectionStarted(true)
 
-    const newSession = createEShellSession()
+    const newSession = createEShellSession(deviceId)
 
     const eshellSocket = newSession.connect()
 
@@ -83,17 +87,20 @@ function EShellPage({ session, location }) {
   }
 
   return (
-    <WrapperStyled flex={true}>
-      <Header
-        devices={devices}
-        eshellConnected={eshellConnected}
-        createSessionHandler={startEshellConnection}
-        stopSessionHandler={stopEshellConnection}
-        setSelectedDevice={setSelectedDevice}
-        disableConnectButton={eshellConnectionStarted || devices.length === 0}
-        toggleShellFullscreen={() => {
-          setCurrentSessionFullscreen(!currentSessionFullscreen)}}
-      />
+    <EShellPageStyled>
+      <WrapperStyled flex={true}>
+        <Header
+          connectToDevice={location.device}
+          devices={devices}
+          eshellConnected={eshellConnected}
+          createSessionHandler={startEshellConnection}
+          stopSessionHandler={stopEshellConnection}
+          setSelectedDeviceId={setSelectedDeviceId}
+          disableConnectButton={eshellConnectionStarted || devices.length === 0}
+          toggleShellFullscreen={() => {
+            setCurrentSessionFullscreen(!currentSessionFullscreen)}}
+        />
+      </WrapperStyled>
       { eshellSessions.length > 0
           ? eshellSessions.map(session => <EShellTermStyled
               key={session.sessionId}
@@ -112,7 +119,7 @@ function EShellPage({ session, location }) {
               }}/>
           </CloseFullscreenButton>
       }
-    </WrapperStyled>
+    </EShellPageStyled>
   )
 
   function getDeviceList() {
@@ -120,14 +127,23 @@ function EShellPage({ session, location }) {
   }
 }
 
-const WrapperStyled = styled(Wrapper)`
+const EShellPageStyled = styled.div`
+  display: flex;
   flex-direction: column;
+  margin: 0 auto;
+  width: 100%;
   height: 100%;
+`
+
+const WrapperStyled = styled(Wrapper)`
+  flex-shrink: 0;
+  height: auto;
 `
 
 const EShellTermStyled = styled(EShellTerm)`
   flex-grow: 1;
   margin-bottom: 20px;
+  padding: 0 12px;
 `
 
 const NoSessionsText = styled.p`

@@ -33,6 +33,20 @@ deviceRouter.get('/', async (req, res) => {
   }
 })
 
+deviceRouter.patch('/:id', async (req, res) => {
+  try {
+    const userId = req.session.user.id
+    const deviceId = req.params.id
+    
+    const newDeviceModel = await Device.findOneAndUpdate({_id: deviceId, userId}, {...req.body}, {new: true, useFindAndModify: true})
+  
+    res.send(newDeviceModel)
+  }
+  catch(err) {
+    res.status(400).send('Invalid request')
+  }
+})
+
 deviceRouter.post('/auth', async (req, res) => {
   console.log('NEW DEVICE AUTH!')
   try {
