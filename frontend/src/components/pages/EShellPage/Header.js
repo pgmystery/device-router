@@ -69,14 +69,9 @@ function Header({ connectToDevice, disableConnectButton, devices, eshellConnecte
   }
 
   return (
-    <PageHeaderStyled leftComponent={ leftHeader() } rightComponent={ rightHeader() } />
+    <PageHeader leftComponent={ leftHeader() } rightComponent={ rightHeader() } />
   )
 }
-
-const PageHeaderStyled = styled(PageHeader)`
-  flex-shrink: 0;
-  height: auto;
-`
 
 const IconButton = styled(Button)`
   display: inline-flex;

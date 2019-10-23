@@ -88,18 +88,20 @@ function EShellPage({ session, location }) {
   }
 
   return (
-    <WrapperStyled flex={true}>
-      <Header
-        connectToDevice={location.device}
-        devices={devices}
-        eshellConnected={eshellConnected}
-        createSessionHandler={startEshellConnection}
-        stopSessionHandler={stopEshellConnection}
-        setSelectedDevice={setSelectedDevice}
-        disableConnectButton={eshellConnectionStarted || devices.length === 0}
-        toggleShellFullscreen={() => {
-          setCurrentSessionFullscreen(!currentSessionFullscreen)}}
-      />
+    <EShellPageStyled>
+      <WrapperStyled flex={true}>
+        <Header
+          connectToDevice={location.device}
+          devices={devices}
+          eshellConnected={eshellConnected}
+          createSessionHandler={startEshellConnection}
+          stopSessionHandler={stopEshellConnection}
+          setSelectedDevice={setSelectedDevice}
+          disableConnectButton={eshellConnectionStarted || devices.length === 0}
+          toggleShellFullscreen={() => {
+            setCurrentSessionFullscreen(!currentSessionFullscreen)}}
+        />
+      </WrapperStyled>
       { eshellSessions.length > 0
           ? eshellSessions.map(session => <EShellTermStyled
               key={session.sessionId}
@@ -118,7 +120,7 @@ function EShellPage({ session, location }) {
               }}/>
           </CloseFullscreenButton>
       }
-    </WrapperStyled>
+    </EShellPageStyled>
   )
 
   function getDeviceList() {
@@ -126,14 +128,24 @@ function EShellPage({ session, location }) {
   }
 }
 
-const WrapperStyled = styled(Wrapper)`
+const EShellPageStyled = styled.div`
+  display: flex;
+  margin: 0 auto;
+  width: 100%;
   flex-direction: column;
   height: 100%;
+`
+
+const WrapperStyled = styled(Wrapper)`
+  flex-shrink: 0;
+  height: auto;
 `
 
 const EShellTermStyled = styled(EShellTerm)`
   flex-grow: 1;
   margin-bottom: 20px;
+  padding-left: 12px;
+  padding-right: 12px;
 `
 
 const NoSessionsText = styled.p`
