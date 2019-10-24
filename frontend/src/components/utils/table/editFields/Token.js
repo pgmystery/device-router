@@ -13,12 +13,12 @@ function Token({ text, onRefresh }) {
   return (
     <>
       <TextSpanStyled onClick={() => setExpand(true)} expand={expand}>{text}</TextSpanStyled>
-      <IconButton onClick={onRefresh} popover={'Refresh Token'}>
+      <IconButton onClick={onRefresh} tooltip={'Refresh Token'}>
         <ReactSVG src={refreshIcon} beforeInjection={svg => {
           svg.setAttribute('style', 'width: 16px; height: 16px; display: flex;')
         }} />
       </IconButton>
-      <IconButton onClick={() => {navigator.clipboard.writeText(text)}} popover={'Copy Token'}>
+      <IconButton onClick={() => {navigator.clipboard.writeText(text)}} tooltip={'Copy Token'}>
         <ReactSVG src={duplicateIcon} beforeInjection={svg => {
           svg.setAttribute('style', 'width: 16px; height: 16px; display: flex;')
         }} />

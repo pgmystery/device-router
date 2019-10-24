@@ -14,16 +14,16 @@ ButtonComponent.defaultProps = {
   disabled: false,
 }
 
-function ButtonComponent({ onClick, children, disabled, className, popover }) {
+function ButtonComponent({ onClick, children, disabled, className, tooltip }) {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
       className={className}
-      popover={popover}
+      tooltip={tooltip}
     >
     {children}
-    { popover && <ButtonPopover>{popover}</ButtonPopover> }
+    { tooltip && <ButtonTooltip>{tooltip}</ButtonTooltip> }
     </button>
   )
 }
@@ -68,7 +68,7 @@ export const Button = styled(ButtonComponent)`
   }
 `
 
-const ButtonPopover = styled.div`
+const ButtonTooltip = styled.div`
   background-color: #00649f;
   border-radius: 2px;
   color: #fff;

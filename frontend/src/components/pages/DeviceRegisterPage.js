@@ -59,7 +59,7 @@ function DeviceRegisterPage() {
           startDate: <Date text={item.startDate} name="startDate" onChanged={newDate => updateRegisterToken(item._id, {startDate: newDate})}/>,
           endDate: <Date text={item.endDate} name="endDate" onChanged={newDate => updateRegisterToken(item._id, {endDate: newDate})}/>,
           delete:
-            <ButtonDelete onClick={() => deleteRegisterToken(item._id)} popover={'Delete'}>
+            <ButtonDelete onClick={() => deleteRegisterToken(item._id)} tooltip={'Delete'}>
               <ReactSVG src={deleteIcon} beforeInjection={svg => {
                   svg.setAttribute('style', 'width: 16px; height: 16px; display: flex; fill: #ffffff;')
                 }}
@@ -95,7 +95,7 @@ function DeviceRegisterPage() {
               />
             </CreateRegisterTokenButton>
           </LinkUnstyled>
-          <RefreshButton onClick={refreshRegisterList} popover={'Refresh'}>
+          <RefreshButton onClick={refreshRegisterList} tooltip={'Refresh'}>
             <ReactSVG src={reloadIcon} beforeInjection={svg => {
                 svg.setAttribute('style', 'width: 26px; height: 26px; display: flex; fill: #000000;')
               }}

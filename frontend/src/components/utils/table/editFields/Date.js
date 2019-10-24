@@ -49,7 +49,7 @@ function Date({ text, onChanged, name="date" }) {
             </form>
           : <TextSpan onClick={() => setOnEditing(true)}>{textValue}</TextSpan>
       }
-      <IconButton onClick={() => setOnEditing(!onEditing)} popover={'Change Date'}>
+      <IconButton onClick={() => setOnEditing(!onEditing)} tooltip={'Change Date'}>
         <ReactSVG src={calendarIcon} beforeInjection={svg => {
           svg.setAttribute('style', 'width: 16px; height: 16px; display: flex;')
         }} />
