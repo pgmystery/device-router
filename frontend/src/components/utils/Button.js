@@ -14,7 +14,7 @@ ButtonComponent.defaultProps = {
   disabled: false,
 }
 
-function ButtonComponent({ onClick, children, disabled, className, popover=false }) {
+function ButtonComponent({ onClick, children, disabled, className, popover }) {
   return (
     <button
       onClick={onClick}
