@@ -8,6 +8,7 @@ import PageHeader from '../utils/PageHeader'
 import Button, { ButtonDanger, ButtonPrimary, ButtonSuccess } from '../utils/Button'
 import deleteIcon from '../images/delete_icon.svg'
 import plusIcon from '../images/plus_icon.svg'
+import downloadIcon from '../images/downloadIcon.svg'
 import reloadIcon from '../images/reload_icon.svg'
 import rounectorFile from '../../files/rounector/Rounector.dmg'
 import LinkUnstyled from '../utils/LinkUnstyled'
@@ -58,7 +59,7 @@ function DeviceRegisterPage() {
           startDate: <Date text={item.startDate} name="startDate" onChanged={newDate => updateRegisterToken(item._id, {startDate: newDate})}/>,
           endDate: <Date text={item.endDate} name="endDate" onChanged={newDate => updateRegisterToken(item._id, {endDate: newDate})}/>,
           delete:
-            <ButtonDelete onClick={() => deleteRegisterToken(item._id)}>
+            <ButtonDelete onClick={() => deleteRegisterToken(item._id)} popover={'Delete'}>
               <ReactSVG src={deleteIcon} beforeInjection={svg => {
                   svg.setAttribute('style', 'width: 16px; height: 16px; display: flex; fill: #ffffff;')
                 }}
@@ -75,7 +76,13 @@ function DeviceRegisterPage() {
     <Wrapper>
       <PageHeader leftComponent={
         <AnchorUnstyled href={rounectorFile} download>
-          <ButtonPrimary>Download Rounector</ButtonPrimary>
+          <ButtonPrimary>
+            Download Rounector
+            <ReactSVG src={downloadIcon} beforeInjection={svg => {
+                svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #ffffff; margin-left: 10px;')
+              }}
+            />
+            </ButtonPrimary>
         </AnchorUnstyled>
       } rightComponent={
         <>
@@ -88,7 +95,7 @@ function DeviceRegisterPage() {
               />
             </CreateRegisterTokenButton>
           </LinkUnstyled>
-          <RefreshButton onClick={refreshRegisterList}>
+          <RefreshButton onClick={refreshRegisterList} popover={'Refresh'}>
             <ReactSVG src={reloadIcon} beforeInjection={svg => {
                 svg.setAttribute('style', 'width: 26px; height: 26px; display: flex; fill: #000000;')
               }}

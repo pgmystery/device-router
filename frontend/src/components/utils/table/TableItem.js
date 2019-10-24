@@ -25,7 +25,7 @@ const TableItemStyled = styled.div`
 `
 
 const TableItemText = styled.div`
-  padding: .75rem;
+  padding: 1.75rem 1.25rem;
   text-overflow: ellipsis;
   overflow: hidden;
   display: flex;

@@ -20,7 +20,7 @@
     "express-session": "^1.16.2",
     "identicon.js": "^2.3.3",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.7.1",
+    "mongoose": "^5.7.6",
     "socket.io": "^2.2.0",
     "ws": "^7.1.2"
   },

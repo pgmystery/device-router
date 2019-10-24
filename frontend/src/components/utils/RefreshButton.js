@@ -8,7 +8,7 @@ import reloadIcon from '../images/reload_icon.svg'
 
 function RefreshButton({ onClick }) {
   return (
-    <RefreshButtonStyled onClick={onClick}>
+    <RefreshButtonStyled onClick={onClick} popover={'Refresh'}>
       <ReactSVG src={reloadIcon} beforeInjection={svg => {
           svg.setAttribute('style', 'width: 26px; height: 26px; display: flex; fill: #000000;')
         }}

@@ -14,17 +14,22 @@ ButtonComponent.defaultProps = {
   disabled: false,
 }
 
-function ButtonComponent({ onClick, children, disabled, className }) {
+function ButtonComponent({ onClick, children, disabled, className, popover=false }) {
   return (
     <button
       onClick={onClick}
       disabled={disabled}
       className={className}
-    >{children}</button>
+      popover={popover}
+    >
+    {children}
+    { popover && <ButtonPopover>{popover}</ButtonPopover> }
+    </button>
   )
 }
 
 export const Button = styled(ButtonComponent)`
+  position: relative;
   border-color: transparent;
   user-select: none;
   display: flex;
@@ -55,11 +60,39 @@ export const Button = styled(ButtonComponent)`
   }
 
   ${
-    props =>
-      props.disabled &&
+    ({ disabled }) =>
+      disabled &&
         `background-color: #827d7d !important;
         border-color: #c7c6cc !important;
         cursor: not-allowed !important;`
+  }
+`
+
+const ButtonPopover = styled.div`
+  background-color: #00649f;
+  border-radius: 2px;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 400;
+  left: 50%;
+  line-height: 1.2;
+  opacity: 0;
+  padding: 0.5em 0.6em;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  transform: translateX(-50%) translateY(0);
+  transition-duration: 300ms;
+  transition-property: opacity,transform,-webkit-transform;
+  visibility: hidden;
+  white-space: nowrap;
+  top: -70%;
+  z-index: 1;
+
+  ${Button}:hover & {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+    visibility: visible;
   }
 `
 
