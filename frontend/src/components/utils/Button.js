@@ -23,10 +23,37 @@ function ButtonComponent({ onClick, children, disabled, className, tooltip }) {
       tooltip={tooltip}
     >
     {children}
-    { tooltip && <ButtonTooltip>{tooltip}</ButtonTooltip> }
     </button>
   )
 }
+
+const ButtonTooltip = `
+  background-color: #00649f;
+  border-radius: 2px;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 400;
+  left: 50%;
+  line-height: 1.2;
+  opacity: 0;
+  padding: 0.5em 0.6em;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  transform: translateX(-50%) translateY(0);
+  transition-duration: 300ms;
+  transition-property: opacity,transform,-webkit-transform;
+  visibility: hidden;
+  white-space: nowrap;
+  top: -70%;
+  z-index: 1;
+`
+
+const ButtonTooltipHover = `
+  opacity: 1;
+  transform: translateX(-50%) translateY(-4px);
+  visibility: visible;
+`
 
 export const Button = styled(ButtonComponent)`
   position: relative;
@@ -50,9 +77,17 @@ export const Button = styled(ButtonComponent)`
   background-color: #f0f0f0;
   border-color: #f0f0f0;
 
+  ::before {
+    ${({ tooltip }) => tooltip && `content: "${tooltip}"; ${ButtonTooltip}`}
+  }
+
   :hover {
     background-color: #e2e6ea;
     border-color: #e2e6ea;
+
+    ::before {
+      ${({ tooltip }) => tooltip && ButtonTooltipHover}
+    }
   }
 
   :active {
@@ -65,34 +100,6 @@ export const Button = styled(ButtonComponent)`
         `background-color: #827d7d !important;
         border-color: #c7c6cc !important;
         cursor: not-allowed !important;`
-  }
-`
-
-const ButtonTooltip = styled.div`
-  background-color: #00649f;
-  border-radius: 2px;
-  color: #fff;
-  font-size: 0.6rem;
-  font-weight: 400;
-  left: 50%;
-  line-height: 1.2;
-  opacity: 0;
-  padding: 0.5em 0.6em;
-  pointer-events: none;
-  position: absolute;
-  text-align: center;
-  transform: translateX(-50%) translateY(0);
-  transition-duration: 300ms;
-  transition-property: opacity,transform,-webkit-transform;
-  visibility: hidden;
-  white-space: nowrap;
-  top: -70%;
-  z-index: 1;
-
-  ${Button}:hover & {
-    opacity: 1;
-    transform: translateX(-50%) translateY(-4px);
-    visibility: visible;
   }
 `
 
