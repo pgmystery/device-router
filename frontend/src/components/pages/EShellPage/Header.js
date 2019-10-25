@@ -59,7 +59,7 @@ function Header({ connectToDevice, disableConnectButton, devices, eshellConnecte
         {eshellConnected &&
           <IconButton onClick={toggleShellFullscreen} tooltip={"Fullscreen"}>
             <ReactSVG src={fullscreenIcon} beforeInjection={svg => {
-                svg.setAttribute('style', 'width: 24px; height: 24px; display: flex; fill: #6f6f6f;')
+                svg.setAttribute('style', 'width: 24px; height: 30px; display: flex; fill: #6f6f6f;')
               }}
             />
           </IconButton>
@@ -77,11 +77,12 @@ const IconButton = styled(Button)`
   display: inline-flex;
   padding: 0;
   margin: 0 0 0 5px;
-  min-height: 32px;
-  min-width: 32px;
+  min-height: 35px;
+  min-width: 35px;
   border: 1px solid #c9c9ca;
   background-color: #fff;
   border-radius: 4px;
+  height: 35px;
 `
 
 

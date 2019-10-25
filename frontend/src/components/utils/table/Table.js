@@ -53,6 +53,8 @@ export const IconButton = styled(Button)`
   min-width: 32px;
   border: 1px solid #c9c9ca;
   padding: 0 11px;
+  height: 32px;
+  width: 32px;
 `
 
 

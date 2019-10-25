@@ -1,16 +1,16 @@
 import React from 'react'
 import { withKnobs } from '@storybook/addon-knobs'
 import { withInfo } from '@storybook/addon-info';
-import PasswordInput from './PasswordInput'
+import Input from './Input'
 
 
 export default {
-  title: 'PasswordInput',
+  title: 'Input',
   decorators: [withKnobs, withInfo]
 }
 
 export const standard = () =>
-  <PasswordInput onChange={() => {}} />
+  <Input />
 
 standard.story = {
   name: 'Default'

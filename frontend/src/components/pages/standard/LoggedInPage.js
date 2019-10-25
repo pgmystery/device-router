@@ -4,12 +4,16 @@ import LostConnectionPage from '../LostConnectionPage'
 import Navigation from '../../utils/navigation/Navigation'
 import { DropdownMenuSeparator } from '../../utils/DropdownMenu'
 import SocketIO  from '../../../socketio/SocketIO'
-import { MainSocketContext } from '../../../socketio/MainSocketContext'
+import { MainSocketContext,  } from '../../../socketio/MainSocketContext'
+import useNotification from '../../../utils/hooks/useNotification'
 
 
 function LoggedInPage({ children }) {
+  const [newNotificationsQueue, setNewNotificationsQueue] = useState([])
+  const [notifications, setNotifications] = useState([])
   const [mainSocketConnected, setMainSocketConnected] = useState(false)
-  const { setMainSocket } = useContext(MainSocketContext)
+  const { setMainSocket, mainSocket } = useContext(MainSocketContext)
+  useNotification(addNotification)
 
   useEffect(() => {
     setMainSocket(SocketIO({ namespace: 'user' }), getMainSocket)
@@ -34,6 +38,13 @@ function LoggedInPage({ children }) {
     },
   ]
 
+  useEffect(() => {
+    setNotifications([
+      ...newNotificationsQueue,
+      ...notifications,
+    ])
+  }, [newNotificationsQueue])
+
   const profileLinks = [
     <Link to='/profile'>My Profile</Link>,
     <Link to='/dashboard'>My Dashboard</Link>,
@@ -49,6 +60,9 @@ function LoggedInPage({ children }) {
             <Navigation
               links={navLinks}
               profileLinks={profileLinks}
+              notifications={notifications}
+              onNotificationClicked={onNotificationClicked}
+              onNotificationsDeleted={removeNotification}
             ></Navigation>
           </header>
           <main>{children}</main>
@@ -66,6 +80,27 @@ function LoggedInPage({ children }) {
         setMainSocketConnected(false)
       })
     }
+  }
+
+  function addNotification(notification) {
+    setNewNotificationsQueue([
+      notification,
+    ])
+  }
+
+  function onNotificationClicked() {
+    mainSocket.emit('notificationsReaded')
+  }
+
+  function removeNotification(index) {
+    const notification = notifications[index]
+
+    mainSocket.emit('notificationDelete', notification._id)
+
+    setNotifications([
+      ...notifications.slice(0, index),
+      ...notifications.slice(index + 1),
+    ])
   }
 
   return (

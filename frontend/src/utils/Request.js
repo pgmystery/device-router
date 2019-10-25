@@ -1,6 +1,5 @@
 import { backendUrl } from '../components/App'
 
-
 class Request {
   constructor(url) {
     this.url = url

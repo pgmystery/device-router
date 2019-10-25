@@ -1,14 +1,13 @@
 import React from 'react'
-import styled from 'styled-components'
-
 import { withKnobs, text, boolean } from '@storybook/addon-knobs'
 import { withInfo } from '@storybook/addon-info';
+
 import { Button, ButtonPrimary, ButtonDanger, ButtonSuccess } from './Button'
 
 
 export default {
   title: 'Buttons',
-  decorators: [withKnobs, withInfo, Wrapper]
+  decorators: [withKnobs, withInfo]
 }
 
 export const standard = () =>
@@ -22,11 +21,6 @@ export const danger = () =>
 
 export const success = () =>
 <ButtonSuccess disabled={boolean('Disabled', false)} tooltip={text('tooltip', 'Tooltip')}>{text('text', 'CLICK ME')}</ButtonSuccess>
-
-const Wrapper = styled.div`
-  padding: 50px;
-`
-
 
 standard.story = {
   name: 'Default'

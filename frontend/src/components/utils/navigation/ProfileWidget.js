@@ -58,7 +58,6 @@ const ProfileWidgetStyled = styled.div`
 
 const ProfileWidgetDropdownMenu = styled(DropdownMenu)`
   right: 0;
-  white-space: nowrap;
 `
 
 
