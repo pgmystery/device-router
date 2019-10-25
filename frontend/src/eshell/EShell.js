@@ -7,7 +7,7 @@ class EShell {
     this.sessions = []
   }
 
-  createSession({ namespace='eshell', data, termCallbacks={} }={}) {
+  createSession({ namespace='eshell', data }={}) {
     const newSession = {
       sessionId: this.uniqueSessionId++,
 

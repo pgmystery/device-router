@@ -98,6 +98,14 @@ function NotificationWidget() {
     setIsMenuOpen(!isMenuOpen)
   }
 
+  function sortNotificationByDate(notifications) {
+    const notificationsSorted = notifications
+    notificationsSorted.sort((a, b) => {
+      return b.time - a.time
+    })
+    return notificationsSorted
+  }
+
   return (
     <NotificationWidgetStyled>
       <div onClick={handleClick}>
@@ -123,7 +131,7 @@ function NotificationWidget() {
           header='Notifications'
           body={
             notifications.length > 0
-              ? notifications.map((notification, index) => <NotificationItem
+              ? sortNotificationByDate(notifications).map((notification, index) => <NotificationItem
                 title={notification.title}
                 msg={notification.msg}
                 index={index}

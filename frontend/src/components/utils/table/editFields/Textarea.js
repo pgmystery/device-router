@@ -44,9 +44,9 @@ function Textarea({ text, onChanged, name="textarea" }) {
               />
               <SubmitButton>Change</SubmitButton>
             </FormStyled>
-          : <TextSpan>{textValue}</TextSpan>
+          : <TextSpan onClick={() => setOnEditing(true)}>{textValue}</TextSpan>
       }
-      <IconButton onClick={() => setOnEditing(!onEditing)}>
+      <IconButton onClick={() => setOnEditing(!onEditing)} tooltip={'Edit'}>
         <ReactSVG src={pencilIcon} beforeInjection={svg => {
           svg.setAttribute('style', 'width: 16px; height: 16px; display: flex;')
         }} />

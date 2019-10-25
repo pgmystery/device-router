@@ -48,7 +48,7 @@ function Input({ text, onChanged, name="input", icon=true}) {
       }
       {
         icon
-        &&<IconButton onClick={() => setOnEditing(!onEditing)}>
+        &&<IconButton onClick={() => setOnEditing(!onEditing)} tooltip={'Edit'}>
             <ReactSVG src={pencilIcon} beforeInjection={svg => {
               svg.setAttribute('style', 'width: 16px; height: 16px; display: flex;')
             }} />

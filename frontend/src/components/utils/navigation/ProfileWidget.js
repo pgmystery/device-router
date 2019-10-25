@@ -23,7 +23,7 @@ function ProfileWidget({ links, session }) {
 
   return (
     <ProfileWidgetStyled onClick={clickHandler}>
-      <NavigationLinkStyled>{session.username}</NavigationLinkStyled>
+      <NavigationLinkStyled to="#">{session.username}</NavigationLinkStyled>
       <ProfilePicture />
       <ReactSVG
         src={ArrowDown}
@@ -40,6 +40,7 @@ const ProfileWidgetStyled = styled.div`
   display: flex;
   align-items: center;
   height: 100%;
+  position: relative;
 
   :hover {
     cursor: pointer;
@@ -56,7 +57,8 @@ const ProfileWidgetStyled = styled.div`
 `
 
 const ProfileWidgetDropdownMenu = styled(DropdownMenu)`
-  right: 10px;
+  right: 0;
+  white-space: nowrap;
 `
 
 

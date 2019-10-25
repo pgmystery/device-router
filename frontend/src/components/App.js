@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import GlobalStyle from './utils/GlobalStyle'
 import PageHandler from './PageHandler'
@@ -14,6 +14,10 @@ const mapStateToProps = ({ session }) => ({
 export const backendUrl = ''
 
 function App({ session }) {
+  useEffect(() => {
+    document.title = "Device-Router"
+  }, []);
+
   return (
     <MainSocketProvider session={session}>
       <GlobalStyle />
