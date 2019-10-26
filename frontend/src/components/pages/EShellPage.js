@@ -98,7 +98,8 @@ function EShellPage({ session, location }) {
           setSelectedDeviceId={setSelectedDeviceId}
           disableConnectButton={eshellConnectionStarted || devices.length === 0}
           toggleShellFullscreen={() => {
-          setCurrentSessionFullscreen(!currentSessionFullscreen)}}
+            setCurrentSessionFullscreen(!currentSessionFullscreen)}
+          }
         />
       </WrapperStyled>
       { eshellSessions.length > 0
