@@ -9,11 +9,7 @@ import TableItem from './TableItem'
 
 Table.propTypes = {
   headerItems: PropTypes.objectOf(PropTypes.string).isRequired,
-  items: PropTypes.arrayOf(
-    PropTypes.objectOf(
-      PropTypes.oneOfType(PropTypes.string, PropTypes.node)
-    )
-  ).isRequired,
+  items: PropTypes.array.isRequired,
   noItemsText: PropTypes.string.isRequired
 }
 
