@@ -1,29 +1,28 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import ReactSVG from 'react-svg'
-
-import { MainSocketContext } from '../../../socketio/MainSocketContext'
 
 import bellIcon from '../../images/bell.svg'
 import bellActiveIcon from '../../images/bellActive.svg'
 import removeIcon from '../../images/deleteIcon.svg'
 import Popover from '../Popover'
 
+NotificationWidget.propTypes = {
+  notifications: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onOpen: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+}
 
-function NotificationWidget() {
+NotificationWidget.defaultTypes = {
+  notifications: '(NO NOTIFICATIONS)',
+  onOpen: ()=>{},
+  onDelete: ()=>{},
+}
+
+function NotificationWidget({ notifications, onOpen, onDelete }) {
   const [isNewNotification, setIsNewNotification] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [notifications, setNotifications] = useState([])
-  const [newNotifications, setNewNotifications] = useState([])
-  const { addMainSocketListeners, mainSocket } = useContext(MainSocketContext)
-
-  useEffect(() => {
-    addMainSocketListeners([
-      ['notification', addNotification],
-      ['notifications', setNewNotifications]
-    ])
-  }, [])
 
   useEffect(() => {
     if (isMenuOpen && isNewNotification) {
@@ -36,62 +35,21 @@ function NotificationWidget() {
         }
       })
       if (changed) {
-        mainSocket.emit('notificationsReaded')
+        onOpen()
       }
       setIsNewNotification(false)
     }
   }, [isMenuOpen])
 
   useEffect(() => {
-    if (newNotifications.length > 0) {
-      addNotifications(newNotifications)
-    } 
-  }, [newNotifications])
-
-
-  function addNotification(newNotification) {
-    setNewNotifications([newNotification])
-  }
-
-  function addNotifications(newNotifications) {
-    let newNotifi = false
-    newNotifications.forEach(notification => {
-      if (isMenuOpen) {
-        notification.new = false
-      }
-      else {
+    if (!isMenuOpen) {
+      notifications.forEach(notification => {
         if (notification.new) {
-          newNotifi = true
+          setIsNewNotification(true)
         }
-      }
-    })
-
-    setNotifications([
-      ...newNotifications,
-      ...notifications,
-    ])
-
-    if (isMenuOpen) {
-      setIsNewNotification(false)
-      mainSocket.emit('notificationsReaded')
+      })
     }
-    else {
-      setIsNewNotification(newNotifi)
-    }
-
-    setNewNotifications([])
-  }
-
-  function removeNotification(index) {
-    const notification = notifications[index]
-
-    mainSocket.emit('notificationDelete', notification._id)
-
-    setNotifications([
-      ...notifications.slice(0, index),
-      ...notifications.slice(index + 1),
-    ])
-  }
+  }, [notifications])
 
   function handleClick(event) {
     event.stopPropagation()
@@ -135,7 +93,7 @@ function NotificationWidget() {
                 title={notification.title}
                 msg={notification.msg}
                 index={index}
-                onDelete={removeNotification}
+                onDelete={onDelete}
                 key={index}
               />)
               : <NoNotificationsText>No new Notifications</NoNotificationsText>
@@ -161,7 +119,7 @@ function NotificationWidgetCounter({ children }) {
   )
 }
 
-function NotificationItem({ title, msg, index, onDelete }) {
+function NotificationItem({ msg, index, onDelete }) {
   return (
     <NotificationItemStyled>
       <NotificationItemText>{msg}</NotificationItemText>
@@ -199,20 +157,20 @@ const NotificationWidgetCounterStyled = styled.p`
 `
 
 const NotificationBellActice = styled.div`
-    z-index: 1;
-    animation-name: notification-alert;
-    animation-duration: 200ms;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-    animation-direction: alternate-reverse;
+  z-index: 1;
+  animation-name: notification-alert;
+  animation-duration: 200ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-direction: alternate-reverse;
 
-  @keyframes notification-alert {
-      from {
-          transform:rotate(-10deg);
-      }
-      to {
-          transform:rotate(10deg);
-      }
+@keyframes notification-alert {
+    from {
+        transform:rotate(-10deg);
+    }
+    to {
+        transform:rotate(10deg);
+    }
   }
 `
 

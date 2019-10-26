@@ -5,8 +5,15 @@ function dateConverter(date, filter='eu') {
   }
   else if (filter === 'na') {
     const newDate = date.split('.')
-    return newDate[2] + '-' + newDate[1] + '-' + newDate[0]
+    return newDate[2] + '-' + newDate[1].padStart(2, '0') + '-' + newDate[0].padStart(2, '0')
   }
+}
+
+export function dateConverterFromObject(date, filter='eu') {
+  return dateConverter(
+    date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0'),
+    filter
+  )
 }
 
 

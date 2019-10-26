@@ -75,6 +75,7 @@ function EShellTerm({ input, output, windowSizeChanged, fullscreen=false, classN
 const TermWrapper = styled.div`
   background-color: ${({ fullscreen }) => fullscreen ? '#000000' : 'transparent'};
   margin: ${({ fullscreen }) => fullscreen ? '0 !important' : 0};
+  height: 100%;
 `
 
 const TermContainer = styled.div`

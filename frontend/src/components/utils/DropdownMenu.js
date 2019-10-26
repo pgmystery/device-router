@@ -34,6 +34,7 @@ const DropdownMenuStyled = styled.ul`
   padding-top: 8px;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
   min-width: 96px;
+  white-space: nowrap;
 `
 
 const DropdownMenuItem = styled.li`

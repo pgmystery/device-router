@@ -1,12 +1,25 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 import Button from '../Button'
 import TableHeadline from './TableHeadline'
 import TableItem from './TableItem'
 
 
-function Table({ headerItems, items, noItemsText="No Items" }) {
+Table.propTypes = {
+  headerItems: PropTypes.objectOf(PropTypes.string).isRequired,
+  items: PropTypes.array.isRequired,
+  noItemsText: PropTypes.string.isRequired
+}
+
+Table.defaultProps = {
+  headerItems: {},
+  items: [],
+  noItemsText: 'NO ITEMS...'
+}
+
+function Table({ headerItems, items, noItemsText='No Items' }) {
   return (
     <TableStyled itemsCount={Object.keys(headerItems).length}>
       {
@@ -53,6 +66,8 @@ export const IconButton = styled(Button)`
   min-width: 32px;
   border: 1px solid #c9c9ca;
   padding: 0 11px;
+  height: 32px;
+  width: 32px;
 `
 
 

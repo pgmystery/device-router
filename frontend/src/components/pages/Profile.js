@@ -61,7 +61,7 @@ function Profile({ session, updateSession }) {
     if (newPasswordConfirm !== password ) {
       setNewPasswordConfirm(password)
 
-      if (password.length > 0 && password === newPassword) {
+      if (password.length && password === newPassword) {
         return changeProfile([newPasswordConfirm, null], 'password', password)
           .then(() => {
             setNewPassword('')
