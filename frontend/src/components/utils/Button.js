@@ -5,13 +5,17 @@ import PropTypes from 'prop-types'
 import MainTheme from '../Theme'
 
 ButtonComponent.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.node]).isRequired,
   disabled: PropTypes.bool,
+  onClick: PropTypes.func,
+  tooltip: PropTypes.string,
 }
 
 ButtonComponent.defaultProps = {
   children: '(NO TITLE)',
   disabled: false,
+  onClick: ()=>{},
+  tooltip: null,
 }
 
 function ButtonComponent({ onClick, children, disabled, className, tooltip }) {

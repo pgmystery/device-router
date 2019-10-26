@@ -1,12 +1,29 @@
 import React from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 import Button from '../Button'
 import TableHeadline from './TableHeadline'
 import TableItem from './TableItem'
 
 
-function Table({ headerItems, items, noItemsText="No Items" }) {
+Table.propTypes = {
+  headerItems: PropTypes.objectOf(PropTypes.string).isRequired,
+  items: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.oneOfType(PropTypes.string, PropTypes.node)
+    )
+  ).isRequired,
+  noItemsText: PropTypes.string.isRequired
+}
+
+Table.defaultProps = {
+  headerItems: {},
+  items: [],
+  noItemsText: 'NO ITEMS...'
+}
+
+function Table({ headerItems, items, noItemsText='No Items' }) {
   return (
     <TableStyled itemsCount={Object.keys(headerItems).length}>
       {

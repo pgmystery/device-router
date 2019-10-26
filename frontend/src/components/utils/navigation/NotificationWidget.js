@@ -8,6 +8,17 @@ import bellActiveIcon from '../../images/bellActive.svg'
 import removeIcon from '../../images/deleteIcon.svg'
 import Popover from '../Popover'
 
+NotificationWidget.propTypes = {
+  notifications: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onOpen: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+}
+
+NotificationWidget.defaultTypes = {
+  notifications: '(NO NOTIFICATIONS)',
+  onOpen: ()=>{},
+  onDelete: ()=>{},
+}
 
 function NotificationWidget({ notifications, onOpen, onDelete }) {
   const [isNewNotification, setIsNewNotification] = useState(false)
@@ -146,20 +157,20 @@ const NotificationWidgetCounterStyled = styled.p`
 `
 
 const NotificationBellActice = styled.div`
-    z-index: 1;
-    animation-name: notification-alert;
-    animation-duration: 200ms;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-    animation-direction: alternate-reverse;
+  z-index: 1;
+  animation-name: notification-alert;
+  animation-duration: 200ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-direction: alternate-reverse;
 
-  @keyframes notification-alert {
-      from {
-          transform:rotate(-10deg);
-      }
-      to {
-          transform:rotate(10deg);
-      }
+@keyframes notification-alert {
+    from {
+        transform:rotate(-10deg);
+    }
+    to {
+        transform:rotate(10deg);
+    }
   }
 `
 
