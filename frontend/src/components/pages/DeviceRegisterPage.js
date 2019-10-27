@@ -46,8 +46,9 @@ function DeviceRegisterPage() {
   }
 
   function deleteRegisterToken(id) {
-    request.delete({ url: '/api/device/register', id })
-      .then(deletedToken => refreshRegisterList())
+    const r = window.confirm('Do you really want to delete the token?')
+    r && request.delete({ url: '/api/device/register', id })
+          .then(deletedToken => refreshRegisterList())
   }
 
   function getListItems(listItems) {
