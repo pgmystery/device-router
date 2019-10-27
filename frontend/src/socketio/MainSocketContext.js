@@ -1,50 +1,21 @@
 import React, { useState, useEffect } from 'react'
+import SocketIO  from './SocketIO'
 
 
 export const MainSocketContext = React.createContext(null)
 
-export function MainSocketProvider({ children, session, startMainSocketListeners=[] }) {
-  const [mainSocketListeners, setMainSocketListeners] = useState(startMainSocketListeners)
-  const [mainSocketListenersQuery, setMainSocketListenersQuery] = useState([])
+let mainSocketListenersQueue = []
+
+export function MainSocketProvider({ children, session }) {
+  const [mainSocketListeners, setMainSocketListeners] = useState([])
   const [authenticated, setAuthenticated] = useState(false)
-  const [mainSocket, setMainSocketState] = useState(null)
-  const [mainSocketCallback, setMainSocketCallback] = useState(null)
+  const [mainSocket, setMainSocket] = useState(null)
 
   useEffect(() => {
-    if (mainSocketCallback) {
-      const [mainSocket, callback] = mainSocketCallback
-
-      if (mainSocket) {
-        if (session.id) {
-          mainSocket.on('connect', () => {
-            mainSocket.emit('authenticate', {id: session.id})
-
-            mainSocket.on('authenticated', () => {
-              setMainSocketState(mainSocket)
-              setAuthenticated(true)
-
-              if (callback) {
-                callback(mainSocket)
-              }
-            })
-          })
-
-          mainSocket.on('disconnect', () => {
-            setMainSocketState(null)
-            setAuthenticated(false)
-            callback && callback(null)
-          })
-        }
-        else {
-          mainSocket.disconnect()
-          setMainSocketState(null)
-        }
-      }
-    }
-  }, [mainSocketCallback])
+  }, [mainSocket])
 
   useEffect(() => {
-    if (authenticated && mainSocketListeners.length > 0) {
+    if (authenticated && mainSocketListeners.length) {
       mainSocketListeners.forEach(([channel, callback]) => {
         mainSocket.on(channel, (...params) => callback(...params))
       })
@@ -52,47 +23,80 @@ export function MainSocketProvider({ children, session, startMainSocketListeners
   }, [authenticated])
 
   useEffect(() => {
-    if (authenticated && mainSocketListenersQuery.length > 0) {
-      mainSocketListenersQuery.forEach(([channel, callback]) => {
+    if (authenticated && mainSocket && mainSocketListeners.length) {
+      mainSocketListeners.forEach(([channel, callback]) => {
         mainSocket.on(channel, (...params) => callback(...params))
       })
 
-      setMainSocketListenersQuery([])
+      mainSocketListenersQueue = []
     }
-
-  }, [mainSocketListenersQuery])
+  }, [mainSocketListeners])
 
   function addMainSocketListeners(listeners) {
+    mainSocketListenersQueue = [
+      ...mainSocketListenersQueue,
+      ...listeners
+    ]
+
     setMainSocketListeners([
       ...mainSocketListeners,
-      ...listeners,
+      ...mainSocketListenersQueue,
     ])
+  }
 
-    setMainSocketListenersQuery(listeners)
+  function createMainSocket(callback, startMainSocketListeners=[]) {
+    if (session.id) {
+      if (mainSocket) {
+        mainSocket.disconnect()
+      }
+      if (!mainSocket) {
+        if (session.id) {
+          const mainSocket = SocketIO({ namespace: 'user' })
+          setMainSocket(mainSocket)
+
+          mainSocket.on('connect', () => {
+            mainSocket.emit('authenticate', {id: session.id})
+  
+            mainSocket.on('authenticated', () => {
+              setAuthenticated(true)
+
+              if (startMainSocketListeners.length) {
+                startMainSocketListeners.forEach(([channel, callback]) => {
+                  mainSocket.on(channel, (...params) => callback(...params))
+                })
+              }
+  
+              if (callback) {
+                callback(mainSocket)
+              }
+            })
+          })
+  
+          mainSocket.on('disconnect', () => {
+            setMainSocket(null)
+            setAuthenticated(false)
+            callback && callback(null)
+          })
+        }
+        else {
+          mainSocket.disconnect()
+          setMainSocket(null)
+        }
+      }
+    }
+    else {
+      callback(new Error('No valid Session'))
+    }
   }
 
   return (
     <MainSocketContext.Provider value={{
       mainSocket,
-      setMainSocket: (io, callback) => setMainSocket(io, session, callback, [mainSocketCallback, setMainSocketCallback]),
+      createMainSocket,
       addMainSocketListener: (channel, callback) => addMainSocketListeners([[channel, callback]]),
       addMainSocketListeners,
     }}>
       {children}
     </MainSocketContext.Provider>
   )
-}
-
-function setMainSocket(io, session, callback, mainSocketCallbackState) {
-  const [mainSocketCallback, setMainSocketCallback] = mainSocketCallbackState
-
-  if (session.id) {
-    setMainSocketCallback([io, callback])
-  }
-  else {
-    mainSocketCallback.disconnect()
-    setMainSocketCallback(null)
-    callback(new Error('No valid Session'))
-  }
-  
 }
