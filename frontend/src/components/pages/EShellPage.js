@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useLayoutEffect } from "react"
 import { connect } from 'react-redux'
 import styled from 'styled-components/macro'
 import ReactSVG from 'react-svg'
@@ -8,6 +8,7 @@ import Wrapper from '../utils/Wrapper'
 import Header from './EShellPage/Header'
 import RunCommands from './EShellPage/RunCommands'
 import closeFullscreenIcon from '../images/fullscreen_icon.svg'
+import useWindowSize from '../../utils/hooks/useWindowSize'
 
 import EShell from '../../eshell/EShell'
 import EShellTerm from "../../eshell/EShellTerm"
@@ -26,6 +27,8 @@ function EShellPage({ session, location }) {
   const [eshellConnectionStarted, setEshellConnectionStarted] = useState(false)
   const [eshellConnected, setEshellConnected] = useState(false)
   const [selectedDeviceId, setSelectedDeviceId] = useState()
+  const [isQuickCommandsShowing, setIsQuickCommandsShowing] = useState(false)
+  const [windowWidth, windowHeight] = useWindowSize()
 
   useEffect(() => {
     getDeviceList().then(deviceList => setDevices(deviceList.devices))
@@ -33,6 +36,10 @@ function EShellPage({ session, location }) {
       startEshellConnection(location.device._id)
     }
   }, [])
+
+  useLayoutEffect(() => {
+
+  }, [windowWidth, windowHeight])
 
   function createEShellSession(deviceId=null) {
   let currentEShellSessions = eshellSessions
@@ -88,7 +95,7 @@ function EShellPage({ session, location }) {
   }
 
   function sendCMD(cmd) {
-    // TODO:
+    currentEShellSession.emit(cmd + '\n')
   }
 
   return (
@@ -105,21 +112,25 @@ function EShellPage({ session, location }) {
           toggleShellFullscreen={() => {
             setCurrentSessionFullscreen(!currentSessionFullscreen)}
           }
-          toggleQuickCommands={()=>{}}
+          toggleQuickCommands={() => setIsQuickCommandsShowing(!isQuickCommandsShowing)}
         />
       </WrapperStyled>
       { eshellSessions.length > 0
           ? <EShellPageWrapper>
             {
-              eshellSessions.map(session => <EShellTerm
+              eshellSessions.map(session => <EShellTermStyld
                 key={session.sessionId}
                 input={session.input}
                 output={session.output}
-                windowSizeChanged={session.windowSizeChanged}
+                onWindowSizeChanged={session.onWindowSizeChanged}
                 fullscreen={currentSessionFullscreen}
+                minusSize={200}
               />)
             }
-            <RunCommands sendCMD={sendCMD}></RunCommands>
+            {
+              isQuickCommandsShowing
+                && <RunCommands sendCMD={sendCMD}></RunCommands>
+            }
             </EShellPageWrapper>
           : <NoSessionsText>No EShell-Sessions...</NoSessionsText>
       }
@@ -157,6 +168,10 @@ const EShellPageWrapper = styled.div`
   flex-grow: 1;
   margin-bottom: 20px;
   padding: 0 12px;
+`
+
+const EShellTermStyld = styled(EShellTerm)`
+  flex-grow: 1;
 `
 
 const NoSessionsText = styled.p`

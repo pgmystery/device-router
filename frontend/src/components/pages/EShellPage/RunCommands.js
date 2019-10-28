@@ -4,6 +4,8 @@ import ReactSVG from 'react-svg'
 
 import request from '../../../utils/Request'
 
+import Button from '../../utils/Button'
+import Input from '../../utils/Input'
 import removeIcon from '../../images/deleteIcon.svg'
 import runRoundIcon from '../../images/runRoundIcon.svg'
 
@@ -82,7 +84,7 @@ function RunCommands({ sendCMD }) {
       </CommandsList>
       <InputWrapper>
         <InputStyled value={cmdInputValue} onChange={e => setCmdInputValue(e.target.value)} onKeyDown={handleKeyDown} />
-        <button onClick={handleClick}>{'>'}</button>
+        <ButtonStyled onClick={handleClick}>{'>'}</ButtonStyled>
       </InputWrapper>
     </RunCommandsStyled>
   )
@@ -90,14 +92,16 @@ function RunCommands({ sendCMD }) {
 
 const RunCommandsStyled = styled.div`
   width: 200px;
-  height: 100%;
   border: 1px solid;
   padding: 10px;
+  display: flex;
+  flex-direction: column;
 `
 
 const CommandsList = styled.ul`
   width: 100%;
-  height: 90%;
+  flex-grow: 1;
+  margin-top: 0;
   padding: 0;
   overflow-y: auto;
 	list-style: none;
@@ -128,8 +132,12 @@ const InputWrapper = styled.div`
   display: flex;
 `
 
-const InputStyled = styled.input`
+const InputStyled = styled(Input)`
+  font-size: 0.70em;
+`
 
+const ButtonStyled = styled(Button)`
+  margin: 0;
 `
 
 

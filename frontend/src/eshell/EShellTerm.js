@@ -5,7 +5,7 @@ import useWindowSize from '../utils/hooks/useWindowSize'
 import { Terminal } from "xterm"
 
 
-function EShellTerm({ input, output, windowSizeChanged, fullscreen=false, className }) {
+function EShellTerm({ input, output, minusSize, onWindowSizeChanged, fullscreen=false, className }) {
   const [term, setTerm] = useState(new Terminal())
   const [windowWidth, windowHeight] = useWindowSize()
   const [termAttachedToNode, setTermAttachedToNode] = useState(false)
@@ -17,7 +17,7 @@ function EShellTerm({ input, output, windowSizeChanged, fullscreen=false, classN
     if (node) {
       if (!termAttachedToNode) {
 
-        const termWidthOffset = window.innerWidth - node.offsetWidth + scrollbarWidth
+        const termWidthOffset = window.innerWidth - node.offsetWidth + scrollbarWidth + minusSize
         const termHeightOffset = window.innerHeight - node.offsetHeight
         setTermWidthOffset(termWidthOffset)
         setTermHeightOffset(termHeightOffset)
@@ -28,7 +28,7 @@ function EShellTerm({ input, output, windowSizeChanged, fullscreen=false, classN
         const rows = Math.floor((window.innerHeight - termHeightOffset) / term._core.charMeasure.height)
 
         term.resize(cols, rows)
-        windowSizeChanged(cols, rows)
+        onWindowSizeChanged(cols, rows)
 
         setTermAttachedToNode(true)
       }
@@ -45,7 +45,7 @@ function EShellTerm({ input, output, windowSizeChanged, fullscreen=false, classN
         }
 
         term.resize(cols, rows)
-        windowSizeChanged(cols, rows)
+        onWindowSizeChanged(cols, rows)
       }
     }
   })
@@ -86,6 +86,7 @@ const TermContainer = styled.div`
   bottom: 0;
   position: ${({ fullscreen }) => fullscreen ? 'fixed' : 'static'};
   z-index: 200;
+  background-color: #000000;
 `
 
 
