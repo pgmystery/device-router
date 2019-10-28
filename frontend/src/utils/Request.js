@@ -1,18 +1,15 @@
 import { backendUrl } from '../components/App'
 
 class Request {
-  constructor(url) {
-    this.url = url
-  }
 
-  get({ url=this.url, id='' }={}) {
+  static get({ url='', id='' }={}) {
     return this.send({
       url,
       id
     })
   }
 
-  post({ url=this.url, data }) {
+  static post({ url='', data }) {
     return this.send({
       url,
       method: 'POST',
@@ -20,7 +17,7 @@ class Request {
     })
   }
 
-  patch({ url=this.url, id='', data }) {
+  static patch({ url='', id='', data }) {
     return this.send({
       url,
       method: 'PATCH',
@@ -29,7 +26,7 @@ class Request {
     })
   }
 
-  delete({ url=this.url, id='' }) {
+  static delete({ url='', id='' }) {
     return this.send({
       url,
       method: 'DELETE',
@@ -37,7 +34,7 @@ class Request {
     })
   }
 
-  send({ url=this.url, method='GET', id='', data }={}) {
+  static send({ url='', method='GET', id='', data }={}) {
     return new Promise((resolve, reject) => {
       fetch(backendUrl + url + '/' + id, {
         method,
@@ -59,4 +56,4 @@ class Request {
   }
 }
 
-export default new Request()
+export default Request

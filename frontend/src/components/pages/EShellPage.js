@@ -6,6 +6,7 @@ import request from '../../utils/Request'
 
 import Wrapper from '../utils/Wrapper'
 import Header from './EShellPage/Header'
+import RunCommands from './EShellPage/RunCommands'
 import closeFullscreenIcon from '../images/fullscreen_icon.svg'
 
 import EShell from '../../eshell/EShell'
@@ -86,6 +87,10 @@ function EShellPage({ session, location }) {
     currentEShellSession.disconnect()
   }
 
+  function sendCMD(cmd) {
+    // TODO:
+  }
+
   return (
     <EShellPageStyled>
       <WrapperStyled flex={true}>
@@ -100,16 +105,22 @@ function EShellPage({ session, location }) {
           toggleShellFullscreen={() => {
             setCurrentSessionFullscreen(!currentSessionFullscreen)}
           }
+          toggleQuickCommands={()=>{}}
         />
       </WrapperStyled>
       { eshellSessions.length > 0
-          ? eshellSessions.map(session => <EShellTermStyled
-              key={session.sessionId}
-              input={session.input}
-              output={session.output}
-              windowSizeChanged={session.windowSizeChanged}
-              fullscreen={currentSessionFullscreen}
-            />)
+          ? <EShellPageWrapper>
+            {
+              eshellSessions.map(session => <EShellTerm
+                key={session.sessionId}
+                input={session.input}
+                output={session.output}
+                windowSizeChanged={session.windowSizeChanged}
+                fullscreen={currentSessionFullscreen}
+              />)
+            }
+            <RunCommands sendCMD={sendCMD}></RunCommands>
+            </EShellPageWrapper>
           : <NoSessionsText>No EShell-Sessions...</NoSessionsText>
       }
       {
@@ -141,7 +152,8 @@ const WrapperStyled = styled(Wrapper)`
   height: auto;
 `
 
-const EShellTermStyled = styled(EShellTerm)`
+const EShellPageWrapper = styled.div`
+  display: flex;
   flex-grow: 1;
   margin-bottom: 20px;
   padding: 0 12px;

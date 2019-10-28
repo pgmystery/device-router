@@ -56,5 +56,31 @@ userRouter.get('/dashboard', async (req, res) => {
   }
 })
 
+userRouter.get('/cmds', async (req, res) => {
+  try {
+    const userId = req.session.user.id
+
+    const userModel = await User.findById(userId)
+
+    res.send({cmds: userModel.cmds})
+  }
+  catch(err) {
+    res.status(400).send(parseError(err))
+  }
+})
+
+userRouter.patch('/cmds', async (req, res) => {
+  try {
+    const userId = req.session.user.id
+
+    const updatedUserModel = await User.findByIdAndUpdate(userId, { cmds: req.body.cmds })
+
+    res.send({cmds: updatedUserModel.cmds})
+  }
+  catch(err) {
+    res.status(400).send(parseError(err))
+  }
+})
+
 
 module.exports = userRouter
