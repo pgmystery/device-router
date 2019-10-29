@@ -23,7 +23,8 @@ Navigation.defaultProps = {
   ]
 }
 
-function Navigation({ links, profileLinks, notifications, onNotificationClicked, onNotificationsDeleted }) {
+function Navigation({ links, profileLinks, notifications, onNotificationClicked, onNotificationsDeleted, isNewNotification }) {
+
   function getLinks() {
     return links.map((link, index) => 
       <NavigationLink
@@ -42,7 +43,12 @@ function Navigation({ links, profileLinks, notifications, onNotificationClicked,
           {getLinks()}
         </NavigationLeftStyled>
         <NavigationRightStyled>
-          <NotificationWidget notifications={notifications} onOpen={onNotificationClicked} onDelete={onNotificationsDeleted} />
+          <NotificationWidget
+            notifications={notifications}
+            onOpen={onNotificationClicked}
+            onDelete={onNotificationsDeleted}
+            isNewNotification={isNewNotification}
+          />
           <ProfileWidget links={profileLinks} />
         </NavigationRightStyled>
       </Wrapper>

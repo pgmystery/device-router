@@ -11,6 +11,7 @@ const Input = styled.input`
   border-left: none;
   border-right: none;
   transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+  outline: none;
 
   :focus {
     border-bottom: 1px solid ${MainTheme.mainColor};

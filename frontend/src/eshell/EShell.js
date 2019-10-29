@@ -13,11 +13,12 @@ class EShell {
 
       input: inputFunction => newSession.input = inputFunction,  // Crazy, but it works...
       output: data => this.send({ session: newSession, data }),
-      windowSizeChanged: (cols, rows) => this.send({ channel: 'term_size', session: newSession, data: {cols, rows} }),
+      onWindowSizeChanged: (cols, rows) => this.send({ channel: 'term_size', session: newSession, data: {cols, rows} }),
 
       connected: false,
       isRdy: false,
 
+      emit: data => this.send({ session: newSession, data }),
       connect: () => this.connectSession(newSession, namespace, data),
       disconnect: () => this.disconnectSession(newSession),
       remove: () => this.removeSession(newSession),

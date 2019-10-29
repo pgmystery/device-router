@@ -51,6 +51,7 @@ const ButtonTooltip = `
   white-space: nowrap;
   top: -70%;
   z-index: 1;
+  outline: none;
 `
 
 const ButtonTooltipHover = `

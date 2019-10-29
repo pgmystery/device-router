@@ -3,21 +3,29 @@ import { Link } from 'react-router-dom'
 import LostConnectionPage from '../LostConnectionPage'
 import Navigation from '../../utils/navigation/Navigation'
 import { DropdownMenuSeparator } from '../../utils/DropdownMenu'
-import SocketIO  from '../../../socketio/SocketIO'
 import { MainSocketContext,  } from '../../../socketio/MainSocketContext'
-import useNotification from '../../../utils/hooks/useNotification'
+import useMainSocket from '../../../utils/hooks/useMainSocket'
 
 
 function LoggedInPage({ children }) {
-  const [newNotificationsQueue, setNewNotificationsQueue] = useState([])
   const [notifications, setNotifications] = useState([])
   const [mainSocketConnected, setMainSocketConnected] = useState(false)
-  const { setMainSocket, mainSocket } = useContext(MainSocketContext)
-  useNotification(addNotification)
+  const { createMainSocket, mainSocket } = useContext(MainSocketContext)
+  const [newNotification] = useMainSocket('notification')
+  const [newNotifications] = useMainSocket('notifications')
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false)
 
   useEffect(() => {
-    setMainSocket(SocketIO({ namespace: 'user' }), getMainSocket)
+    createMainSocket(getMainSocket)
   }, [])
+
+  useEffect(() => {
+    newNotification && addNotifications([newNotification])
+  }, [newNotification])
+
+  useEffect(() => {
+    newNotifications && addNotifications(newNotifications)
+  }, [newNotifications])
 
   const navLinks = [
     {
@@ -37,13 +45,6 @@ function LoggedInPage({ children }) {
       url: '/eshell',
     },
   ]
-
-  useEffect(() => {
-    setNotifications([
-      ...newNotificationsQueue,
-      ...notifications,
-    ])
-  }, [newNotificationsQueue])
 
   const profileLinks = [
     <Link to='/profile'>My Profile</Link>,
@@ -82,13 +83,19 @@ function LoggedInPage({ children }) {
     }
   }
 
-  function addNotification(notification) {
-    setNewNotificationsQueue([
-      notification,
+  function addNotifications(newNotifications) {
+    setNotifications([
+      ...newNotifications,
+      ...notifications,
     ])
+
+    if (isNotificationOpen) {
+      mainSocket.emit('notificationsReaded')
+    }
   }
 
-  function onNotificationClicked() {
+  function onNotificationClicked(isOpen) {
+    setIsNotificationOpen(isOpen)
     mainSocket.emit('notificationsReaded')
   }
 

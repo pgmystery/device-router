@@ -12,6 +12,7 @@ NotificationWidget.propTypes = {
   notifications: PropTypes.arrayOf(PropTypes.object).isRequired,
   onOpen: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
+  isNewNotification: PropTypes.bool,
 }
 
 NotificationWidget.defaultTypes = {
@@ -26,17 +27,12 @@ function NotificationWidget({ notifications, onOpen, onDelete }) {
 
   useEffect(() => {
     if (isMenuOpen && isNewNotification) {
-      let changed = false
-
       notifications.forEach(notification => {
         if (notification.new) {
           notification.new = false
-          changed = true
         }
       })
-      if (changed) {
-        onOpen()
-      }
+      onOpen(isMenuOpen)
       setIsNewNotification(false)
     }
   }, [isMenuOpen])

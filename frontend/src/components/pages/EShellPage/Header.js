@@ -6,9 +6,21 @@ import PageHeader from '../../utils/PageHeader'
 import Button, { ButtonSuccess, ButtonDanger } from '../../utils/Button'
 import Select, { Option } from '../../utils/Select'
 import fullscreenIcon from '../../images/fullscreen2_icon.svg'
+import runIcon from '../../images/runIcon.svg'
 
 
-function Header({ connectToDevice, disableConnectButton, devices, eshellConnected, createSessionHandler, stopSessionHandler, setSelectedDeviceId, toggleShellFullscreen }) {
+function Header({
+  connectToDevice,
+  disableConnectButton,
+  devices,
+  eshellConnected,
+  createSessionHandler,
+  stopSessionHandler,
+  setSelectedDeviceId,
+  toggleShellFullscreen,
+  toggleQuickCommands,
+}) {
+
   function getEshellConnectButton() {
     return (
       <ButtonSuccess
@@ -57,12 +69,20 @@ function Header({ connectToDevice, disableConnectButton, devices, eshellConnecte
     return (
       <>
         {eshellConnected &&
-          <IconButton onClick={toggleShellFullscreen} tooltip={"Fullscreen"}>
-            <ReactSVG src={fullscreenIcon} beforeInjection={svg => {
-                svg.setAttribute('style', 'width: 24px; height: 30px; display: flex; fill: #6f6f6f;')
-              }}
-            />
-          </IconButton>
+          <>
+            <IconButton onClick={toggleQuickCommands} tooltip={"Run command"}>
+              <ReactSVG src={runIcon} beforeInjection={svg => {
+                  svg.setAttribute('style', 'width: 24px; height: 30px; display: flex; fill: #6f6f6f;')
+                }}
+              />
+            </IconButton>
+            <IconButton onClick={toggleShellFullscreen} tooltip={"Fullscreen"}>
+              <ReactSVG src={fullscreenIcon} beforeInjection={svg => {
+                  svg.setAttribute('style', 'width: 24px; height: 30px; display: flex; fill: #6f6f6f;')
+                }}
+              />
+            </IconButton>
+          </>
         }
       </>
     )
