@@ -10,7 +10,10 @@ class Rounector {
         dialogPrompt({
             title: 'IP:Port of the backend',
             label: 'http://',
-            value: this.url.replace('http://', '')
+            value: this.url.replace('http://', ''),
+            type: 'input',
+            alwaysOnTop: true,
+            height: 220,
         })
           .then(r => {
             if (r == null) {
