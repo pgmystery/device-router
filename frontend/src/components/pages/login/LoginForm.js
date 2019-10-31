@@ -29,12 +29,16 @@ function LoginForm({ onSubmit, errors }) {
       <p>{errors}</p>
       <LoginFormStyled onSubmit={submitHandler}>
         <div>
-          <Label>Username:</Label>
-          <Input type="text" name='username' value={username} onChange={event => setUsername(event.currentTarget.value)} placeholder="Username" required autoFocus/>
+          <Label>
+            Username:
+            <Input type="text" name='username' value={username} onChange={event => setUsername(event.currentTarget.value)} placeholder="Username" required autoFocus/>
+          </Label>
         </div>
         <div>
-          <Label>Password:</Label>
-          <Input type="password" name='password' value={password} onChange={event => setPassword(event.currentTarget.value)} placeholder="Password" required />
+          <Label>
+            Password:
+            <Input type="password" name='password' value={password} onChange={event => setPassword(event.currentTarget.value)} placeholder="Password" required />
+          </Label>
         </div>
         <SubmitButton>Login</SubmitButton>
       </LoginFormStyled>
