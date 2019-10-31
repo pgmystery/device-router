@@ -10,7 +10,7 @@ import deleteIcon from '../images/delete_icon.svg'
 import plusIcon from '../images/plus_icon.svg'
 import downloadIcon from '../images/downloadIcon.svg'
 import reloadIcon from '../images/reload_icon.svg'
-import rounectorFile from '../../files/rounector/Rounector.dmg'
+import rounectorFile from '../../utils/rounectorFile'
 import LinkUnstyled from '../utils/LinkUnstyled'
 import AnchorUnstyled from '../utils/AnchorUnstyled'
 

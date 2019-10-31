@@ -14,7 +14,7 @@ import flagIcon from '../images/flagIcon.svg'
 import checkIcon from '../images/checkIcon.svg'
 import LinkUnstyled from '../utils/LinkUnstyled'
 import AnchorUnstyled from '../utils/AnchorUnstyled'
-import rounectorFile from '../../files/rounector/Rounector.dmg'
+import rounectorFile from '../../utils/rounectorFile'
 
 
 const mapStateToProps = ({ session }) => ({
@@ -100,7 +100,7 @@ function Dashboard({ session }) {
       <StepsWrapper>
 
         <StepWrapper>
-            <StepBoxHeadline>1. Register-token</StepBoxHeadline>
+          <StepBoxHeadline>1. Register-token</StepBoxHeadline>
           <LinkUnstyled to="/registerlist/new">
             { getStepBox({ icon: keyIcon, arrowRight: true}) }
           </LinkUnstyled>

@@ -11,7 +11,10 @@
   },
   "build": {
     "appId": "com.device-router.rounector.app",
-    "productName": "Rounector"
+    "productName": "Rounector",
+    "win": {
+      "target": "portable"
+    }
   },
   "author": "Philipp Glaw",
   "license": "ISC",
