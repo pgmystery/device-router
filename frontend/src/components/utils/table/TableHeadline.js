@@ -6,12 +6,18 @@ function TableHeadline({ items, order }) {
   return (
     <TableHeadlineStyled>
       {
-        order.map(itemKey => (
-        <TableHeadlineItem 
-            keyName={itemKey}
-            key={itemKey}
-          >{items[itemKey]}</TableHeadlineItem>
-        ))
+        order.map(itemKey => {
+          if (itemKey !== "_id") {
+            return (
+              <TableHeadlineItem 
+                keyName={itemKey}
+                key={itemKey}
+              >
+                {items[itemKey]}
+              </TableHeadlineItem>
+            )
+          }
+        })
       }
     </TableHeadlineStyled>
   )

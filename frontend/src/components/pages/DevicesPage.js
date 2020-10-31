@@ -41,6 +41,7 @@ function DevicesPage() {
     if (devices && devices.length > 0) {
       return devices.map(device => {
         return {
+          _id: device._id,
           name: <Input text={device.name} onChanged={newName => updateDevice(device._id, {name: newName})} />,
           type: <TextSpan>{device.type}</TextSpan>,
           version: <TextSpan>{device.version}</TextSpan>,

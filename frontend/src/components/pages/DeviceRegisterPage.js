@@ -21,17 +21,24 @@ import Date from '../utils/table/editFields/Date'
 
 
 function DeviceRegisterPage() {
-  const [registerTokenList, setRegisterTokenList] = useState()
+  const [registerTokenList, setRegisterTokenListState] = useState()
 
   useEffect(() => {
     refreshRegisterList()
   }, [])
 
+  function setRegisterTokenList(newRegisterTokenList) {
+    setRegisterTokenListState({
+      keys: registerTokenList.keys,
+      tokens: newRegisterTokenList
+    })
+  }
+
   function refreshRegisterList() {
     getRegisterTokenList()
       .then(registerTokenList => {
         registerTokenList.keys.delete = 'Delete'
-        setRegisterTokenList(registerTokenList)
+        setRegisterTokenListState(registerTokenList)
       })
       .catch(err => console.error(err))
   }
@@ -42,19 +49,30 @@ function DeviceRegisterPage() {
 
   function updateRegisterToken(id, data) {
     request.patch({ url: '/api/device/register', id, data })
-      .then(updatedToken => refreshRegisterList())
+      .then(updatedToken => updateRegisterTokenList(id, updatedToken))
   }
 
   function deleteRegisterToken(id) {
     const r = window.confirm('Do you really want to delete the token?')
     r && request.delete({ url: '/api/device/register', id })
-          .then(deletedToken => refreshRegisterList())
+      .then(deletedToken => deleteRegisterTokenInList(deletedToken._id))
+  }
+
+  function updateRegisterTokenList(id, newToken) {
+    const newRegisterTokenList = registerTokenList.tokens.map(registerToken => registerToken._id !== id ? registerToken : newToken)
+    setRegisterTokenList(newRegisterTokenList)
+  }
+
+  function deleteRegisterTokenInList(id) {
+    const newRegisterTokenList = registerTokenList.tokens.filter(registerToken => registerToken._id !== id)
+    setRegisterTokenList(newRegisterTokenList)
   }
 
   function getListItems(listItems) {
     if (listItems.length > 0) {
       const newListItems = listItems.map(item => {
         return {
+          _id: item.token,
           name: <Input text={item.name} onChanged={newName => updateRegisterToken(item._id, {name: newName})}/>,
           token: <Token text={item.token} onRefresh={() => updateRegisterToken(item._id, {token: true})}/>,
           startDate: <Date text={item.startDate} name="startDate" onChanged={newDate => updateRegisterToken(item._id, {startDate: newDate})}/>,

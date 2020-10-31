@@ -28,8 +28,11 @@ function Table({ headerItems, items, noItemsText='No Items' }) {
       {
         items === undefined ||
           items.length > 0
-            ? items.map((itemComponents, index) => 
-                <TableItem key={index} itemComponents={itemComponents} order={Object.keys(items[0])}></TableItem>
+            ? items.map(itemComponents => {
+              const itemKey = itemComponents._id
+              delete itemComponents._id
+              return <TableItem key={itemKey} itemComponents={itemComponents} order={Object.keys(items[0])}></TableItem>
+            }
               )
             : <TableNotItemsText>{noItemsText}</TableNotItemsText>
       }
