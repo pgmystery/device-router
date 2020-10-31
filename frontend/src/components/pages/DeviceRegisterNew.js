@@ -38,15 +38,15 @@ function DeviceRegisterNew() {
           <DeviceRegisterNewForm onSubmit={submitHandler}>
             <div>
               <Label>Name</Label>
-              <Input type="text" name="name" placeholder="Name" required autoFocus />
+              <Input type="text" name="name" placeholder="Name" required autoFocus/>
             </div>
             <div>
               <Label>Start-Date</Label>
-              <Input type="Date" name="startDate" placeholder="Start-Date" required/>
+              <Input type="Date" name="startDate" placeholder="Start-Date" defaultValue={new Date().toISOString().substr(0,10)} required/>
             </div>
             <div>
               <Label>End-Date</Label>
-              <Input type="Date" name="endDate" placeholder="End-Date" required/>
+              <Input type="Date" name="endDate" placeholder="End-Date" defaultValue={new Date().toISOString().substr(0,10)} required/>
             </div>
             <SubmitButton>Create Register-Token</SubmitButton>
           </DeviceRegisterNewForm>
