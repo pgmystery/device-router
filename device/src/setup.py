@@ -54,8 +54,8 @@ class Setup:
 			print(output)
 
 			# Install requirements for virtualenv:
-			print(self.working_dir + "/match/virtualenv/bin/pip install -r " + self.path + "/requirements.txt")
-			p = subprocess.Popen(['sudo', self.working_dir + "/match/virtualenv/bin/pip", "install", "-r", self.path + "/requirements.txt"], stdout=subprocess.PIPE)
+			print(self.working_dir + "/match/virtualenv/bin/pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r " + self.path + "/requirements.txt")
+			p = subprocess.Popen(['sudo', self.working_dir + "/match/virtualenv/bin/pip", "install", "--trusted-host", "pypi.org", "--trusted-host", "files.pythonhosted.org", "-r", self.path + "/requirements.txt"], stdout=subprocess.PIPE)
 			output, err = p.communicate()
 			print(output)
 

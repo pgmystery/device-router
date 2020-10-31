@@ -20,8 +20,8 @@ class Match(MatchDaemon):
     self.version = __version__
 
     # self.url = "http://127.0.0.1:3001"
-    # self.url = "http://192.168.1.122:3001"  # HOME
-    self.url = "http://172.16.100.38:3001"  # NEUE_FISCHE
+    self.url = "http://192.168.1.5:3001"  # HOME
+    # self.url = "http://172.16.100.38:3001"  # NEUE_FISCHE
 
     self.logger = Logger()
     self.logger.log("MATCH-Service startet")
