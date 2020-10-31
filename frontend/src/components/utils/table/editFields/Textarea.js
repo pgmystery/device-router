@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import ReactSVG from 'react-svg'
 
 import { ButtonSuccess } from '../../../utils/Button'
-import Input from '../../../utils/Input'
 import { TextSpan, IconButton } from '../Table'
 import pencilIcon from '../../../images/pencil_icon.svg'
 

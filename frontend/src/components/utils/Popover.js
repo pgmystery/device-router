@@ -40,7 +40,7 @@ const PopoverArrowStyled = styled.div`
   border-top-color: transparent;
   border-left-color: transparent;
   border-right-color: transparent;
-  top: -12px;
+  top: -11px;
   right: 8px;
 `
 

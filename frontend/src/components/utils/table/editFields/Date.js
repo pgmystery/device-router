@@ -42,7 +42,7 @@ function Date({ text, onChanged, name="date" }) {
                 name={name}
                 onChange={event => setInputValue(event.currentTarget.value)}
                 value={inputValue}
-                onFocus={(event) => event.target.select()}
+                onFocus={event => event.target.select()}
                 autoFocus
               />
               <SubmitButton>Change</SubmitButton>
