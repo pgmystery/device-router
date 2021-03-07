@@ -1,61 +1,35 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components/macro'
-import useWindowSize from '../utils/hooks/useWindowSize'
+import ReactResizeDetector from 'react-resize-detector'
 
-import { Terminal } from "xterm"
+import { Terminal } from 'xterm'
+import { FitAddon } from 'xterm-addon-fit'
 
 
-function EShellTerm({ input, output, minusSize, onWindowSizeChanged, fullscreen=false, className }) {
-  const [term, setTerm] = useState(new Terminal())
-  const [windowWidth, windowHeight] = useWindowSize()
-  const [termAttachedToNode, setTermAttachedToNode] = useState(false)
-  const [termWidthOffset, setTermWidthOffset] = useState(0)
-  const [termHeightOffset, setTermHeightOffset] = useState(0)
-  const [scrollbarWidth, setScrollbarWidth] = useState(15)
-
-  const measuredRef = useCallback(node => {
-    if (node) {
-      if (!termAttachedToNode) {
-
-        const termWidthOffset = window.innerWidth - node.offsetWidth + scrollbarWidth + minusSize
-        const termHeightOffset = window.innerHeight - node.offsetHeight
-        setTermWidthOffset(termWidthOffset)
-        setTermHeightOffset(termHeightOffset)
-
-        term.open(node)
-
-        const cols = Math.floor((window.innerWidth - termWidthOffset) / term._core.charMeasure.width)
-        const rows = Math.floor((window.innerHeight - termHeightOffset) / term._core.charMeasure.height)
-
-        term.resize(cols, rows)
-        onWindowSizeChanged(cols, rows)
-
-        setTermAttachedToNode(true)
-      }
-      else {
-
-        let cols, rows
-        if (fullscreen) {
-          cols = Math.floor((window.innerWidth / term._core.charMeasure.width) - scrollbarWidth)
-          rows = Math.floor(window.innerHeight / term._core.charMeasure.height)
-        }
-        else {
-          cols = Math.floor((windowWidth - termWidthOffset) / term._core.charMeasure.width)
-          rows = Math.floor((window.innerHeight - termHeightOffset) / term._core.charMeasure.height)
-        }
-
-        term.resize(cols, rows)
-        onWindowSizeChanged(cols, rows)
-      }
-    }
-  })
+function EShellTerm({ input, output, onWindowSizeChanged, fullscreen=false, className }) {
+  const [term, setTerm] = useState(null)
+  const containerRef = useRef()
+  const [fitAddon, setFitAddon] = useState(null)
 
   useEffect(() => {
-
-    term.onData(outputData)
-
-    input(inputData)
+    !term && setTerm(new Terminal())
+    !fitAddon && setFitAddon(new FitAddon())
   }, [])
+
+  useEffect(() => {
+    if (term) {
+      term.loadAddon(fitAddon)
+
+      term.onData(outputData)  
+      input(inputData)
+
+      if (containerRef.current) {
+        term.open(containerRef.current)
+      }
+    }
+  }, [term, containerRef])
+
+  useEffect(handleWrapperResize, [term, fitAddon, onWindowSizeChanged])
 
   function inputData(data) {
     term.write(data)
@@ -65,10 +39,28 @@ function EShellTerm({ input, output, minusSize, onWindowSizeChanged, fullscreen=
     output(data)
   }
 
+  function handleWrapperResize() {
+    if (term && fitAddon) {
+      fitAddon.fit()
+      onWindowSizeChanged(term.cols, term.rows)
+    }
+  }
+
   return (
-    <TermWrapper className={className} fullscreen={fullscreen}>
-      <TermContainer fullscreen={fullscreen} scrollbarWidth={scrollbarWidth} ref={measuredRef} />
-    </TermWrapper>
+    <ReactResizeDetector handleWidth handleHeight>
+      {
+        ({ width, height }) => (
+          <TermWrapper className={className} fullscreen={fullscreen}>
+            <TermContainer fullscreen={fullscreen} ref={containerRef} style={{
+              width: fullscreen ? '100%' : width && width.toString() + 'px',
+              height: fullscreen ? '100%' : height && height.toString() + 'px',
+            }}>
+              <ReactResizeDetector onResize={handleWrapperResize}/>
+            </TermContainer>
+          </TermWrapper>
+        )
+      }
+    </ReactResizeDetector>
   )
 }
 
@@ -79,14 +71,13 @@ const TermWrapper = styled.div`
 `
 
 const TermContainer = styled.div`
-  height: 100%;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  position: ${({ fullscreen }) => fullscreen ? 'fixed' : 'static'};
+  left: ${({ fullscreen }) => fullscreen ? 0 : 'auto'};
+  right: ${({ fullscreen }) => fullscreen ? 0 : 'auto'};
+  top: ${({ fullscreen }) => fullscreen ? 0 : 'auto'};
+  bottom: ${({ fullscreen }) => fullscreen ? 0 : 'auto'};
+  position: ${({ fullscreen }) => fullscreen ? 'fixed' : 'absolute'};
   z-index: 200;
-  background-color: #000000;
+  background-color: #000;
 `
 
 

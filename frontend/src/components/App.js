@@ -4,14 +4,15 @@ import GlobalStyle from './utils/GlobalStyle'
 import PageHandler from './PageHandler'
 import { MainSocketProvider } from '../socketio/MainSocketContext'
 
-import '../../node_modules/xterm/dist/xterm.css'
+import '../../node_modules/xterm/css/xterm.css'
 
 
 const mapStateToProps = ({ session }) => ({
   session
 })
 
-export const backendUrl = ''
+// export const backendUrl = 'http://localhost:5000/'
+export const backendUrl = '/'
 
 function App({ session }) {
   useEffect(() => {
@@ -30,3 +31,5 @@ function App({ session }) {
 export default connect(
   mapStateToProps
 )(App)
+
+// https://itnext.io/mastering-session-authentication-aa29096f6e22

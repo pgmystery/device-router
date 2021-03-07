@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react"
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components/macro'
 import ReactSVG from 'react-svg'
@@ -8,7 +8,7 @@ import Wrapper from '../utils/Wrapper'
 import Header from './EShellPage/Header'
 import RunCommands from './EShellPage/RunCommands'
 import closeFullscreenIcon from '../images/fullscreen_icon.svg'
-import useWindowSize from '../../utils/hooks/useWindowSize'
+// import useWindowSize from '../../utils/hooks/useWindowSize'
 
 import EShell from '../../eshell/EShell'
 import EShellTerm from "../../eshell/EShellTerm"
@@ -28,7 +28,7 @@ function EShellPage({ session, location }) {
   const [eshellConnected, setEshellConnected] = useState(false)
   const [selectedDeviceId, setSelectedDeviceId] = useState()
   const [isQuickCommandsShowing, setIsQuickCommandsShowing] = useState(false)
-  const [windowWidth, windowHeight] = useWindowSize()
+  // const [windowWidth, windowHeight] = useWindowSize()
 
   useEffect(() => {
     getDeviceList().then(deviceList => setDevices(deviceList.devices))
@@ -37,12 +37,12 @@ function EShellPage({ session, location }) {
     }
   }, [])
 
-  useLayoutEffect(() => {
-
-  }, [windowWidth, windowHeight])
+  // useLayoutEffect(() => {
+  //
+  // }, [windowWidth, windowHeight])
 
   function createEShellSession(deviceId=null) {
-  let currentEShellSessions = eshellSessions
+    let currentEShellSessions = eshellSessions
 
     if (currentEShellSession) {
       currentEShellSession.remove()
@@ -72,6 +72,7 @@ function EShellPage({ session, location }) {
     ]
 
     setEshellSessions(currentEShellSessions)
+
     return newSession
   }
 
@@ -124,7 +125,6 @@ function EShellPage({ session, location }) {
                 output={session.output}
                 onWindowSizeChanged={session.onWindowSizeChanged}
                 fullscreen={currentSessionFullscreen}
-                minusSize={200}
               />)
             }
             {

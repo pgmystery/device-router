@@ -5,6 +5,7 @@ class EShell {
   constructor() {
     this.uniqueSessionId = 0
     this.sessions = []
+    this.sendQueues = {}
   }
 
   createSession({ namespace='eshell', data }={}) {
@@ -47,15 +48,19 @@ class EShell {
       socket.emit('authenticate', {userId: data.userId, deviceId: data.deviceId})
 
       socket.on('authenticated', () => {
-
         session.connected = true
-  
+
         socket.on('rdy', data => {
-          for (let [key, value] of Object.entries(data)) {
+          for (const [key, value] of Object.entries(data)) {
             session[key] = value
           }
   
           session.isRdy = true
+
+          if (this.sendQueues.hasOwnProperty(session)) {
+            this.sendQueues[session].forEach(([ channel, data ]) => this.send({ channel, session, data }))
+            delete this.sendQueues[session]
+          }
         })
   
         socket.on('msg', data => session.input(data))
@@ -72,6 +77,11 @@ class EShell {
   send({ channel='cmd', session, data }) {
     if (session.connected && session.isRdy) {
       session.socket.emit(channel, data)
+    }
+    else {
+      this.sendQueues.hasOwnProperty(session)
+        ? this.sendQueues[session].push([channel, data])
+        : this.sendQueues[session] = [[channel, data]]
     }
   }
 }
