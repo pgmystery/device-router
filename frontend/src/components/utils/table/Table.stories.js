@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { withKnobs } from '@storybook/addon-knobs'
-import { withInfo } from '@storybook/addon-info';
+import { withInfo } from '@storybook/addon-info'
 import Table from './Table'
 
 

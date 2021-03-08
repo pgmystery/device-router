@@ -64,7 +64,7 @@ function LoggedInPage({ children }) {
               notifications={notifications}
               onNotificationClicked={onNotificationClicked}
               onNotificationsDeleted={removeNotification}
-            ></Navigation>
+            />
           </header>
           <main>{children}</main>
         </>

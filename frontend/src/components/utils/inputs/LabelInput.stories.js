@@ -10,24 +10,24 @@ export default {
   decorators: [withKnobs, withInfo]
 }
 
-export const standard = () => {
+export const Standard = () => {
   const [value, setValue] = useState('Philipp Glaw')
 
   return <LabelInput type={'text'} value={value} onEdit={newValue => setValue(newValue)} />
 }
 
-export const password = () => {
+export const Password = () => {
   const [value, setValue] = useState('Philipp Glaw')
 
   return <LabelInput type={'password'} value={value} onEdit={newValue => setValue(newValue)} />
 }
 
-export const date = () => {
+export const _Date = () => {
   const [value, setValue] = useState(dateConverterFromObject(new Date()))
 
   return <LabelInput type={'date'} value={value} onEdit={newValue => setValue(dateConverter(newValue))} />
 }
 
-standard.story = {
+Standard.story = {
   name: 'Default'
 }
