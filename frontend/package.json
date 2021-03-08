@@ -1,7 +1,6 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "proxy": "http://localhost:5000",
   "private": true,
   "dependencies": {
     "react": "^16.9.0",
@@ -27,7 +26,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && npm run build-sw",
+    "build-sw": "node ./src/build-sw.js",
+    "serve-build": "npx serve -s build",
     "test": "react-scripts test",
     "cypress": "cypress open",
     "eject": "react-scripts eject",
