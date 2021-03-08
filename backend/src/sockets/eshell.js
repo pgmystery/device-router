@@ -27,7 +27,7 @@ class EshellSocket {
       }
     })
 
-    this.eshellChannel.on("connection", async socket => {
+    this.eshellChannel.on('connection', async socket => {
       console.log('NEW ESHELL CONNECTION')
       if (socket.handshake.query.type === 'user') {
         this.checkUserAuthentication(socket)
@@ -56,11 +56,8 @@ class EshellSocket {
       session.id === sessionId
       && session.deviceId === String(deviceId)
     )
-    if (session && session.status === 0) {
-      return true
-    }
 
-    return false
+    return !!(session && session.status === 0)
   }
 
   async checkUserAuthentication(socket) {
@@ -116,7 +113,7 @@ class EshellSocket {
       if (eshellSession) {
         this.eshellChannel.in('eshell-' + eshellSession.id).clients((err, clients) => {
           if (!err) {
-            if (clients.length == 1) {
+            if (clients.length === 1) {
               this.eshellChannel.connected[clients[0]].disconnect()
             }
           }
@@ -149,7 +146,7 @@ class EshellSocket {
     socket.emit('eshell_session_joined', eshellSession)
 
     socket.on('rdy', async sessionId => {
-      console.log('rdy from device!!!s')
+      console.log('rdy from device!!!')
       const eshellSession = this.sessions.find(session =>
           session.id === sessionId
           && session.deviceSocket === socket.id
