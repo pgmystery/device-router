@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components/macro'
 import PropTypes from 'prop-types'
 
@@ -24,12 +25,31 @@ Navigation.defaultProps = {
 }
 
 function Navigation({ links, profileLinks, notifications, onNotificationClicked, onNotificationsDeleted, isNewNotification }) {
+  const location = useLocation()
+  const [currentSiteIndex, setCurrentSiteIndex] = useState(-1)
+
+  useEffect(() => {
+    setCurrentSiteIndex(-1)
+    if (location.pathname === '/') {
+      setCurrentSiteIndex(0)
+    }
+    else {
+      for (let i=0; i < links.length; i++) {
+        if (links[i].url === location.pathname) {
+          setCurrentSiteIndex(i)
+          break
+        }
+      }
+    }
+  }, [location, links])
 
   function getLinks() {
-    return links.map((link, index) => 
+    return links.map((link, index) =>
       <NavigationLink
         to={link.url}
         key={index}
+        active={currentSiteIndex === index}
+        onClick={() => setCurrentSiteIndex(index)}
       >
         {link.name}
       </NavigationLink>
