@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    networks:
+      - lighter
+    ports:
+      - 27017:27017
+    restart: unless-stopped
+
+  mongo_seed:
+    image: mongo
+    links:
+      - mongo
+    volumes:
+      - ./mongodb/dump:/docker-entrypoint-initdb.d/mongodb
+      - ./mongodb/scripts/import_cmd.sh:/docker-entrypoint-initdb.d/import_cmd.sh
+    command:
+      /docker-entrypoint-initdb.d/import_cmd.sh
+
+  backend:
+    build: .
+    networks:
+      - lighter
+    ports:
+      - 5000:5000
+    depends_on:
+      - mongo
+
+
+networks:
+  lighter:
+    driver: bridge
