@@ -5,6 +5,7 @@
   "main": "src/main.js",
   "scripts": {
     "start": "gulp start && electron .",
+    "gulp": "gulp start",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "build": "yarn dist"

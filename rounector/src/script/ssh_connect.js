@@ -96,14 +96,8 @@ async function start_connect() {
     rounector.data['loginData'] = loginData
     try {
         const status = await check_device(loginData)
-        if (status) {
-            showLoadingScreen(false)
-            loadFrameNext()
-        }
-        else {
-            showLoadingScreen(false)
-            alert('Connection denied...')
-        }
+        showLoadingScreen(false)
+        status ? loadFrameNext() : alert('Connection denied...')
     }
     catch(err) {
         console.error(err)
