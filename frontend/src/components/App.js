@@ -12,7 +12,8 @@ const mapStateToProps = ({ session }) => ({
 })
 
 // export const backendUrl = 'http://localhost:5000/'
-export const backendUrl = '/'
+// export const backendUrl = '/'
+export const backendUrl = ''
 
 function App({ session }) {
   useEffect(() => {
