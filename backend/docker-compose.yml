@@ -4,8 +4,6 @@ services:
   mongo:
     image: mongo
     container_name: mongo
-    networks:
-      - lighter
     ports:
       - 27017:27017
     restart: unless-stopped
@@ -22,14 +20,7 @@ services:
 
   backend:
     build: .
-    networks:
-      - lighter
     ports:
       - 5000:5000
     depends_on:
       - mongo
-
-
-networks:
-  lighter:
-    driver: bridge
