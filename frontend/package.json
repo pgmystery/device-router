@@ -23,7 +23,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && npm run",
+    "build": "react-scripts build",
     "serve-build": "npx serve -s build",
     "test": "react-scripts test",
     "cypress": "cypress open",
