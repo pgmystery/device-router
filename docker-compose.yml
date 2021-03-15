@@ -5,12 +5,16 @@ services:
     image: mongo
     container_name: mongo
     hostname: mongo
+    networks:
+      - deviceRouter
     ports:
       - 27017:27017
     restart: unless-stopped
 
   mongo_seed:
     image: mongo
+    networks:
+      - deviceRouter
     links:
       - mongo
     volumes:
@@ -21,6 +25,9 @@ services:
 
   backend:
     build: ./backend
+    hostname: backend
+    networks:
+      - deviceRouter
     ports:
       - 5000:5000
     depends_on:
@@ -28,7 +35,15 @@ services:
 
   frontend:
     build: ./frontend
+    hostname: frontend
+    networks:
+      - deviceRouter
     ports:
       - 80:80
     depends_on:
       - backend
+
+networks:
+  deviceRouter:
+    driver: bridge
+    name: device_router
