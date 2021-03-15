@@ -55,9 +55,16 @@ class Setup:
 
 			# Install requirements for virtualenv:
 			print(self.working_dir + "/match/virtualenv/bin/pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r " + self.path + "/requirements.txt")
-			p = subprocess.Popen(['sudo', self.working_dir + "/match/virtualenv/bin/pip", "install", "--trusted-host", "pypi.org", "--trusted-host", "files.pythonhosted.org", "-r", self.path + "/requirements.txt"], stdout=subprocess.PIPE)
-			output, err = p.communicate()
-			print(output)
+			virtualenv_install_command = [self.working_dir + "/match/virtualenv/bin/pip", "install", "--trusted-host", "pypi.org", "--trusted-host", "files.pythonhosted.org", "-r", self.path + "/requirements.txt"]
+			try:
+				p = subprocess.Popen(virtualenv_install_command, stdout=subprocess.PIPE)
+				output, err = p.communicate()
+				print(output)
+			except:
+				virtualenv_install_command.insert(0, "sudo")
+				p = subprocess.Popen(virtualenv_install_command, stdout=subprocess.PIPE)
+				output, err = p.communicate()
+				print(output)
 
 			if os.path.isdir("/etc/init.d/"):
 				print("Edit \"match.sh\"-file")
