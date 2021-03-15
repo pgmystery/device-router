@@ -212,7 +212,7 @@ function cleanUp(command, response, sshObj) {
       flashWindow()
       dialog.showMessageBox(null, {
         title: 'Done',
-        message: 'The installation was successfull!',
+        message: 'The installation was successful :)',
       },
       () => {
         closeApp()
