@@ -1,14 +1,14 @@
 class Rounector {
     constructor() {
-        // this.url = 'http://192.168.1.10:5000'  // HOME
-        this.url = 'http://172.16.100.80:5000'  // neuefische
+        this.url = 'localhost'
+        this.backendUrlForDevice= 'backend:5000'
         this.client = new SSHClient()
         this.data = {}
         this.afterUrlPromp = []
 
         // SET IP+PORT:
         dialogPrompt({
-            title: 'IP:Port of the backend',
+            title: 'IP:Port of the backend from your pc',
             label: 'http://',
             value: this.url.replace('http://', ''),
             type: 'input',
@@ -21,6 +21,21 @@ class Rounector {
             }
             this.url = 'http://' + r
             this.afterUrlPromp.forEach(callback => callback())
+
+
+            dialogPrompt({
+                title: '(IP or domain-name):Port of the backend from device',
+                label: 'http://',
+                value: this.backendUrlForDevice.replace('http://', ''),
+                type: 'input',
+                alwaysOnTop: true,
+                height: 220,
+            })
+              .then(r => {
+                  r == null && closeApp()
+
+                  this.backendUrlForDevice = 'http://' + r
+              })
           })
     }
 

@@ -32,7 +32,7 @@ function startRounection() {
       device_config.info.type = rounector.data['device_type']
       device_config.info.version = rounector.data['device_version']
       device_config.auth.register_token = rounector.data['register_token']
-      device_config.remote_host = rounector.url.replace('http://', '')
+      device_config.remote_host = rounector.backendUrlForDevice.replace('http://', '')
 
       writeFileSync(tempPath + '/config.json', JSON.stringify(device_config))
 
@@ -56,6 +56,11 @@ function rounection() {
   const host = {
     server: rounector.data['loginData'],
     commands: ['cd /tmp/', 'ls /tmp/match.tar'],
+
+    idleTimeOut: 100000,  //integer milliseconds
+
+    dataIdleTimeOut: 100000,  //integer milliseconds
+
     onCommandComplete: function( command, response, sshObj ) {
       console.log('command', command)
       console.log('response', response)
@@ -88,6 +93,10 @@ function rounection() {
           break
       }
     },
+
+    onData: function( data ) {
+      console.log(data)
+    },
   }
 
   setProgress('Connect to device...')
@@ -111,7 +120,7 @@ function connectToDevice(command, response, sshObj) {
   if (startDownload) {
     setProgress('downloading match-files...')
     progress = 'downloadMatch'
-    sshObj.commands.push(`wget "${rounector.url}/api/match/download\x16?type=${rounector.data['device_type']}&version=${rounector.data['device_version'].replace(/\./g, '_')}" -O match.tar`)
+    sshObj.commands.push(`wget "${rounector.backendUrlForDevice}/api/match/download\x16?type=${rounector.data['device_type']}&version=${rounector.data['device_version'].replace(/\./g, '_')}" -O match.tar`)
     sshObj.commands.push('echo "download-done"')
   }
 }
@@ -136,7 +145,7 @@ function checkMatch2(command, response, sshObj) {
     if (startDownload) {
       setProgress('downloading match-files...')
       progress = 'downloadMatch'
-      sshObj.commands.push(`wget "${rounector.url}/api/match/download\x16?type=${rounector.data['device_type']}&version=${rounector.data['device_version'].replace(/\./g, '_')}" -P /tmp/ -O match.tar`)
+      sshObj.commands.push(`wget "${rounector.backendUrlForDevice}/api/match/download\x16?type=${rounector.data['device_type']}&version=${rounector.data['device_version'].replace(/\./g, '_')}" -P /tmp/ -O match.tar`)
       sshObj.commands.push('echo "download-done"')
     }
   }
