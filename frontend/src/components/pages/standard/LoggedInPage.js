@@ -33,7 +33,7 @@ function LoggedInPage({ children }) {
       url: '/dashboard',
     },
     {
-      name: 'Registerlist',
+      name: 'Registertokens',
       url: '/registerlist',
     },
     {
@@ -41,7 +41,7 @@ function LoggedInPage({ children }) {
       url: '/devices',
     },
     {
-      name: 'EShell',
+      name: 'Terminal',
       url: '/eshell',
     },
   ]

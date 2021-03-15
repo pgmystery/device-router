@@ -132,7 +132,7 @@ function EShellPage({ session, location }) {
                 && <RunCommands sendCMD={sendCMD}></RunCommands>
             }
             </EShellPageWrapper>
-          : <NoSessionsText>No EShell-Sessions...</NoSessionsText>
+          : <NoSessionsText>No Terminal-Sessions...</NoSessionsText>
       }
       {
         currentSessionFullscreen
