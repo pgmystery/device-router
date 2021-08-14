@@ -3,9 +3,9 @@ const {
   NODE_ENV = 'development',
 
   // If you run it local:
-  MONGO_URI = 'mongodb://localhost:27017/devicerouter',
+  // MONGO_URI = 'mongodb://localhost:27017/devicerouter',
   // If you run it in a docker-container:
-  // MONGO_URI = 'mongodb://mongo:27017/devicerouter',
+  MONGO_URI = 'mongodb://mongo:27017/devicerouter',
 
   SESS_NAME = 'sid',
   SESS_SECRET = 'mySecret!',
