@@ -53,10 +53,12 @@
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.2.1",
+    "@storybook/addon-info": "^5.2.1",
     "@storybook/addon-links": "^5.2.1",
     "@storybook/addons": "^5.2.1",
     "@storybook/react": "^5.2.1",
-    "@storybook/addon-info": "^5.2.1",
-    "cypress": "^3.5.0"
+    "cypress": "^3.5.0",
+    "eslint": "^6.1.0",
+    "eslint-config-react-app": "^7.0.1"
   }
 }
