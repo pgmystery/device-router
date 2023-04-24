@@ -8,14 +8,14 @@ COPY package-lock.json ./
 
 COPY . ./
 
-CMD ["npm", "start"]
+RUN npm install && npm run-script build
 
 
 #Nginx
 FROM nginx:stable-alpine
 
 COPY --from=builder /app/build /usr/share/nginx/html
-COPY --from=builder /app/nginx/proxy.nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./nginx/proxy.nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
