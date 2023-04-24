@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/bash
+
+echo "root:root" | chpasswd
 
 # SSH:
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
 service ssh start
-
-echo "root:root" | chpasswd
 
 
 # Python:
@@ -18,4 +18,6 @@ NEW_PYTHON_FILE_PATH=${PYTHON_DIR_PATH}/python
 ln -sf ${PYTHON_FILE_PATH} ${NEW_PYTHON_FILE_PATH}
 
 
+# ENTRYPOINT:
+/usr/sbin/sshd -D
 bash

@@ -43,6 +43,15 @@ services:
     depends_on:
       - backend
 
+  device:
+    build: ./test_device
+    tty: true
+    ports:
+      - "1022:22"
+    restart: unless-stopped
+    networks:
+      - deviceRouter
+
 networks:
   deviceRouter:
     driver: bridge
