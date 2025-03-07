@@ -13,7 +13,7 @@
     "react-svg": "^10.0.22",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.5.0",
     "socket.io-client": "^2.2.0",
     "styled-components": "^4.3.2",
     "xterm": "^4.9.0",
