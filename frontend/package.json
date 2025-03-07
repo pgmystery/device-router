@@ -9,7 +9,7 @@
     "react-redux": "^7.1.1",
     "react-resize-detector": "^5.2.0",
     "react-router-dom": "^5.1.0",
-    "react-scripts": "3.1.1",
+    "react-scripts": "5.0.1",
     "react-svg": "^10.0.22",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
@@ -56,7 +56,7 @@
     "@storybook/addon-info": "^5.2.1",
     "@storybook/addon-links": "^5.2.1",
     "@storybook/addons": "^5.2.1",
-    "@storybook/react": "^5.2.1",
+    "@storybook/react": "^6.5.13",
     "cypress": "^3.5.0",
     "eslint": "^6.1.0",
     "eslint-config-react-app": "^7.0.1"
